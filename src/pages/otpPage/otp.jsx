@@ -8,12 +8,22 @@ import { postOTP } from '../../services/user/apiMethods'
 function Otp() {
   const navigate = useNavigate()
   const [getOtp, setOtp] = useState("")
-  const otpRef = useRef(null)
-  const initialTimer = parseInt(localStorage.getItem("otpTimer") || "60")
+  const queryParams = new URLSearchParams(location.search);
+  const email = queryParams.get("email") || "";
 
   const handleChange = (e) => {
     setOtp(e.target.value);
   };
+
+  const handleResendOTP = () => {
+    postResendOTP({email: email})
+      .then((response) => {
+        toast.success("OTP has been resend to" + response.data.email);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -44,7 +54,7 @@ function Otp() {
     <div className='flex justify-center h-screen bg-white'>
       {/* left side */}
       <div className='flex items-center justify-center w-1/2'>
-        <div className='max-w-md w-full p-8 shadow-md'>
+        <div className='max-w-md w-full p-8 shadow-lg'>
           <h2 className='text-2xl font-semibold text-start mb-2'>Enter Your OTP</h2>
           <h2 className=' text-start mb-6'>OTP has been send to your email</h2>
           <form onSubmit={handleSubmit}>
@@ -57,10 +67,13 @@ function Otp() {
               />
             </div>
             <div className='flex px-2 items-center justify-between mb-4'>
-              <div>
-                <p>Resend</p>
+              <div className='w-full border py-2'>
+                <button 
+                onClick={handleResendOTP}
+                className='w-4/12 hover:bg-blue-700 border py-1.5 px-4 rounded'>
+                  Resend OTP
+                </button>
               </div>
-              <p>Timer</p>
             </div>
             <button 
             type='submit'

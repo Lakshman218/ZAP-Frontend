@@ -43,7 +43,7 @@ function Login() {
     <div className="flex justify-center h-screen bg-white">
       {/* Left side: Login form */}
       <div className="flex items-center justify-center w-1/2">
-        <div className="max-w-md w-full p-8 shadow-md">
+        <div className="max-w-md w-full p-8 shadow-lg">
           <h2 className="text-2xl font-semibold text-center mb-4">Welcome Back!</h2>
 
           <Formik 
@@ -62,13 +62,13 @@ function Login() {
               <div className="mb-6">
                 <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="password">Password</label>
                 <Field 
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" 
                 id="password" name="password" type="password" placeholder="Enter your password" autoComplete="off" />
                 <ErrorMessage name="password" component="div" className="text-red-600 text-xs" />
               </div>
               <div className="flex items-center justify-between mb-4">
                 <button 
-                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded focus:outline-none focus:shadow-outline" 
                 type="submit">Sign In</button>
               </div>
             </Form>

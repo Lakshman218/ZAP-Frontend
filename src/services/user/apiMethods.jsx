@@ -36,6 +36,23 @@ export const postOTP = (otp) => {
   })
 } 
 
+// resent otp
+export const postResendOTP = (email) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.resendOtp, email)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
 // login
 
 export const postLogin = (userData) => {
