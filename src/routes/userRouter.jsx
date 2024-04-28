@@ -6,6 +6,10 @@ import Signup from "../pages/signup/signup";
 import Otp from "../pages/otpPage/otp";
 import Profile from "../pages/profile/Profile";
 import userHomePage from "../pages/homepage/userHomePage";
+import ForgotPassword from "../pages/forgotPassword/forgotPassword";
+import ForgotOtp from "../pages/otpPage/forgotOtp";
+import RenewPassword from "../pages/forgotPassword/renewPassword";
+
 
 const appRouter = createBrowserRouter([
   {
@@ -37,6 +41,18 @@ const appRouter = createBrowserRouter([
   {
     path: "/otp",
     element: <Otp />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />
+  },
+  {
+    path: "/forgot-otp",
+    element: <ForgotOtp />
+  },
+  {
+    path: "/renew-password",
+    element: <RenewPassword />
   }
 ])
 

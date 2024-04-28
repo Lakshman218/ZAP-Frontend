@@ -3,4 +3,7 @@ export const userUrls = {
   registerOtp: "/verifyOTP",
   resendOtp: "/resendOTP",
   login: "/login",
+  forgotPassword: "/forgot-password",
+  forgotOtp: "/forgot-otp",
+  resetPassword: "/reset-password",
 }

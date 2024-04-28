@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react'
 import otpImg from '../../../public/images/otpImg.jpg'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { postOTP, postResendOTP } from '../../services/user/apiMethods'
+import { forgotOTP, postResendOTP } from '../../services/user/apiMethods'
 
 
-function Otp() {
+function ForgotOtp() {
   const navigate = useNavigate()
   const [getOtp, setOtp] = useState("")
   const queryParams = new URLSearchParams(location.search);
@@ -18,7 +18,7 @@ function Otp() {
   const handleResendOTP = () => {
     postResendOTP({email: email})
       .then((response) => {
-        toast.success("OTP has been resend to " + response.data.email);
+        toast.success("OTP has been resend to" + response.data.email);
       })
       .catch((error) => {
         console.log(error);
@@ -34,13 +34,13 @@ function Otp() {
       return
     }
 
-    postOTP({otp: otp}) 
+    forgotOTP({otp: otp}) 
       .then((response) => {
         console.log("In response");
         const data = response.data
         if(response.status == 200) {
           toast.success(data.message)
-          navigate("/")
+          navigate("/renew-password")
         } else {
           toast.error(data.message)
         }
@@ -92,4 +92,4 @@ function Otp() {
   )
 }
 
-export default Otp
+export default ForgotOtp

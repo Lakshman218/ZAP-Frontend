@@ -32,10 +32,11 @@ export const apiCall = async(method, url, data) => {
       if(response) {
         resolve(response)
       } else if(error) {  
-        console.log(error); // need modify
+        console.log( "error in apical",error.response); // need modify
+        reject(error?.response?.data);
       }
     } catch (error) {
-      
+      reject(err.response.data);
     }
   })
 }
