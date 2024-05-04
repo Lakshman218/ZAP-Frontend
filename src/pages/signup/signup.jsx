@@ -5,12 +5,16 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import loginimage from "../../../public/images/socialImg.png"
 import { initialValues, validationSchema } from '../../utils/validations/registerValidation';
 import { useDispatch } from 'react-redux';
-import { postRegister } from '../../services/user/apiMethods';
+import { googleAuthenticate, postRegister } from '../../services/user/apiMethods';
+import {auth, provider} from "../../utils/firebase/config"
+import {signInWithPopup} from "firebase/auth"
+import { loginSuccuss } from '../../utils/context/reducers/authSlice';
 
 
 function Signup() {
   // const dispatch = useDispatch()
   const navigate =  useNavigate()
+  const dispatch = useDispatch()
   const submit = (values) => {
     postRegister(values)
     .then((response) => {
@@ -28,47 +32,127 @@ function Signup() {
       })
   }
 
+  const handlegoogleSignUp = () => {
+    signInWithPopup(auth, provider)
+      .then((data) => {
+         console.log("userdata from firebase",data);
+      
+
+        const userData = {
+          userName: data.user.displayName,
+          email: data.user.email,
+          profileImg: data.user.photoURL,
+        };
+
+        console.log("user details",userData);
+   
+        googleAuthenticate({userData})
+          .then((response) => {
+            const data = response.data
+            if(response.status == 200) {
+              toast.info(data.message)
+              dispatch(loginSuccuss({user: data}))
+              navigate('/')
+            } else {
+              toast.error(data.message) 
+              console.log(response.message);
+            }
+          })
+          .catch((error) => {
+            toast.error(error?.message);
+            console.log(error?.message);
+          })
+      })
+  }
+
   return (
     <div className='flex flex-col md:flex-row justify-center h-screen bg-white'>
       {/* left side */}
-      <div className='flex items-center justify-center md:w-1/2 '>
+      <div className='flex items-center justify-center md:w-1/2 hover:scale-105 transition-transform duration-500'>
         <div className=' max-w-md w-full shadow-lg p-6'>
           <h2 className='text-2xl font-semibold text-center mb-6 mt-2'>Get Started Now</h2>
 
           <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={submit}
-          >
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={submit}
+            >
 
-            <Form>
-              <div className='mb-4'>
-                <label className='block text-gray-500 text-xs font-semibold mb-1' htmlFor="email">Email</label>
-                <Field className='shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none' type="text" id="email" name='email' placeholder="Enter your email" />
+            <Form className="max-w-md mx-auto">
+              <div className="relative z-0 w-full mb-4 group">
+                <Field 
+                  type="email" 
+                  name="email" 
+                  id="email" 
+                  autoComplete="off"
+                  className="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                  placeholder=" " 
+                />
+                <label 
+                  htmlFor="email" 
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Email address
+                </label>
                 <ErrorMessage name="email" component="div" className="text-red-600 text-xs" />
               </div>
-              <div className='mb-4'>
-                <label className='block text-gray-500 text-xs font-semibold mb-2' htmlFor="userName">userName</label>
-                <Field className='shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none' type="text" id="userName" name='userName' placeholder="Enter your userName" />
+              <div className="relative z-0 w-full mb-4 group">
+                <Field 
+                  type="text" 
+                  name="userName" 
+                  id="userName" 
+                  autoComplete="off"
+                  className="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                  placeholder=" " 
+                />
+                <label 
+                  htmlFor="userName" 
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  UserName
+                </label>
                 <ErrorMessage name="userName" component="div" className="text-red-600 text-xs" />
               </div>
-              {/* <div className='mb-4'>
-                <label className='block text-gray-700 text-xs font-semibold mb-1' htmlFor="name">Name</label>
-                <Field className='shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none' type="text" id="name" name='name' placeholder="Enter your name" />
-                <ErrorMessage name="name" component="div" className="text-red-500 text-xs" />
-              </div> */}
-              <div className='mb-6'>
-                <label className='block text-gray-500 text-xs font-semibold mb-1' htmlFor="password">Password</label>
-                <Field className='shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none' type="password" id="password" name='password' placeholder="Enter your password" />
+              {/* Repeat for other input fields */}
+              <div className="relative z-0 w-full mb-4 group">
+                <Field 
+                  type="password" 
+                  name="password" 
+                  id="password" 
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                  placeholder=" " 
+                  autoComplete="off" // Add this line
+                />
+                <label 
+                  htmlFor="password" 
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Password
+                </label>
                 <ErrorMessage name="password" component="div" className="text-red-600 text-xs" />
               </div>
-              <div className='mb-6'>
-                <label className='block text-gray-500 text-xs font-semibold mb-1' htmlFor="confirmPassword">Confirm Password</label>
-                <Field className='shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none mb-2' type="password" id="confirmPassword" name='confirmPassword' placeholder="Confirm password" />
+              <div className="relative z-0 w-full mb-8 group">
+                <Field 
+                  type="password" 
+                  name="confirmPassword" 
+                  id="confirmPassword" 
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                  placeholder=" " 
+                  autoComplete="off" // Add this line
+                />
+                <label 
+                  htmlFor="password" 
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Confim Password
+                </label>
                 <ErrorMessage name="confirmPassword" component="div" className="text-red-600 text-xs" />
               </div>
-              <div className='flex items-center justify-between mb-3'>
-                <button className='w-full bg-gray-500 hover:bg-blue-700 text-white py-1.5 px-4 rounded focus:outline-none' type='submit' >SignUp</button>
+              
+              <div className="flex items-center justify-between mb-3">
+                <button 
+                className="w-full bg-gray-500 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded focus:outline-none focus:shadow-outline" 
+                type="submit">SignUp</button>
               </div>
             </Form>
 
@@ -78,11 +162,16 @@ function Signup() {
             <span className="text-gray-600">Or</span>
           </div>
 
-          <button type="button" className="shadow-md border justify-center w-full text-black bg-white hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
-            <svg className="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
-              <path fillRule="evenodd" fill="#FF5733" d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z" clipRule="evenodd"/>
-            </svg>
-            <span>Sign in with Google</span>
+          <button 
+            type="button" 
+            onClick={handlegoogleSignUp}
+            className="bg-white font-medium justify-center w-full active:bg-blueGray-50 text-blueGray-700  px-4 py-3 rounded-md outline-grey focus:outline-none mr-3 mb-5  uppercase shadow hover:shadow-md inline-flex items-center text-xs ease-linear transition-all duration-150">
+            <img
+              alt="..."
+              className="w-5 mr-1"
+              src="https://demos.creative-tim.com/notus-js/assets/img/google.svg"
+            />
+            <span>SignUp with Google</span>
           </button>
 
           <div className="text-center mt-4">
@@ -96,7 +185,7 @@ function Signup() {
       {/* right side */}
       <div className='hidden md:flex md:w-1/2 items-center bg-white'>
         <div className='p-20'>
-          <img className='w-full p-20' src={loginimage} alt="" />
+          <img className='w-full p-20 ' src={loginimage} alt="" />
         </div>
       </div>
     </div>

@@ -5,10 +5,12 @@ import Login from "../pages/login/login";
 import Signup from "../pages/signup/signup";
 import Otp from "../pages/otpPage/otp";
 import Profile from "../pages/profile/Profile";
-import userHomePage from "../pages/homepage/userHomePage";
 import ForgotPassword from "../pages/forgotPassword/forgotPassword";
 import ForgotOtp from "../pages/otpPage/forgotOtp";
 import RenewPassword from "../pages/forgotPassword/renewPassword";
+import { adminLoginRouter, adminRouter } from "./adminRouter";
+import HomePage from "../pages/userHomePage/HomePage";
+
 
 
 const appRouter = createBrowserRouter([
@@ -22,7 +24,7 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <userHomePage />
+        element: <HomePage />
       },
       {
         path: "/profile",
@@ -53,7 +55,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/renew-password",
     element: <RenewPassword />
-  }
+  },
+
+  adminRouter,
+  adminLoginRouter,
 ])
 
 export default appRouter

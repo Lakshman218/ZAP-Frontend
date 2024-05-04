@@ -6,4 +6,9 @@ export const userUrls = {
   forgotPassword: "/forgot-password",
   forgotOtp: "/forgot-otp",
   resetPassword: "/reset-password",
+  googleAuth: "/google-auth",
+}
+
+export const adminUrls = {
+  login: "/admin/login",
 }

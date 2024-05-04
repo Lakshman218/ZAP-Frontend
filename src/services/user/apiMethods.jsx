@@ -107,3 +107,40 @@ export const forgotPassword = (email) => {
     }
   })
 }
+
+// renew password
+
+export const renewPassword = (userData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.resetPassword, userData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// google authentication
+
+export const googleAuthenticate = (userData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("userdata in api method", userData)
+      apiCall("post", userUrls.googleAuth, userData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}

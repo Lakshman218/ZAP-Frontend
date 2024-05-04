@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function protect() {
+function Protect({children}) {
   const navigate = useNavigate();
   const selectUser = (state) => state.auth.user
   const user = useSelector(selectUser)
@@ -13,4 +13,4 @@ function protect() {
   }
 }
 
-export default protect
+export default Protect
