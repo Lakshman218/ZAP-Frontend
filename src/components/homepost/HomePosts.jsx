@@ -1,10 +1,14 @@
 import React from 'react'
+import Header from '../header/header'
 
 function HomePosts() {
   return (
 
-    <div class="w-full border p-6 mt-5 ml-4 mr-2 h-max rounded-md">
-      <div class="w-full border p-2"> 
+    <div class="w-full border p-6 mt-5 ml-4 mr-2 h-max rounded-md bg-black">
+      <div>
+        <Header />
+      </div>
+      <div class="border p-2"> 
 
         <div id="controls-carousel" class="relative w-full" data-carousel="static">
           

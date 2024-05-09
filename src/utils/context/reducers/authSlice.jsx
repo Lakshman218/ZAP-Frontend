@@ -16,6 +16,10 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      state.post = [];
+    },
+    setPosts: (state, action) => {
+      state.posts = action.payload.posts;
     }
   }
 })

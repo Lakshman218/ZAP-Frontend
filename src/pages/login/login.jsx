@@ -165,14 +165,14 @@ function Login() {
       </div>
       {/* Right side: Image */}
       <div className='hidden md:flex md:w-1/2 items-center bg-white'>
-  <div className='p-14'>
-    <img 
-      className='w-full p-10 ' // Add hover effect here
-      src={loginimage} 
-      alt="" 
-    />
-  </div>
-</div>
+        <div className='p-14'>
+          <img 
+            className='w-full p-10 ' // Add hover effect here
+            src={loginimage} 
+            alt="" 
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { apiCall } from "./apiCalls";
-import { userUrls } from "../endPoints";
+import { connectionUrls, postUrls, userUrls } from "../endPoints";
 
 // User Register
 
@@ -133,6 +133,94 @@ export const googleAuthenticate = (userData) => {
     try {
       console.log("userdata in api method", userData)
       apiCall("post", userUrls.googleAuth, userData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// get user post
+
+export const getUserPost = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrls.getUserPosts}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// get all posts
+export const getAllPosts = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", postUrls.getAllPosts, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// delete post
+export const deletePost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", postUrls.deletePost, postData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// get user connections
+export const getUserConnection = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.getConnection, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// user edit profile
+export const editProfile = (userData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("userdata in api method", userData)
+      apiCall("post", userUrls.editProfile, userData)
         .then((response) => {
           resolve(response)
         })
