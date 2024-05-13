@@ -5,7 +5,6 @@ import Protect from './routes/protect'
 import SideNavBar from './components/sidebar/SideNavBar'
 
 
-
 function App() {
   const selectUser = (state) => state.auth.user;
   const user = useSelector(selectUser);

@@ -145,8 +145,25 @@ export const googleAuthenticate = (userData) => {
   })
 }
 
-// get user post
+// Add new post
+export const addPost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("Postdata in api", postData);
+      apiCall("post", postUrls.addPost, postData)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+} 
 
+// get user post
 export const getUserPost = () => {
   return new Promise((resolve, reject) => {
     try {

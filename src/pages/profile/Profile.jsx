@@ -17,6 +17,15 @@ function Profile() {
   const userId = user._id;
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
+  const [viewPost, setViewPost] = useState(true) 
+  const [IsEditProfileOpen, SetEditProfileOpen] = useState(false)
+
+  const openEditProfile = () => {
+    SetEditProfileOpen(true)
+  }
+  const closeEditProfile = () => {
+    SetEditProfileOpen(false)
+  }
 
   useEffect(() => {
     try {
@@ -53,53 +62,56 @@ function Profile() {
   }
 
   return (
-    <div className='w-full p-4 mr-2'>
-      <div className='flex w-full justify-center mb-6'>
-        <div className='flex bg-gray-200 w-full rounded-md'>
-          <div className='flex p-8 ml-4 justify-center gap-8'>
-            <div className="flex ml-8">
-              <img
-                className=" h-40 w-40 rounded-full"
-                src={user.profileImg}
-                alt=""
-              />
-            </div>
-            <div className='block ml-10'>
-              <div className='font-semibold text-3xl pb-2'>{user.userName}</div>
-              <div className='pb-0'>{user.name}</div>
-              <div className='pb-1'>{user.bio}</div>
-              <div className='flex justify-between  mt-2 cursor-pointer'>
-                <div className='flex flex-col cursor-pointer items-center'>
-                  <p className="font-medium text-lg">{posts.length}</p>
-                  <p className="text-sm">Posts</p>
-                </div>
-                <div className='flex flex-col cursor-pointer items-center'>
-                  <p className="font-medium text-lg">{followers.length}</p>
-                  <p className="text-sm">Followers</p>
-                </div>
-                <div className='flex flex-col cursor-pointer items-center'>
-                  <p className="font-medium text-lg">{following.length}</p>
-                  <p className="text-sm">Following</p>
-                </div>
-              </div>  
-            </div>
-            <div className='flex'>
-              <div>
-                <button className='bg-black text-white py-2 px-6 rounded ml-10 items-center'>Edit Profile</button>
+      <div className='w-full p-4 mr-2'>
+        <div className='flex w-full justify-center mb-6'>
+          <div className='flex bg-gray-200 w-full rounded-md'>
+            <div className='flex p-8 ml-4 justify-center gap-8'>
+              <div className="flex ml-8">
+                <img
+                  className=" h-40 w-40 rounded-full"
+                  src={user.profileImg}
+                  alt=""
+                />
               </div>
-              <div>
-                <button 
-                onClick={handleLogout}
-                className='bg-black text-white py-2 px-6 rounded ml-8 items-center'>Logout</button>
+              <div className='block ml-10'>
+                <div className='font-semibold text-3xl pb-2'>{user.userName}</div>
+                <div className='pb-0'>{user.name}</div>
+                <div className='pb-1'>{user.bio}</div>
+                <div className='flex justify-between  mt-2 cursor-pointer'>
+                  <div className='flex flex-col cursor-pointer items-center'>
+                    <p className="font-medium text-lg">{posts.length}</p>
+                    <p className="text-sm">Posts</p>
+                  </div>
+                  <div className='flex flex-col cursor-pointer items-center'>
+                    <p className="font-medium text-lg">{followers.length}</p>
+                    <p className="text-sm">Followers</p>
+                  </div>
+                  <div className='flex flex-col cursor-pointer items-center'>
+                    <p className="font-medium text-lg">{following.length}</p>
+                    <p className="text-sm">Following</p>
+                  </div>
+                </div>  
+              </div>
+              <div className='flex'>
+                <div>
+                  <button 
+                  onClick={openEditProfile}
+                  className='bg-black text-white py-2 px-6 rounded ml-10 items-center'>Edit Profile</button>
+                  {IsEditProfileOpen && <EditProfile closeEditProfile={closeEditProfile} />}
+                </div>
+                <div>
+                  <button 
+                  onClick={handleLogout}
+                  className='bg-black text-white py-2 px-6 rounded ml-8 items-center'>Logout</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div className='p-4 bg-black rounded-md'>
+          <PostGallery /> 
+        </div>
       </div>
-      <div className='p-4 bg-black rounded-md'>
-        <PostGallery /> 
-      </div>
-    </div>
   )
 }
 
