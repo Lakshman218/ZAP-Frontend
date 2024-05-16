@@ -5,8 +5,8 @@ import { toast } from 'sonner';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 import axios from 'axios';
-import { addPost } from '../../services/user/apiMethods';
 import { useSelector } from 'react-redux';
+import  { addPost } from "../../services/user/apiMethods"
 
 function AddPost({ closeAddPost }) {
   const selectedUser = (state) => state.auth.user || ""
@@ -14,18 +14,28 @@ function AddPost({ closeAddPost }) {
   const userId = user._id || ""
   const [selectedFiles, setSelectedFiles] = useState([]);
 
+  const resetState=()=>{
+    formik.values.images=[];
+    formik.values.title='';
+    formik.values.description = '';
+  }
+
   const handleFileChange = useCallback((event) => {
-    const files = event.target.files; 
-    if(files && files.length > 0) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
       const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-      const selectedFiles = Array.from(files);
-      const invalidFiles = selectedFiles.filter(file => !validImageTypes.includes(file.type))
-      if(invalidFiles.length > 0) {
+      const selectedFilesArray = Array.from(files);
+      const invalidFiles = selectedFilesArray.filter(
+        (file) => !validImageTypes.includes(file.type)
+      );
+      if (invalidFiles.length > 0) {
         toast.error("Please select only image files (JPEG, PNG, GIF)");
-        return
+        return;
       }
+      console.log("selectedfiles",selectedFilesArray);
+      formik.setFieldValue('images', selectedFilesArray);
+      setSelectedFiles(selectedFilesArray); 
     }
-    setSelectedFiles(files);
   }, []);
 
   const formik = useFormik({
@@ -38,37 +48,60 @@ function AddPost({ closeAddPost }) {
       images: Yup.array()
         .min(1, "At least one image is required")
         .required("Image file required"),
-      title: Yup.string().required("Title is required"),
-      description: Yup.string().required("Description is required"),
+      title: Yup.string()
+        .trim() // Trim leading and trailing spaces
+        .required("Title is required")
+        .matches(/^\S+.*\S$/, "Title cannot contain only spaces"),
+      description: Yup.string()
+        .trim() // Trim leading and trailing spaces
+        .required("Description is required")
+        .matches(/^\S+.*\S$/, "Description cannot contain only spaces"),
     }),
     onSubmit: async() => {
       const {title, description} = formik.values;
+      console.log("formik values", formik.values.images);
       const imageUrls = []
-      for(const image of formik.values.images) {
-        const response = await fetch(image)
-        const blob = await response.blob()
-
-        const formData = new FormData()
-        formData.append("file", blob)
-        formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET) 
-        formData.append("cloud_name", process.env.REACT_APP_CLOUD_NAME);
-
+      for (const imageFile of formik.values.images) {
+        console.log("formik images", imageFile);
+        // Directly use the File object to create a Blob
+        const blob = new Blob([imageFile], { type: imageFile.type });
+      
+        console.log("response blob", blob);
+        const formData = new FormData();
+        formData.append("file", blob);
+        formData.append("upload_preset", "tzxkty8m");
+      
         try {
+          console.log("formdata in url", formData);
           const res = await axios.post(
             "https://api.cloudinary.com/v1_1/dpn5xsh8k/image/upload",
             formData
-          )
-          const imageUrl = res.data.url
-          imageUrls.push(imageUrl)
+          );
+          console.log("res from cloud", res);
+          const imageUrl = res.data.url;
+          imageUrls.push(imageUrl);
+          console.log("imageurls", imageUrls);
         } catch (error) {
           console.log("Error uploading image:", error);
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            console.log('Error', error.message);
+          }
         }
       }
-      addPost({ userId, imageUrls, title, description  })
+      
+      addPost({ userId, imgUrl:imageUrls, title, description  })
        .then((response) => {
         const data = response.data
         if(response.status ===  200) {
           toast.info(data.message)
+          resetState()
+          handleCancelClick()
         } else {
           console.log(response.message);
             toast.error(data.message);
@@ -83,6 +116,7 @@ function AddPost({ closeAddPost }) {
 
   const handleCancelClick = () => {
     formik.values.images = [];
+    resetState()
     closeAddPost()
   }
 
@@ -102,27 +136,37 @@ function AddPost({ closeAddPost }) {
               <div className="relative z-0 w-full mb-5 group">
                 <Label htmlFor="multiple-file-upload" value="Upload multiple files" />
                 <FileInput id="multiple-file-upload" multiple onChange={handleFileChange} />
+                {/* <Label htmlFor="file-upload" value="Upload file" />
+                <FileInput id="file-upload" multiple onChange={handleFileChange} /> */}
               </div>
 
-              {/* Render selected images */}
-              {selectedFiles.length > 0 && (
-                <div className="mt-4">
-                  <p className="font-medium">Selected Images:</p>
-                  <div className="flex flex-wrap gap-4 mt-2">
-                    {Array.from(selectedFiles).map((file, index) => (
-                      <div key={index} className="w-24 h-24 border border-gray-300 rounded-md overflow-hidden">
-                        <img src={URL.createObjectURL(file)} alt={`Image ${index}`} className="w-full h-full object-cover" />
-                        <p className="text-xs text-center">{file.name}</p>
-                      </div>
-                    ))}
-                  </div>
+              {!formik.values.images.length && (
+                <div className="flex flex-col gap 10 items-center">
+                  {(!formik.values.images.length ||
+                    formik.errors.images) && (
+                    <div className="flex flex-col gap 10 items-center">
+                      <p className="text-red-600 text-xs">
+                        {formik.errors.images}
+                      </p>
+                      <p className="text-blue-700 mt-2">Select Image</p>{" "}
+                    </div>
+                  )}
                 </div>
               )}
 
-              {formik.errors.images && (
-                <p className="text-red-600 text-xs">
-                  {formik.errors.images}
-                </p>
+              { !formik.errors.images && formik.values.images.length > 0  &&(
+                <div className="mt-4">
+                <p className="font-medium">Selected Images:</p>
+                <div className="flex flex-wrap gap-4 mt-2 mb-2">
+                  {Array.from(selectedFiles).map((file, index) => (
+                    <div key={index} className="w-24 h-24 border border-gray-300 rounded-md overflow-hidden">
+                      <img src={URL.createObjectURL(file)} alt={`Image ${index}`} className="w-full h-full object-cover" />
+                      <p className="text-xs text-center">{file.name}</p>
+                    </div>
+                    
+                  ))}
+                </div>
+              </div>
               )}
 
               {/* Title Input */}
@@ -133,7 +177,7 @@ function AddPost({ closeAddPost }) {
                 onBlur={formik.handleBlur}
                 type="text" 
                 name="title" id="title" 
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                 <label htmlFor="title" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Title</label>
               </div>
               {formik.touched.title && formik.errors.title && (
@@ -150,12 +194,12 @@ function AddPost({ closeAddPost }) {
                 onBlur={formik.handleBlur}
                 name="description" 
                 id="description" 
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required></textarea>
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "></textarea>
                 <label htmlFor="description" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description</label>
               </div>
               {formik.touched.description &&
               formik.errors.description && (
-                <p className="text-red-600 text-xs">
+                <p className="text-red-600 text-xs mb-4">
                   {formik.errors.description}
                 </p>
               )}

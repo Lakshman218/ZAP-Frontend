@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../../utils/context/reducers/authSlice'
+import { logout, setPosts } from '../../utils/context/reducers/authSlice'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import PostGallery from '../../components/profile/postGallery'
@@ -13,13 +13,14 @@ function Profile() {
   const selectedUser = (state) => state.auth.user;
   const selectPosts = (state) => state.auth.posts;
   const user = useSelector(selectedUser);
+  console.log("userdata", user);
   const posts =  useSelector(selectPosts) || []
+  console.log("userposts", posts);
   const userId = user._id;
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
-  const [viewPost, setViewPost] = useState(true) 
   const [IsEditProfileOpen, SetEditProfileOpen] = useState(false)
-
+  const userimg = user.profileImg
   const openEditProfile = () => {
     SetEditProfileOpen(true)
   }
@@ -38,15 +39,15 @@ function Profile() {
           console.log(error);
         })
 
-      getUserConnection(userId)
-        .then((response)  => {
-          const connectionData = response.data.connection;  
-          setFollowers(connectionData.followers)
-          setFollowing(connectionData.following)
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+      // getUserConnection(userId)
+      //   .then((response)  => {
+      //     const connectionData = response.data.connection;  
+      //     setFollowers(connectionData.followers)
+      //     setFollowing(connectionData.following)
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
 
     } catch (error) {
       console.log(error);
@@ -69,7 +70,7 @@ function Profile() {
               <div className="flex ml-8">
                 <img
                   className=" h-40 w-40 rounded-full"
-                  src={user.profileImg}
+                  src={userimg}
                   alt=""
                 />
               </div>
@@ -108,9 +109,24 @@ function Profile() {
             </div>
           </div>
         </div>
-        <div className='p-4 bg-black rounded-md'>
-          <PostGallery /> 
+        
+        <div className='w-full mt-5 grid grid-cols-2 md:grid-cols-3 gap-5 bg-black rounded-md  p-8'>
+          {posts.length === 0? (
+            <div className='text-center items-center text-cyan-600 font-semibold py-5'>
+              Create your first post.
+              <div className='mt-2 text-cyan-600'>
+                Capture the moment with a friend
+              </div>
+            </div>
+          ) : (
+            posts.map((post) => (
+              <div key={post._id}>
+                <PostGallery post={post}/> 
+              </div>
+            ))
+          )}
         </div>
+
       </div>
   )
 }

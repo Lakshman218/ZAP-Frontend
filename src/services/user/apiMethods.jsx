@@ -164,9 +164,10 @@ export const addPost = (postData) => {
 } 
 
 // get user post
-export const getUserPost = () => {
+export const getUserPost = (userId) => {
   return new Promise((resolve, reject) => {
     try {
+      console.log("in userpost apicall");
       const url = `${postUrls.getUserPosts}/${userId}`
       apiCall("get", url, null)
         .then((response) => {
@@ -182,10 +183,11 @@ export const getUserPost = () => {
 }
 
 // get all posts
-export const getAllPosts = () => {
+export const getAllPosts = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      apiCall("get", postUrls.getAllPosts, userId)
+      // console.log("userid in getallpost",userId);
+      apiCall("post", postUrls.getAllPosts, userId)
         .then((response) => {
           resolve(response)
         })
@@ -238,6 +240,22 @@ export const editProfile = (userData) => {
     try {
       console.log("userdata in api method", userData)
       apiCall("post", userUrls.editProfile, userData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+export const getUserSuggestions = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.userSuggestions, userId)
         .then((response) => {
           resolve(response)
         })
