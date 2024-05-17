@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AddPost from '../posts/addPost';
-
+import logoImg from "../../../public/images/zap.jpg"
+import Searchbar from '../searchbar/Searchbar';
 
 function SideNavBar() {
   const navigate = useNavigate()
@@ -18,17 +19,27 @@ function SideNavBar() {
   const [isAddPostOpen, setIsAddPostOpen] = useState(false);
   const openAddPostModal = () => {
     setIsAddPostOpen(true);
+    closeSidebar()
   };
   const closeAddPostModal = () => {
     setIsAddPostOpen(false);
   };
+
+  const [isSearchbarOpen, setSearchbarOpen] = useState(false)
+  const openSearchbar = () => {
+    setSearchbarOpen(true);
+    closeSidebar()
+  }
+  const closeSearchbar = () => {
+    setSearchbarOpen(false);
+  }
 
   return (
     // <div className="w-full max-w-xs block justify-end">
     <div className="sm:w-0 md:w-4/12 max-w-72 block justify-end sm:p-0 md:p-2">
       <button
         type="button"
-        className="inline-flex items-center p-0 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex z-auto items-center p-0 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
         onClick={toggleSidebar}
       >
         <span className="sr-only">Toggle sidebar</span>
@@ -49,22 +60,22 @@ function SideNavBar() {
 
         <aside
           id="logo-sidebar"
-          className={`p-4 ml-2 fixed top-0 left-0 z-40 w-72 h-screen transition-transform ${
+          className={`p-2 ml-0 border hover:shadow-md fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
             isSidebarOpen ? '' : '-translate-x-full sm:translate-x-0'
           }`}
           aria-label="Sidebar"
         >
-          <div className="rounded-lg h-full px-3 py-4 overflow-y-auto bg-gray-200 dark:bg-black">
-              <a href="" onClick={closeSidebar} className="flex items-center ps-2.5 mb-5">
-                <img src="https://flowbite.com/docs/images/logo.svg" className="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
-                <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">ZAP</span>
-              </a>
+          <div className=" h-full px-3 py-4 overflow-y-auto bg-white dark:bg-black">
+            <div className="logo-container  max-w-32 h-auto overflow-hidden flex justify-center items-center">
+              <img className='logo-img transition-transform duration-300 ease-in-out transform hover:scale-110 w-28 flex' src={logoImg} alt="" />
+            </div>
+
               <ul className="space-y-2 font-medium">
-              <li>
+                <li>
                   <Link
                     to={"/" }
                     onClick={closeSidebar}
-                    className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-white dark:hover:bg-gray-700 dark:text-white group"
+                    className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                   >
                     <svg
                       className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -81,9 +92,9 @@ function SideNavBar() {
                 </li>
                 <li>
                   <Link
-                    to={"/" }
-                    onClick={closeSidebar}
-                    className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                    to={"" }
+                    onClick={openSearchbar}
+                    className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100  00 dark:hover:bg-gray-700 dark:text-white group"
                   >
                     <svg
                       className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -96,6 +107,7 @@ function SideNavBar() {
                     </svg>
                     <span className="ms-3">Search</span>
                   </Link>
+                  {isSearchbarOpen && <Searchbar closeSearchmodal={closeSearchbar}/>}
                 </li>
                 <li>
                     <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">

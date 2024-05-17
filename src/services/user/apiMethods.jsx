@@ -217,23 +217,6 @@ export const deletePost = (postData) => {
   })
 }
 
-// get user connections
-export const getUserConnection = (userId) => {
-  return new Promise((resolve, reject) => {
-    try {
-      apiCall("post", connectionUrls.getConnection, userId)
-        .then((response) => {
-          resolve(response)
-        })
-        .catch((err) => {
-          reject(err)
-        })
-    } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
-    }
-  })
-}
-
 // user edit profile
 export const editProfile = (userData) => {
   return new Promise((resolve, reject) => {
@@ -252,10 +235,130 @@ export const editProfile = (userData) => {
   })
 }
 
+// get user suggustions to miniprofile
 export const getUserSuggestions = (userId) => {
   return new Promise((resolve, reject) => {
     try {
       apiCall("post", userUrls.userSuggestions, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+export const getUserSearch = (searchQuery) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.userSearch, searchQuery)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// get user details
+export const getUserDetails = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("getuserdetails", userId);
+      apiCall("get", userUrls.getUserDetails+`/${userId}`)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// get user connections
+export const getUserConnection = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.getConnection, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// follow user
+export const followUser = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.follow, data)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// unfollow user
+export const unFollowUser = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.unFollow, data)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// reject follow request
+export const rejectFollowRequest = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.rejectRequest, data)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// accept follow request
+export const acceptFollowRequest = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", connectionUrls.acceptRequest, data)
         .then((response) => {
           resolve(response)
         })

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import UserSuggestion from './UserSuggestion'
 import { getUserSuggestions } from '../../services/user/apiMethods'
 
 
-function MiniProfile() {
+function MiniProfile() {    
     const selectedUser = (state) => state.auth.user
     const user = useSelector(selectedUser)
     const userId = user._id
     const [users, setUsers] = useState([])  
 
     useEffect(() => {
-        console.log("inside minprofile");   
+        // console.log("inside minprofile");   
         getUserSuggestions(userId)
             .then((response) => {
                 setUsers(response.data.suggestedUsers)
@@ -26,7 +25,7 @@ function MiniProfile() {
     return (
         
         <div className="w-full mr-2 max-w-xs block  justify-end p-4">
-            <div className=" w-full mb-2 max-w-sm bg-gray-200 border border-gray-200 rounded-lg shadow dark:bg-black dark:border-gray-700">
+            <div className=" w-full mb-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-black dark:border-gray-700">
                 <div className="flex justify-end px-4 pt-4">
                 </div>
                 <div className="flex flex-col items-center pb-6">
@@ -41,7 +40,7 @@ function MiniProfile() {
 
             {/* suggustions */}
 
-            <div className="w-full max-w-md p-4 bg-gray-200 border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-black dark:border-gray-700">
+            <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-black dark:border-gray-700">
                 <div className="flex items-center justify-between mb-4">
                     <h5 className="text-lg font-bold leading-none text-gray-900 dark:text-white">Show Suggusions</h5>
                     <a href="#" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">

@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <Protect>
-        <div className='flex'>
+        <div className='flex '>
           <SideNavBar />
           <Outlet/>
         </div>

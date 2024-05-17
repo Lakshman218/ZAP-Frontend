@@ -4,7 +4,7 @@ import { Button, Modal } from "flowbite-react";
 function EditProfile({closeEditProfile}) {
 
   return (
-    <div>
+    <div >
       <Modal
       dismissible
       show={true} // Always show the modal
@@ -13,7 +13,7 @@ function EditProfile({closeEditProfile}) {
       
     >
       {/* Modal content */}
-      <div className='p-10'>
+      <div className='p-10 '>
       <Modal.Header>Edit Profile</Modal.Header>
       <Modal.Body>
         {/* Body content */}

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import PostGallery from '../../components/profile/postGallery'
 import { getUserConnection, getUserPost } from '../../services/user/apiMethods'
 import EditProfile from '../../components/profile/editProfile'
+import emptypost from '../../../public/images/nopost.jpg'
 
 function Profile() {
   const navigate = useNavigate();
@@ -39,15 +40,15 @@ function Profile() {
           console.log(error);
         })
 
-      // getUserConnection(userId)
-      //   .then((response)  => {
-      //     const connectionData = response.data.connection;  
-      //     setFollowers(connectionData.followers)
-      //     setFollowing(connectionData.following)
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
+      getUserConnection(userId)
+        .then((response)  => {
+          const connectionData = response.data.connection;  
+          setFollowers(connectionData.followers)
+          setFollowing(connectionData.following)
+        })
+        .catch((error) => {
+          console.log(error);
+        })
 
     } catch (error) {
       console.log(error);
@@ -65,9 +66,9 @@ function Profile() {
   return (
       <div className='w-full p-4 mr-2'>
         <div className='flex w-full justify-center mb-6'>
-          <div className='flex bg-gray-200 w-full rounded-md'>
-            <div className='flex p-8 ml-4 justify-center gap-8'>
-              <div className="flex ml-8">
+          <div className='flex bg-white w-full rounded-md shadow-md'>
+            <div className='lg:flex lg:p-8 ml-4 justify-center gap-8'>
+              <div className="flex lg:ml-8 justify-center">
                 <img
                   className=" h-40 w-40 rounded-full"
                   src={userimg}
@@ -93,39 +94,50 @@ function Profile() {
                   </div>
                 </div>  
               </div>
-              <div className='flex'>
-                <div>
-                  <button 
-                  onClick={openEditProfile}
-                  className='bg-black text-white py-2 px-6 rounded ml-10 items-center'>Edit Profile</button>
-                  {IsEditProfileOpen && <EditProfile closeEditProfile={closeEditProfile} />}
-                </div>
-                <div>
-                  <button 
-                  onClick={handleLogout}
-                  className='bg-black text-white py-2 px-6 rounded ml-8 items-center'>Logout</button>
-                </div>
+              <div className='flex lg:ml-4'>
+              <div>
+                <button 
+                onClick={openEditProfile}
+                className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 '>Edit Profile</button>
+                {IsEditProfileOpen && <EditProfile closeEditProfile={closeEditProfile} />}
+              </div>
+              <div>
+                <button 
+                onClick={handleLogout}
+                className=' lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 '>Logout</button>
+              </div>
               </div>
             </div>
           </div>
         </div>
         
-        <div className='w-full mt-5 grid grid-cols-2 md:grid-cols-3 gap-5 bg-black rounded-md  p-8'>
-          {posts.length === 0? (
-            <div className='text-center items-center text-cyan-600 font-semibold py-5'>
-              Create your first post.
-              <div className='mt-2 text-cyan-600'>
-                Capture the moment with a friend
-              </div>
-            </div>
-          ) : (
-            posts.map((post) => (
-              <div key={post._id}>
-                <PostGallery post={post}/> 
-              </div>
-            ))
-          )}
+        {posts.length === 0? (
+        <div className='flex flex-col justify-center items-center mt-4 left-10 fixed text-black w-full h-auto '>
+          <img className='w-96' src={emptypost} alt="" />
+          <p>Create your first post.</p>
         </div>
+        ) : (
+        <div className='w-full mt-5  rounded-md  bg-white'>
+          <div className='flex justify-between px-10  gap-10 p-2 font-normal text-lg'>
+            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md'>
+              <button>Posts</button>
+            </div>
+            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md'>
+              <button>Saved</button>
+            </div>
+          </div>
+        
+          <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white p-2'>
+            {
+              posts.map((post) => (
+                <div key={post._id}>
+                  <PostGallery post={post}/> 
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      )}
 
       </div>
   )

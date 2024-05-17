@@ -7,7 +7,7 @@ export const apiCall = async(method, url, data) => {
     try {
       let response, error;
       if(method === 'post') {
-        console.log("in api call", data);
+        console.log("in api call", url, data);
         response = await api.post(url, data).catch((err) => {
           error = err
         }) 

@@ -2,7 +2,7 @@ import React from 'react';
 
 function PostGallery({ post }) {
   const imageUrlArray = post.imgUrl; 
-  console.log("imageurl in postgallery", imageUrlArray);
+  // console.log("imageurl in postgallery", imageUrlArray);
 
   return (
     <div className=''>

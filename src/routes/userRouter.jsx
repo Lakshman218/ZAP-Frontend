@@ -10,7 +10,7 @@ import ForgotOtp from "../pages/otpPage/forgotOtp";
 import RenewPassword from "../pages/forgotPassword/renewPassword";
 import { adminLoginRouter, adminRouter } from "./adminRouter";
 import HomePage from "../pages/userHomePage/HomePage";
-
+import UserProfile from "../pages/userProfile/UserProfile";
 
 
 const appRouter = createBrowserRouter([
@@ -30,7 +30,10 @@ const appRouter = createBrowserRouter([
         path: "/profile",
         element: <Profile />
       },
-      
+      {
+        path: "/user-profile/:userId",
+        element: <UserProfile />,
+      },
     ]
   },
   

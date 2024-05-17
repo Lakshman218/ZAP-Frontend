@@ -13,6 +13,7 @@ function AddPost({ closeAddPost }) {
   const user = useSelector(selectedUser)
   const userId = user._id || ""
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [croppedImage, setCroppedImage] = useState([]);
 
   const resetState=()=>{
     formik.values.images=[];
@@ -25,7 +26,7 @@ function AddPost({ closeAddPost }) {
     if (files && files.length > 0) {
       const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
       const selectedFilesArray = Array.from(files);
-      const invalidFiles = selectedFilesArray.filter(
+      const invalidFiles = selectedFilesArray.filter( 
         (file) => !validImageTypes.includes(file.type)
       );
       if (invalidFiles.length > 0) {
@@ -115,8 +116,8 @@ function AddPost({ closeAddPost }) {
   })
 
   const handleCancelClick = () => {
-    formik.values.images = [];
     resetState()
+    setCroppedImage([]);
     closeAddPost()
   }
 
@@ -154,7 +155,7 @@ function AddPost({ closeAddPost }) {
                 </div>
               )}
 
-              { !formik.errors.images && formik.values.images.length > 0  &&(
+              { !formik.errors.images && formik.values.images.length > 0 &&(
                 <div className="mt-4">
                 <p className="font-medium">Selected Images:</p>
                 <div className="flex flex-wrap gap-4 mt-2 mb-2">
@@ -163,8 +164,7 @@ function AddPost({ closeAddPost }) {
                       <img src={URL.createObjectURL(file)} alt={`Image ${index}`} className="w-full h-full object-cover" />
                       <p className="text-xs text-center">{file.name}</p>
                     </div>
-                    
-                  ))}
+                  ))} 
                 </div>
               </div>
               )}

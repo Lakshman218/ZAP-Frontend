@@ -25,7 +25,7 @@ function HomePage() {
     getAllPosts({ userId: userId })
      .then((response) => {
         const postDatas = response.data;
-        console.log("postdatas in homepage", postDatas);
+        // console.log("postdatas in homepage", postDatas);
         setPosts(postDatas);
         // console.log("post in home", posts);
       })
@@ -37,11 +37,11 @@ function HomePage() {
   return (
     <>
       {/* <div className="flex justify-between w-full"> */}
-        <div className="flex flex-col mr-2 ml-5" style={{width:'870px'}}>
-          <div className="border p-8 mt-5 h-max rounded-md bg-black">
+        <div className="flex flex-col mr-2 lg:ml-5" style={{width:'870px'}}>
+          <div className="p-2 rounded-md  bg-white">
             <Header />
           </div>
-          <div className="w-full p-10 mr-2 h-max rounded-md bg-black">
+          <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white">
             {posts.map((post) => {
               // console.log("post in inside home", post);
               return <HomePosts key={post._id} post={post} />;

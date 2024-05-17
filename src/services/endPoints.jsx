@@ -10,6 +10,7 @@ export const userUrls = {
   getUserDetails: "/user-details",
   editProfile: "/edit-profile",
   userSuggestions: "/user-suggestions",
+  userSearch: "/user-search"
 }
 
 export const postUrls = {
@@ -21,6 +22,11 @@ export const postUrls = {
 }
 
 export const connectionUrls = {
+  follow: "/connection/follow",
+  unFollow: "/connection/unFollow",
+  acceptRequest: "/connection/accept-request",
+  rejectRequest: "/connection/reject-request",
+  requestedUsers: "/connection//get-requested-users",
   getConnection: "/connection/get-connection",
 }
 
