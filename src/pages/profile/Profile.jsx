@@ -7,6 +7,7 @@ import PostGallery from '../../components/profile/postGallery'
 import { getUserConnection, getUserPost } from '../../services/user/apiMethods'
 import EditProfile from '../../components/profile/editProfile'
 import emptypost from '../../../public/images/nopost.jpg'
+import UserEditProfile from '../../components/profile/UserEditProfile'
 
 function Profile() {
   const navigate = useNavigate();
@@ -14,14 +15,15 @@ function Profile() {
   const selectedUser = (state) => state.auth.user;
   const selectPosts = (state) => state.auth.posts;
   const user = useSelector(selectedUser);
-  console.log("userdata", user);
+  // console.log("userdata", user);
   const posts =  useSelector(selectPosts) || []
-  console.log("userposts", posts);
+  // console.log("userposts", posts);
   const userId = user._id;
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
   const [IsEditProfileOpen, SetEditProfileOpen] = useState(false)
   const userimg = user.profileImg
+
   const openEditProfile = () => {
     SetEditProfileOpen(true)
   }
@@ -40,7 +42,7 @@ function Profile() {
           console.log(error);
         })
 
-      getUserConnection(userId)
+      getUserConnection({userId:userId})
         .then((response)  => {
           const connectionData = response.data.connection;  
           setFollowers(connectionData.followers)
@@ -99,7 +101,8 @@ function Profile() {
                 <button 
                 onClick={openEditProfile}
                 className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 '>Edit Profile</button>
-                {IsEditProfileOpen && <EditProfile closeEditProfile={closeEditProfile} />}
+                {/* {IsEditProfileOpen && <EditProfile closeEditProfile={closeEditProfile} />} */}
+                {IsEditProfileOpen && <UserEditProfile user={user} closeEditProfile={closeEditProfile} />}
               </div>
               <div>
                 <button 
@@ -119,10 +122,10 @@ function Profile() {
         ) : (
         <div className='w-full mt-5  rounded-md  bg-white'>
           <div className='flex justify-between px-10  gap-10 p-2 font-normal text-lg'>
-            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md'>
+            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
               <button>Posts</button>
             </div>
-            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md'>
+            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
               <button>Saved</button>
             </div>
           </div>

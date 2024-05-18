@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import  { addPost } from "../../services/user/apiMethods"
+import { useNavigate } from 'react-router-dom';
 
 function AddPost({ closeAddPost }) {
   const selectedUser = (state) => state.auth.user || ""
@@ -14,7 +15,8 @@ function AddPost({ closeAddPost }) {
   const userId = user._id || ""
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [croppedImage, setCroppedImage] = useState([]);
-
+  const navigate = useNavigate()
+  
   const resetState=()=>{
     formik.values.images=[];
     formik.values.title='';
@@ -119,6 +121,7 @@ function AddPost({ closeAddPost }) {
     resetState()
     setCroppedImage([]);
     closeAddPost()
+    navigate('/')
   }
 
   return (

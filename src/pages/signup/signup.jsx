@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { toast } from 'sonner';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -12,7 +12,8 @@ import { loginSuccuss } from '../../utils/context/reducers/authSlice';
 
 
 function Signup() {
-  // const dispatch = useDispatch()
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate =  useNavigate()
   const dispatch = useDispatch()
   const submit = (values) => {
@@ -116,7 +117,7 @@ function Signup() {
               {/* Repeat for other input fields */}
               <div className="relative z-0 w-full mb-4 group">
                 <Field 
-                  type="password" 
+                  type={showPassword? "text" : "password"} 
                   name="password" 
                   id="password" 
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
@@ -129,11 +130,29 @@ function Signup() {
                 >
                   Password
                 </label>
+                <span 
+                  className="absolute right-3 top-3 cursor-pointer" 
+                  onClick={() => setShowPassword(!showPassword)}
+                  >
+                  {showPassword? 
+          
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                  <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                  </svg>
+        
+                  : 
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                  </svg>
+        
+                  } 
+                </span>
                 <ErrorMessage name="password" component="div" className="text-red-600 text-xs" />
               </div>
               <div className="relative z-0 w-full mb-8 group">
                 <Field 
-                  type="password" 
+                  type={showConfirmPassword? "text" : "password"} 
                   name="confirmPassword" 
                   id="confirmPassword" 
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
@@ -146,6 +165,24 @@ function Signup() {
                 >
                   Confim Password
                 </label>
+                <span 
+                  className="absolute right-3 top-3 cursor-pointer" 
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                  {showConfirmPassword? 
+          
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                  <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                  </svg>
+        
+                  : 
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                  </svg>
+        
+                  } 
+                </span>
                 <ErrorMessage name="confirmPassword" component="div" className="text-red-600 text-xs" />
               </div>
               

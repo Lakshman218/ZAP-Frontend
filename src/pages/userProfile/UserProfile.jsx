@@ -14,7 +14,7 @@ function UserProfile() {
   useEffect(() => {
     getUserDetails(userId)
       .then((response) => {
-        console.log("userprofile response", response);
+        // console.log("userprofile response", response.data);
         setUser(response.data.user)
         setConnections(response.data.connections);
       })

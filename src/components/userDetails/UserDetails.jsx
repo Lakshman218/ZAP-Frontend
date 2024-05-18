@@ -5,6 +5,7 @@ import emptypost from '../../../public/images/userNoPost.jpg'
 import { useSelector } from 'react-redux';
 
 function UserDetails({user, connections, posts}) {
+  console.log("connetions data", connections);
   const selectUser = (state) => state.auth.user;
   const userData = useSelector(selectUser);
   const userId = userData._id || ""
@@ -20,8 +21,8 @@ function UserDetails({user, connections, posts}) {
         const connectionData = response.data.connection
         setFollowers(connectionData.followers)
         setFollowing(connectionData.following)
-        setIsFollowed(connections.followers.include(userId))
-        setIsFollowRequested(connections.requested.include(userId))
+        setIsFollowed(connections.followers.includes(userId))
+        setIsFollowRequested(connections.requested.includes(userId))
       })
       .catch((error) => {
         console.log(error.message);
@@ -29,8 +30,8 @@ function UserDetails({user, connections, posts}) {
   },[])
 
   const handleFollow = () => {
-    const followingUserId = user._id
-    followUser({userId, followingUserId})
+    const followingUser = user._id
+    followUser({userId, followingUser})
       .then((response) => {
         response.data.followed?
         setIsFollowed(true):
@@ -41,8 +42,8 @@ function UserDetails({user, connections, posts}) {
       })
   }
   const handleUnFollow = () => {
-    const followingUserId = user._id
-    unFollowUser({userId, followingUserId})
+    const unfollowingUser = user._id
+    unFollowUser({userId, unfollowingUser})
       .then((response) => {
         console.log(response.data);
         setIsFollowed(false)
@@ -100,7 +101,7 @@ function UserDetails({user, connections, posts}) {
                 <button 
                 onClick={handleUnFollow}
                 className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 items-center'>
-                    UnFollow
+                    Following
                 </button>
                 ) : isFollowRequested ? (
                   <button 
@@ -135,10 +136,10 @@ function UserDetails({user, connections, posts}) {
         ) : (
         <div className='w-full mt-5  rounded-md  bg-white'>
           <div className='flex justify-between px-10  gap-10 p-2 font-normal text-lg'>
-            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md'>
+            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
               <button>Posts</button>
             </div>
-            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md'>
+            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
               <button>Saved</button>
             </div>
           </div>

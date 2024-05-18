@@ -290,6 +290,7 @@ export const getUserDetails = (userId) => {
 export const getUserConnection = (userId) => {
   return new Promise((resolve, reject) => {
     try {
+      console.log("userid in getting cnnt", userId);
       apiCall("post", connectionUrls.getConnection, userId)
         .then((response) => {
           resolve(response)

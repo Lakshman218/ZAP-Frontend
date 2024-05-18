@@ -14,8 +14,8 @@ function HomePosts({post}) {
     <div className="w-full lg:px-10 lg:p-0 mb-8 mr-2 h-max rounded-md border-none shadow-md bg-white border">
       
       <div className='flex justify-start items-center'>
-        <div className="flex items-center justify-center bg-gray-200 rounded-full max-h-12 max-w-12">
-          <img className='rounded-full w-full' src={profileImg} alt="" />
+        <div className="flex items-center justify-center bg-white rounded-full w-12 h-12 overflow-hidden ">
+          <img className='rounded-full object-cover w-full h-full' src={profileImg} alt="" />
         </div>
         <div className='lg:ml-4 ml-2 font-medium lg:text-xl mb-2'>
           <p className='text-black'>{userName}</p>
