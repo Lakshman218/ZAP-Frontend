@@ -24,8 +24,17 @@ function UserEditProfile({user, handleEditModal}) {
       phone: user.phone,
     },
     validationSchema: Yup.object({
-      userName: Yup.string().required("UserName is required"),
-      phone: Yup.string().matches(/^\d{10}$/, "Invalid phone number")
+      userName: Yup.string()
+    .trim()  // Trims leading and trailing whitespace
+    .test(
+      'no-whitespace', 
+      'UserName should not contain spaces', 
+      value => !/\s/.test(value)  // Checks for whitespace within the string
+    )
+    .required('UserName is required'),
+  phone: Yup.string()
+    .matches(/^\d{10}$/, 'Invalid phone number')
+    .required('Phone number is required')
     }),
     onSubmit: async(values) => {
       const userId = user._id
@@ -64,12 +73,13 @@ function UserEditProfile({user, handleEditModal}) {
           handleEditModal()
           navigate('/profile')
         })
-        .catch((err) => {
+        .catch((error) => {
+          toast.error(error.message)
           console.log(err);
         })
       } catch (error) { 
         console.error("Error updating profile:", error);
-        toast.error("Failed to update profile");
+        // toast.error("Failed to update profile");
         return
       }
     },
@@ -130,7 +140,7 @@ function UserEditProfile({user, handleEditModal}) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.userName}
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                   {formik.touched.userName && formik.errors.userName && (
                     <p className="text-red-600 text-xs">{formik.errors.userName}</p>
                   )}

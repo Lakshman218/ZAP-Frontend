@@ -94,14 +94,13 @@ function AddPost({ closeAddPost }) {
         console.log("response blob", blob);
         const formData = new FormData();
         formData.append("file", blob);
-        formData.append("upload_preset", "tzxkty8m");
+        formData.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
+
+        const cloudinaryUrl = import.meta.env.VITE_CLOUDINARY_URL;
       
         try {
           console.log("formdata in url", formData);
-          const res = await axios.post(
-            "https://api.cloudinary.com/v1_1/dpn5xsh8k/image/upload",
-            formData
-          );
+          const res = await axios.post(cloudinaryUrl, formData);
           console.log("res from cloud", res);
           const imageUrl = res.data.url;
           imageUrls.push(imageUrl);
