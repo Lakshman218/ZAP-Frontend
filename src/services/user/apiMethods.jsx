@@ -200,11 +200,29 @@ export const getAllPosts = (userId) => {
   })
 }
 
+// get all posts
+export const getEditPost = (postId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      // console.log("userid in getallpost",userId);
+      apiCall("post", postUrls.getEditPost, postId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
 // delete post
 export const deletePost = (postData) => {
   return new Promise((resolve, reject) => {
     try {
-      apiCall("get", postUrls.deletePost, postData)
+      apiCall("post", postUrls.deletePost, postData)
         .then((response) => {
           resolve(response)
         })
@@ -368,6 +386,74 @@ export const acceptFollowRequest = (data) => {
         })
     } catch (error) {
       resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// save post
+export const SavePost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.savePost, postData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// get saved post
+export const getSavedPosts = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrls.getSavedPosts}/${userId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+export const editPost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.editPost, postData)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// report post
+export const reportPost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.reportPost, postData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
     }
   })
 }

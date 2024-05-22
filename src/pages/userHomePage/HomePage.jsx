@@ -25,9 +25,7 @@ function HomePage() {
     getAllPosts({ userId: userId })
      .then((response) => {
         const postDatas = response.data;
-        // console.log("postdatas in homepage", postDatas);
         setPosts(postDatas);
-        // console.log("post in home", posts);
       })
      .catch((error) => {
         toast.error(error.message);
@@ -44,12 +42,12 @@ function HomePage() {
           <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white">
             {posts.map((post) => {
               // console.log("post in inside home", post);
-              return <HomePosts key={post._id} post={post} />;
+              return <HomePosts key={post._id} post={post} fetchposts={fetchposts} />;
             })}
           </div>
         </div>
       {/* </div> */}
-        <div className="hidden md:flex fixed right-0">
+        <div className="hidden lg:flex fixed right-0">
           <MiniProfile />
         </div>
     </>

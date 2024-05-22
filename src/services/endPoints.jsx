@@ -16,9 +16,13 @@ export const userUrls = {
 export const postUrls = {
   getUserPosts: "/post/get-user-post",
   getAllPosts: "/post/get-post",
+  getEditPost: "/post/get-edit-post",
   addPost: "/post/add-post",
   editPost: "/post/edit-post",
   deletePost: "/post/delete-post",
+  savePost: "post/save-post",
+  getSavedPosts: "post/user-saved-post",
+  reportPost: "/post/report-post",
 }
 
 export const connectionUrls = {
@@ -32,4 +36,9 @@ export const connectionUrls = {
 
 export const adminUrls = {
   login: "/admin/login",
+  userBlock: "/admin/user-block",
+  userList: "/admin/get-users",
+  postList: "/admin/get-posts",
+  reportList: "/admin/get-reports",
+  postBlock: "/admin/post-block"
 }

@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { loginSuccuss } from '../../utils/context/reducers/authSlice';
 import {auth, provider} from "../../utils/firebase/config"
 import {signInWithPopup} from "firebase/auth"
+import logoImg from "../../../public/images/zap.jpg"
 
 function Login() {
   const navigate = useNavigate()
@@ -79,7 +80,7 @@ function Login() {
     <div className="flex flex-col md:flex-row justify-center bg-white h-screen">
       {/* Left side: Login form */}
       <div className="flex items-center justify-center md:w-1/2 hover:scale-105 transition-transform duration-500">
-        <div className="max-w-md w-full p-8 shadow-lg">
+        <div className="max-w-md w-full px-8 pb-8 shadow-lg">
           <h2 className="text-2xl font-semibold text-center mb-5">Welcome Back!</h2>
 
           <Formik 
@@ -127,13 +128,13 @@ function Login() {
                   >
                   {showPassword? 
           
-                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <svg class="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
                   <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
                   <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
         
                   : 
-                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <svg class="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
         
@@ -184,9 +185,10 @@ function Login() {
       </div>
       {/* Right side: Image */}
       <div className='hidden md:flex md:w-1/2 items-center bg-white'>
+          <img className='w-auto h-20' src={logoImg} alt="" />
         <div className='p-14'>
           <img 
-            className='w-full p-10 ' // Add hover effect here
+            className='w-full p-0 ' // Add hover effect here
             src={loginimage} 
             alt="" 
           />

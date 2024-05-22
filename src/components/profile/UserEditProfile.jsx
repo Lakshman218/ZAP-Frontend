@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import CropImage from '../imageCrop/CropImage';
 import axios from 'axios';
 
-function UserEditProfile({user, closeEditProfile}) {
+function UserEditProfile({user, handleEditModal}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [profileImage, setProfileImage] = useState(user.profileImg || '');
@@ -61,7 +61,7 @@ function UserEditProfile({user, closeEditProfile}) {
           console.log("res in edit", response.data);
           dispatch(loginSuccuss({user: userData}))
           toast.info("Profile updated succussfully")
-          closeEditProfile()
+          handleEditModal()
           navigate('/profile')
         })
         .catch((err) => {
@@ -99,7 +99,7 @@ function UserEditProfile({user, closeEditProfile}) {
             <h2 className='font-semibold text-xl'>Edit Profile</h2>
             <div >
             <button 
-            onClick={closeEditProfile}
+            onClick={handleEditModal}
             className=" text-white px-2 py-2 rounded">
               <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
@@ -171,7 +171,7 @@ function UserEditProfile({user, closeEditProfile}) {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     autoComplete="off"
-                    type="tel" name="phone" id="phone" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                    type="tel" name="phone" id="phone" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="" />
                     {formik.touched.phone && formik.errors.phone && (
                     <p className="text-red-600 text-xs">{formik.errors.phone}</p>
                   )}
@@ -179,7 +179,7 @@ function UserEditProfile({user, closeEditProfile}) {
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
                     {/* <input type="text" name="gender" id="gender" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required /> */}
-                    {/* <label for="gender" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Gender</label> */}
+                    <label for="gender" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Gender</label>
                     {/* <label
                     htmlFor="gender"
                     className="block text-sm font-medium text-gray-900 dark:text-white"

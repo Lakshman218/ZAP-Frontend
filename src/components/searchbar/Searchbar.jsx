@@ -63,7 +63,7 @@ function Searchbar({closeSearchmodal}) {
         <div className="flex justify-center items-start  h-14 p-2 border-t border-gray-400 ">
           <input 
           onChange={searchUser} 
-          type="search" placeholder="Search..." className="w-full max-w-md p-2 rounded-l-lg focus:outline-none" />
+          type="search" placeholder="Search..." className="w-full max-w-md p-2 lg:mr-2 rounded-l-lg focus:outline-none" />
         </div>
         {/* search result */}
         {users.map((user) => (

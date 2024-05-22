@@ -4,10 +4,11 @@ import { logout, setPosts } from '../../utils/context/reducers/authSlice'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import PostGallery from '../../components/profile/postGallery'
-import { getUserConnection, getUserPost } from '../../services/user/apiMethods'
-import EditProfile from '../../components/profile/editProfile'
+import { getSavedPosts, getUserConnection, getUserPost } from '../../services/user/apiMethods'
 import emptypost from '../../../public/images/nopost.jpg'
 import UserEditProfile from '../../components/profile/UserEditProfile'
+import FollowingList from '../../components/profile/FollowingList'
+import FollowersList from '../../components/profile/FollowersList'
 
 function Profile() {
   const navigate = useNavigate();
@@ -15,20 +16,26 @@ function Profile() {
   const selectedUser = (state) => state.auth.user;
   const selectPosts = (state) => state.auth.posts;
   const user = useSelector(selectedUser);
-  // console.log("userdata", user);
-  const posts =  useSelector(selectPosts) || []
-  // console.log("userposts", posts);
   const userId = user._id;
+  const posts =  useSelector(selectPosts) || []
+
+  const [savedPost, setSavedPost] = useState([])
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
   const [IsEditProfileOpen, SetEditProfileOpen] = useState(false)
+  const [isFollowingModal, setIsFollowingModal] = useState(false);
+  const [isFollowersgModal, setIsFollowersgModal] = useState(false);
+  const [currentView, setCurrentView] = useState('posts');
   const userimg = user.profileImg
 
-  const openEditProfile = () => {
-    SetEditProfileOpen(true)
+  const handleEditModal = () => {
+    SetEditProfileOpen(!IsEditProfileOpen)
   }
-  const closeEditProfile = () => {
-    SetEditProfileOpen(false)
+  const handleFollowingModal = () => {
+    setIsFollowingModal(!isFollowingModal)
+  } 
+  const handleFollowersModal = () => {
+    setIsFollowersgModal(!isFollowersgModal)
   }
 
   useEffect(() => {
@@ -52,10 +59,19 @@ function Profile() {
           console.log(error);
         })
 
+      getSavedPosts(userId)
+        .then((response) => {
+          const savedPostData = response.data
+          setSavedPost(savedPostData)
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        })
+
     } catch (error) {
       console.log(error);
     }
-  }, [])
+  }, [userId, dispatch])
 
   // logout
   const handleLogout = () => {
@@ -86,11 +102,15 @@ function Profile() {
                     <p className="font-medium text-lg">{posts.length}</p>
                     <p className="text-sm">Posts</p>
                   </div>
-                  <div className='flex flex-col cursor-pointer items-center'>
+                  <div 
+                  onClick={handleFollowersModal}
+                  className='flex flex-col cursor-pointer items-center'>
                     <p className="font-medium text-lg">{followers.length}</p>
                     <p className="text-sm">Followers</p>
                   </div>
-                  <div className='flex flex-col cursor-pointer items-center'>
+                  <div 
+                  onClick={handleFollowingModal}
+                  className='flex flex-col cursor-pointer items-center'>
                     <p className="font-medium text-lg">{following.length}</p>
                     <p className="text-sm">Following</p>
                   </div>
@@ -99,10 +119,8 @@ function Profile() {
               <div className='flex lg:ml-4'>
               <div>
                 <button 
-                onClick={openEditProfile}
+                onClick={handleEditModal}
                 className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 '>Edit Profile</button>
-                {/* {IsEditProfileOpen && <EditProfile closeEditProfile={closeEditProfile} />} */}
-                {IsEditProfileOpen && <UserEditProfile user={user} closeEditProfile={closeEditProfile} />}
               </div>
               <div>
                 <button 
@@ -114,36 +132,74 @@ function Profile() {
           </div>
         </div>
         
-        {posts.length === 0? (
-        <div className='flex flex-col justify-center items-center mt-4 left-10 fixed text-black w-full h-auto '>
-          <img className='w-96' src={emptypost} alt="" />
-          <p>Create your first post.</p>
-        </div>
-        ) : (
-        <div className='w-full mt-5  rounded-md  bg-white'>
-          <div className='flex justify-between px-10  gap-10 p-2 font-normal text-lg'>
-            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
-              <button>Posts</button>
-            </div>
-            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
-              <button>Saved</button>
-            </div>
-          </div>
         
-          <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white p-2'>
-            {
-              posts.map((post) => (
-                <div key={post._id}>
-                  <PostGallery post={post}/> 
-                </div>
-              ))
-            }
+        <div className='w-full mt-5 rounded-md bg-white'>
+          <div className='flex justify-between px-10 gap-10 p-2 font-normal text-lg'>
+            <div
+              className={`bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
+                currentView === 'posts' ? 'border-b-2 border-blue-500' : ''
+              }`}
+            >
+              <button onClick={() => setCurrentView('posts')}>Posts</button>
+            </div>
+            <div
+              className={`bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
+                currentView === 'saved' ? 'border-b-2 border-blue-500' : ''
+              }`}
+            >
+              <button onClick={() => setCurrentView('saved')}>Saved</button>
+            </div>
           </div>
+
+          {currentView === 'posts' ? (
+            posts.length === 0 ? (
+              <div className='flex flex-col justify-center items-center mt-4 text-black w-full h-auto'>
+                <img className='w-96' src={emptypost} alt="" />
+                <p>Create your first post.</p>
+              </div>
+            ) : (
+              <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white p-2'>
+                {posts.map((post) => (
+                  <div key={post._id}>
+                    <PostGallery post={post} />
+                  </div>
+                ))}
+              </div>
+            )
+          ) : savedPost.length === 0 ? (
+            <div className='flex flex-col justify-center items-center mt-4 text-black w-full h-auto'>
+              <img className='w-96' src={emptypost} alt="" />
+              <p>No saved post</p>
+            </div>
+          ) : (
+            <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white p-2'>
+              {savedPost.map((post) => (
+                <div key={post._id}>
+                  <PostGallery post={post} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+
+        {IsEditProfileOpen && <UserEditProfile user={user} 
+        handleEditModal={handleEditModal} />}
+
+        {isFollowersgModal && <FollowersList 
+        followers={followers}
+        followingUsers={following}
+        setFollowingUsers={setFollowing}
+        onClose={handleFollowersModal} /> }
+
+        {isFollowingModal && <FollowingList 
+        currentUser={userId}
+        followingUsers={following}
+        setFollowingUsers={setFollowing}
+        onClose={handleFollowingModal} />}
 
       </div>
   )
 }
+
 
 export default Profile

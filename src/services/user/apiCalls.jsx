@@ -1,6 +1,7 @@
 import { toast } from "sonner";
 import { api } from "./api";
 import {store} from "../../utils/context/store";
+import { logout } from "../../utils/context/reducers/authSlice";
 
 export const apiCall = async(method, url, data) => {
   return await new Promise(async (resolve, reject) => {
@@ -32,7 +33,13 @@ export const apiCall = async(method, url, data) => {
       if(response) {
         resolve(response)
       } else if(error) {  
-        console.log( "error in apical",error.response); // need modify
+        console.log("in error");
+        if(error?.response?.status == 401) {
+          toast.error("user is blocked");
+          store.dispatch(logout(null))
+          return
+        }
+        console.log( "error in apical",error.response); 
         reject(error?.response?.data);
       }
     } catch (error) {

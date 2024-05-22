@@ -1,46 +1,29 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import AddPost from '../posts/addPost';
 import logoImg from "../../../public/images/zap.jpg"
-import Searchbar from '../searchbar/Searchbar';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AdminLogout } from '../../utils/context/reducers/adminAuthSlice';
 
-function SideNavBar() {
-  const navigate = useNavigate()
+function AdminSidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
 
-  const [isAddPostOpen, setIsAddPostOpen] = useState(false);
-  const openAddPostModal = () => {
-    setIsAddPostOpen(true);
-    closeSidebar()
-  };
-  const closeAddPostModal = () => {
-    setIsAddPostOpen(false);
-  };
-
-  const [isSearchbarOpen, setSearchbarOpen] = useState(false)
-  const openSearchbar = () => {
-    setSearchbarOpen(true);
-    closeSidebar()
-  }
-  const closeSearchbar = () => {
-    setSearchbarOpen(false);
-  }
-
-  const handleClose = () => {
-    closeSidebar()
-    closeSearchbar()
+  const handleLogout = () => {
+    dispatch(AdminLogout());
+    localStorage.removeItem("email");
+    toast.info("Logout succussfull");
+    navigate("/admin/login")
   }
 
   return (
-    // <div className="w-full max-w-xs block justify-end">
     <div className="sm:w-0 md:w-4/12 max-w-72 block justify-end sm:p-0 md:p-2">
       <button
         type="button"
@@ -65,19 +48,19 @@ function SideNavBar() {
 
         <aside
           id="logo-sidebar"
-          className={`pl-2 ml-0 border hover:shadow-md fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+          className={`pl-2 ml-0 border hover:shadow-md fixed top-0 left-0 z-40 w-60 h-screen transition-transform ${
             isSidebarOpen ? '' : '-translate-x-full sm:translate-x-0'
           }`}
           aria-label="Sidebar"
         >
           <div className=" h-full px-3 py-4 overflow-y-auto bg-white dark:bg-black">
-          <div className='flex justify-between'>
+            <div className='flex justify-between'>
               <div className="logo-container  max-w-32 h-auto overflow-hidden flex">
                 <img className='logo-img transition-transform duration-300 ease-in-out transform hover:scale-110 w-28 flex' src={logoImg} alt="" />
               </div>
               <div className="flex justify-end p-2 sm:hidden">
                 <button 
-                  onClick={handleClose}
+                  onClick={closeSidebar}
                   className="text-white px-2 py-2 rounded"
                 >
                   <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -90,8 +73,8 @@ function SideNavBar() {
               <ul className="space-y-2 font-medium">
                 <li>
                   <Link
-                    to={"/" }
-                    onClick={handleClose}
+                    to={"/admin/" }
+                    onClick={closeSidebar}
                     className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                   >
                     <svg
@@ -103,17 +86,55 @@ function SideNavBar() {
                     >
                     <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
                     </svg>
+                    
 
-                    <span className="ms-3">Home</span>
+                    <span className="ms-3">Dashboard</span>
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to={"" }
-                    onClick={openSearchbar}
+                    to={"/admin/users" }
+                    onClick={closeSidebar}
                     className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100  00 dark:hover:bg-gray-700 dark:text-white group"
                   >
-                    <svg
+                    <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
+                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
+                      </svg>
+                    <span className="ms-3">Users</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/admin/posts" }
+                    onClick={closeSidebar}
+                    className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100  00 dark:hover:bg-gray-700 dark:text-white group"
+                  >
+                    <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
+                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd" d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                      <path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z" clip-rule="evenodd"/>
+                    </svg>
+
+                    <span className="ms-3">Posts</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/admin/reports" }
+                    className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100  00 dark:hover:bg-gray-700 dark:text-white group"
+                  >
+                    <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
+                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
+                    </svg>
+                      
+                    <span className="ms-3">Reports</span>
+                  </Link>
+                </li>
+                {/* <li>
+                    <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                      <svg
                       className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
@@ -122,31 +143,11 @@ function SideNavBar() {
                     >
                       <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                     </svg>
-                    <span className="ms-3">Search</span>
-                  </Link>
-                  {isSearchbarOpen && <Searchbar closeSearchmodal={closeSearchbar}/>}
-                </li>
-                <li>
-                    <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                      <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
-                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 22">
-                      <path fill-rule="evenodd" d="M3 5.983C3 4.888 3.895 4 5 4h14c1.105 0 2 .888 2 1.983v8.923a1.992 1.992 0 0 1-2 1.983h-6.6l-2.867 2.7c-.955.899-2.533.228-2.533-1.08v-1.62H5c-1.105 0-2-.888-2-1.983V5.983Zm5.706 3.809a1 1 0 1 0-1.412 1.417 1 1 0 1 0 1.412-1.417Zm2.585.002a1 1 0 1 1 .003 1.414 1 1 0 0 1-.003-1.414Zm5.415-.002a1 1 0 1 0-1.412 1.417 1 1 0 1 0 1.412-1.417Z" clip-rule="evenodd"/>
-                      </svg>
-                      <span className="flex-1 ms-3 whitespace-nowrap">Message</span>
-                      {/* <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span> */}
-                    </a>
-                </li>
-                <li>
-                    <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                      <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
-                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
-                      </svg>
                       
                       <span className="flex-1 ms-3 whitespace-nowrap">Explore</span>
                     </a>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                     <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
                       aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -154,11 +155,10 @@ function SideNavBar() {
                       </svg>
                       <span className="flex-1 ms-3 whitespace-nowrap">Notifications</span>
                     </a>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <Link
                     to={""}
-                    onClick={openAddPostModal}
                     className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                   >
                     <svg
@@ -172,28 +172,9 @@ function SideNavBar() {
                     </svg>
                     <span className="ms-3">Create</span>
                   </Link>
-                </li>
-                {isAddPostOpen && {handleClose  } && <AddPost closeAddPost={closeAddPostModal} />}
+                </li> */}
               </ul>
               <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-                <li>
-                  <Link
-                    to={"/profile" }
-                    onClick={handleClose}
-                    className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-                  >
-                    <svg
-                      className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 22 22"
-                    >
-                      <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd"/>
-                    </svg>
-                    <span className="ms-3">Profile</span>
-                  </Link>
-                </li>
                 <li>
                   <Link
                     to={"#" }
@@ -212,12 +193,30 @@ function SideNavBar() {
                     <span className="ms-3">Settings</span>
                   </Link>
                 </li>
+                <li>
+                  <div
+                    
+                    onClick={handleLogout}
+                    className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                  >
+                    <svg
+                      className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 22 22"
+                    >
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"/>
+                    </svg>
+
+                    <span className="ms-3">Logout</span>
+                  </div>
+                </li>
               </ul>
           </div>
         </aside>
       </div>
-    // </div>
   )
 }
 
-export default SideNavBar
+export default AdminSidebar

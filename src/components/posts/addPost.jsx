@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Modal } from "flowbite-react";
 import { FileInput, Label } from "flowbite-react";
 import { toast } from 'sonner';
@@ -6,8 +6,9 @@ import { useFormik } from 'formik';
 import * as Yup from "yup";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import  { addPost } from "../../services/user/apiMethods"
+import  { addPost, getAllPosts } from "../../services/user/apiMethods"
 import { useNavigate } from 'react-router-dom';
+import { setPosts } from '../../utils/context/reducers/authSlice';
 
 function AddPost({ closeAddPost }) {
   const selectedUser = (state) => state.auth.user || ""
@@ -16,6 +17,26 @@ function AddPost({ closeAddPost }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [croppedImage, setCroppedImage] = useState([]);
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    try {
+      fetchposts();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const fetchposts = () => {
+    getAllPosts({ userId: userId })
+     .then((response) => {
+        const postDatas = response.data;
+        setPosts(postDatas);
+      })
+     .catch((error) => {
+        toast.error(error.message);
+      });
+  };
   
   const resetState=()=>{
     formik.values.images=[];
@@ -61,6 +82,7 @@ function AddPost({ closeAddPost }) {
         .matches(/^\S+.*\S$/, "Description cannot contain only spaces"),
     }),
     onSubmit: async() => {
+      // setLoading(true);
       const {title, description} = formik.values;
       console.log("formik values", formik.values.images);
       const imageUrls = []
@@ -105,6 +127,8 @@ function AddPost({ closeAddPost }) {
           toast.info(data.message)
           resetState()
           handleCancelClick()
+          // setLoading(false);
+          // fetchposts()
         } else {
           console.log(response.message);
             toast.error(data.message);
@@ -114,6 +138,7 @@ function AddPost({ closeAddPost }) {
         toast.error(error?.message);
         console.log(error?.message);
       })
+      fetchposts()
     }
   })
 
@@ -125,8 +150,9 @@ function AddPost({ closeAddPost }) {
   }
 
   return (
-    <div className=''>
-      <Modal
+    <div>
+      
+        <Modal
         dismissible
         show={true}  
         onClose={handleCancelClick}
@@ -208,7 +234,7 @@ function AddPost({ closeAddPost }) {
               )}
 
               <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-              </form>
+            </form>
           </Modal.Body>
           <Modal.Footer>
             <Button color="gray" onClick={closeAddPost}>
@@ -217,6 +243,7 @@ function AddPost({ closeAddPost }) {
           </Modal.Footer>
         </div>
       </Modal>
+      
     </div>
   );
 }

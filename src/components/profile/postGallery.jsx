@@ -9,7 +9,7 @@ function PostGallery({ post }) {
       <div>
         {imageUrlArray.map((imageUrl, index) => (
           <div key={index}>
-            <img className='h-full w-full rounded-lg ' src={imageUrl} alt={`Post ${index}`} />
+            <img style={{height: '256px'}} className=' w-full rounded-lg ' src={imageUrl} alt={`Post ${index}`} />
           </div>
         ))}
       </div>

@@ -7,7 +7,7 @@ function Protect({ children }) {
   const selectUser = (state) => state.auth.user;
   const user = useSelector(selectUser);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!user) {
       navigate('/login');
     }
