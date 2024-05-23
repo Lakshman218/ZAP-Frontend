@@ -3,6 +3,9 @@ import { followUser, unFollowUser, getUserConnection, rejectFollowRequest } from
 import PostGallery from '../profile/postGallery';
 import emptypost from '../../../public/images/userNoPost.jpg'
 import { useSelector } from 'react-redux';
+import FollowersList from '../profile/FollowersList';
+import FollowingList from '../profile/FollowingList';
+
 
 function UserDetails({user, connections, posts}) {
   console.log("connetions data", connections);
@@ -13,6 +16,8 @@ function UserDetails({user, connections, posts}) {
   const [isFollowRequested, setIsFollowRequested] = useState(false);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [isFollowingModal, setIsFollowingModal] = useState(false);
+  const [isFollowersgModal, setIsFollowersgModal] = useState(false);
 
   useEffect(() => {
     const followingUserId = user?._id
@@ -64,6 +69,13 @@ function UserDetails({user, connections, posts}) {
       })
   }
 
+  const handleFollowingModal = () => {
+    setIsFollowingModal(!isFollowingModal)
+  } 
+  const handleFollowersModal = () => {
+    setIsFollowersgModal(!isFollowersgModal)
+  }
+
   return (
     <div className='w-full p-4 mr-2'>
       <div className='flex w-full justify-center mb-6'>
@@ -85,11 +97,15 @@ function UserDetails({user, connections, posts}) {
                     <p className="font-medium text-lg">{posts.length}</p>
                     <p className="text-sm">Posts</p>
                   </div>
-                  <div className='flex flex-col cursor-pointer items-center'>
+                  <div
+                  onClick={handleFollowersModal} 
+                  className='flex flex-col cursor-pointer items-center'>
                     <p className="font-medium text-lg">{followers.length}</p>
                     <p className="text-sm">Followers</p>
                   </div>
-                  <div className='flex flex-col cursor-pointer items-center'>
+                  <div
+                  onClick={handleFollowingModal} 
+                  className='flex flex-col cursor-pointer items-center'>
                     <p className="font-medium text-lg">{following.length}</p>
                     <p className="text-sm">Following</p>
                   </div>
@@ -155,6 +171,18 @@ function UserDetails({user, connections, posts}) {
           </div>
         </div>
       )}
+
+        {isFollowersgModal && <FollowersList 
+        followers={followers}
+        followingUsers={following}
+        setFollowingUsers={setFollowing}
+        onClose={handleFollowersModal} /> }
+
+        {isFollowingModal && <FollowingList 
+        currentUser={userId}
+        followingUsers={following}
+        setFollowingUsers={setFollowing}
+        onClose={handleFollowingModal} />}
 
     </div>
   )
