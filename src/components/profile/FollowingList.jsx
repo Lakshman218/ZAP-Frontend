@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { followUser, getUserConnection, rejectFollowRequest, unFollowUser } from '../../services/user/apiMethods';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function FollowingList(
   { onClose, currentUser, setFollowingUsers, followingUsers }
@@ -30,12 +30,27 @@ function FollowingList(
       });
   },[])
 
+  const handleFollow = (selectedUserId) => {
+    followUser({userId, followingUser: selectedUserId})
+      .then((response) => {
+        if(response.data.followed) {
+          setFollowing([...following, selectedUserId])
+          // setFollowingUsers([...followingUsers, selectedUserId])
+        } else {
+          setRequested((prevRequested) => [...prevRequested, selectedUserId])
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
+
   const handleUnFollow = (selectedUserId) => {
     unFollowUser({userId, unfollowingUser:selectedUserId})
       .then((response) => {
         setFollowing(following.filter((userId) => userId !== selectedUserId))
         if(currentUser == userId) {
-          setFollowingUsers(followingUsers.filter((user) => user._id !== selectedUserId))
+          // setFollowingUsers(followingUsers.filter((user) => user._id !== selectedUserId))
         }
       })
       .catch((error) => {
@@ -60,15 +75,6 @@ function FollowingList(
     return requested.includes(selectedUserId)
   }
 
-  const handleSearch = (postUserId) => {
-    console.log("postUserId", postUserId);
-    if(postUserId === userId) {
-      navigate('/profile')
-    } else {
-      navigate(`/user-profile/${postUserId}`)
-    }
-  }
-
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
       <div className='flex justify-center items-center h-full'>
@@ -84,33 +90,50 @@ function FollowingList(
           <hr className="border-t-2 border-gray-200" />
           <div className='space-y-4'>
             {followingUsers.map((user) => (
-              <div key={user.id} className='flex justify-between items-center'>
-                <div
-                onClick={() => handleSearch(user._id)}  
-                className='flex items-center cursor-pointer'>
-                  <div className="flex items-center justify-center bg-white rounded-full w-10 h-10 overflow-hidden">
-                    <img className='rounded-full object-cover w-full h-full' src={user.profileImg} alt={user.userName} />
-                  </div>
-                  <div className='ml-4'>
-                    <p className='text-black font-medium'>{user.userName}</p>
-                    <p className='text-gray-500 text-sm'>{user.name}</p>
-                  </div>
+              <div>
+                <div key={user.id} className='flex justify-between items-center'>
+                  <Link
+                    to={user._id === userId
+                      ? "/profile"
+                      : `/user-profile/${user._id}`
+                    }
+                    className='flex items-center cursor-pointer'>
+                    <div className="flex items-center justify-center bg-white rounded-full w-10 h-10 overflow-hidden">
+                      <img className='rounded-full object-cover w-full h-full' src={user.profileImg} alt={user.userName} />
+                    </div>
+                    <div className='ml-4'>
+                      <p className='text-black font-medium'>{user.userName}</p>
+                      <p className='text-gray-500 text-sm'>{user.name}</p>
+                    </div>
+                  </Link>
+
+                  {userId !== user._id && (
+                    <div>
+                      {!isFollowing(user._id) && !isRequested(user._id) && (
+                      <button 
+                      onClick={() => handleFollow(user._id)}
+                      className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 lg:w-24 rounded-md'>
+                      Follow
+                      </button>
+                      )}
+                      {isFollowing(user._id) && (
+                        <button
+                        onClick={() => handleUnFollow(user._id)} 
+                        className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 lg:w-24 rounded-md'>
+                        UnFollow  
+                      </button>
+                      )}
+                      {isRequested(user._id) && (
+                        <button
+                        onClick={() => hadleReject(user._id) } 
+                        className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 lg:w-24 rounded-md'>
+                        Requested
+                      </button>
+                      )}
+                    </div>
+                  )}
+
                 </div>
-
-                  <button
-                  onClick={() => handleUnFollow(user._id)} 
-                  className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 rounded-md'>
-                  UnFollow  
-                </button>
-           
-                {/* {isRequested(user._id) && (
-                  <button
-                  onClick={() => hadleReject(user._id) } 
-                  className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 rounded-md'>
-                  Requested
-                </button>
-                )} */}
-
               </div>
             ))}
           </div>

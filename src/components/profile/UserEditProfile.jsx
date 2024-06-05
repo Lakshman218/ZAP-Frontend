@@ -8,11 +8,13 @@ import { loginSuccuss } from '../../utils/context/reducers/authSlice';
 import { toast } from 'sonner';
 import CropImage from '../imageCrop/CropImage';
 import axios from 'axios';
+import Loader from '../loader/loader';
 
 function UserEditProfile({user, handleEditModal}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [profileImage, setProfileImage] = useState(user.profileImg || '');
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -24,19 +26,27 @@ function UserEditProfile({user, handleEditModal}) {
       phone: user.phone,
     },
     validationSchema: Yup.object({
-      userName: Yup.string()
-    .trim()  // Trims leading and trailing whitespace
+    userName: Yup.string()
+    .trim() 
     .test(
       'no-whitespace', 
       'UserName should not contain spaces', 
-      value => !/\s/.test(value)  // Checks for whitespace within the string
+      value => !/\s/.test(value)  
     )
     .required('UserName is required'),
-  phone: Yup.string()
+    name: Yup.string()
+        .trim()
+        .test(
+          'no-whitespace',
+          'Name should not contain leading/trailing spaces',
+          value => !/^\s|\s$/.test(value)
+        ),
+      phone: Yup.string()
     .matches(/^\d{10}$/, 'Invalid phone number')
-    .required('Phone number is required')
+    // .required('Phone number is required')
     }),
     onSubmit: async(values) => {
+      setLoading(!loading)
       const userId = user._id
       const {userName, name, phone, bio, gender} = values
       let imageUrl 
@@ -61,15 +71,16 @@ function UserEditProfile({user, handleEditModal}) {
           userId,
           image: imageUrl,
           userName,
-          name,
+          name: name || '',
           bio,
           gender,
-          phone,
+          phone: phone || '',
         }).then((response) => {
           const userData = response.data
           console.log("res in edit", response.data);
           dispatch(loginSuccuss({user: userData}))
           toast.info("Profile updated succussfully")
+          setLoading(!loading)
           handleEditModal()
           navigate('/profile')
         })
@@ -108,16 +119,23 @@ function UserEditProfile({user, handleEditModal}) {
           <div className='flex justify-between items-center'>
             <h2 className='font-semibold text-xl'>Edit Profile</h2>
             <div >
-            <button 
-            onClick={handleEditModal}
-            className=" text-white px-2 py-2 rounded">
-              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-              </svg>
-            </button>
-          </div>
+              <button 
+              onClick={handleEditModal}
+              className=" text-white px-2 py-2 rounded">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                </svg>
+              </button>
+            </div>
           </div>
           <div className='max-w-md mx-auto'>
+            {loading && 
+              <div className='relative flex flex-col justify-center z-0 items-center h-96'>
+                <Loader/>
+                <p className='mt-6'>Updating...</p>
+              </div>
+            }
+            {!loading && 
             <form onSubmit={formik.handleSubmit}>
 
               {/* Profile Photo Upload */}
@@ -152,7 +170,10 @@ function UserEditProfile({user, handleEditModal}) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   autoComplete="off"
-                  type="text" name="name" id="name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  type="text" name="name" id="name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
+                  {formik.touched.name && formik.errors.name && (
+                    <p className="text-red-600 text-xs">{formik.errors.name}</p>
+                  )}
                   <label for="name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Name</label>
               </div>
               <div className="relative z-0 w-full mb-5 group">
@@ -161,19 +182,9 @@ function UserEditProfile({user, handleEditModal}) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   autoComplete="off"
-                  type="text" name="bio" id="bio" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                  type="text" name="bio" id="bio" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
                   <label for="bio" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Bio</label>
               </div>
-              {/* <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-5 group">
-                    <input type="text" name="floating_first_name" id="floating_first_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label for="floating_first_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">First name</label>
-                </div>
-                <div className="relative z-0 w-full mb-5 group">
-                    <input type="text" name="floating_last_name" id="floating_last_name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label for="floating_last_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last name</label>
-                </div>
-              </div> */}
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-5 group">
                     <input 
@@ -212,9 +223,8 @@ function UserEditProfile({user, handleEditModal}) {
                 </div>
               </div>
               <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-              
-            
             </form>
+            }
           </div>
         </div>
       </div>

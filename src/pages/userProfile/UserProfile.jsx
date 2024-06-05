@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getUserDetails, getUserPost } from '../../services/user/apiMethods';
 import { toast } from 'sonner';
 import UserDetails from '../../components/userDetails/UserDetails';
+import Loader from '../../components/loader/loader';
 
 function UserProfile() {  
   const [user, setUser] = useState(null);
@@ -12,9 +13,9 @@ function UserProfile() {
   const { userId } = useParams();
 
   useEffect(() => {
+    setLoading(true)
     getUserDetails(userId)
       .then((response) => {
-        // console.log("userprofile response", response.data);
         setUser(response.data.user)
         setConnections(response.data.connections);
       })
@@ -32,11 +33,12 @@ function UserProfile() {
       .finally(() => {
         setLoading(false);
       });
+      
   },[])
 
   return (
     <div className='w-full mr-2'>
-      {loading && <p className='flex justify-center items-center font-semibold mt-10'>Loading</p> }
+      {loading && <p className='flex justify-center items-center mt-10'><Loader/></p> }
       {!loading && <UserDetails user={user} connections={connections} posts={posts} />}
     </div>
   )

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { followUser, getUserConnection, rejectFollowRequest, unFollowUser } from '../../services/user/apiMethods';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function FollowersList(
 {onClose, followers, followingUsers, setFollowingUsers}
@@ -75,15 +75,6 @@ function FollowersList(
     return requested?.includes(selectedUserId)
   }
 
-  const handleSearch = (postUserId) => {
-    console.log("postUserId", postUserId);
-    if(postUserId === userId) {
-      navigate('/profile')
-    } else {
-      navigate(`/user-profile/${postUserId}`)
-    }
-  }
-
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
       <div className='flex justify-center items-center h-full'>
@@ -100,9 +91,12 @@ function FollowersList(
           <div className='space-y-4'>
             {followers.map((user) => (
               <div key={user.id} className='flex justify-between items-center'>
-                <div
-                onClick={() => handleSearch(user._id)} 
-                className='flex items-center cursor-pointer'>
+                <Link
+                  to={user._id === userId
+                    ? "/profile"
+                    : `/user-profile/${user._id}`
+                  }
+                  className='flex items-center cursor-pointer'>
                   <div className="flex items-center justify-center bg-white rounded-full w-10 h-10 overflow-hidden">
                     <img className='rounded-full object-cover w-full h-full' src={user.profileImg} alt={user.userName} />
                   </div>
@@ -110,28 +104,32 @@ function FollowersList(
                     <p className='text-black font-medium'>{user.userName}</p>
                     <p className='text-gray-500 text-sm'>{user.name}</p>
                   </div>
-                </div>
+                </Link>
 
-                {!isFollowing(user._id) && !isRequested(user._id) && (
-                  <button 
-                  onClick={() => handleFollow(user._id)}
-                  className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 rounded-md'>
-                  Follow
-                </button>
-                )}
-                {isFollowing(user._id) && (
-                  <button
-                  onClick={() => handleUnFollow(user._id)} 
-                  className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 rounded-md'>
-                  UnFollow  
-                </button>
-                )}
-                {isRequested(user._id) && (
-                  <button
-                  onClick={() => hadleReject(user._id) } 
-                  className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 rounded-md'>
-                  Requested
-                </button>
+                {userId !== user._id && (
+                  <div>
+                    {!isFollowing(user._id) && !isRequested(user._id) && (
+                      <button 
+                      onClick={() => handleFollow(user._id)}
+                      className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 lg:w-24 rounded-md'>
+                      Follow
+                    </button>
+                    )}
+                    {isFollowing(user._id) && (
+                      <button
+                      onClick={() => handleUnFollow(user._id)} 
+                      className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 lg:w-24 rounded-md'>
+                      UnFollow  
+                    </button>
+                    )}
+                    {isRequested(user._id) && (
+                      <button
+                      onClick={() => hadleReject(user._id) } 
+                      className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 lg:w-24 rounded-md'>
+                      Requested
+                    </button>
+                    )}
+                  </div>
                 )}
 
               </div>

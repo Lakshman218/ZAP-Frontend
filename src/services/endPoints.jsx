@@ -40,5 +40,6 @@ export const adminUrls = {
   userList: "/admin/get-users",
   postList: "/admin/get-posts",
   reportList: "/admin/get-reports",
-  postBlock: "/admin/post-block"
+  postBlock: "/admin/post-block",
+  getDetails: "/admin/get-details"
 }

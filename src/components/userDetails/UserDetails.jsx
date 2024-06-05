@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import FollowersList from '../profile/FollowersList';
 import FollowingList from '../profile/FollowingList';
 
-
 function UserDetails({user, connections, posts}) {
   console.log("connetions data", connections);
   const selectUser = (state) => state.auth.user;
@@ -113,28 +112,44 @@ function UserDetails({user, connections, posts}) {
               </div>
               <div className='flex lg:mt-0 mt-2'>
               <div>
+                
                 {isFollowed ? (
-                <button 
-                onClick={handleUnFollow}
-                className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 items-center'>
-                    Following
+                <button
+                onClick={handleUnFollow} 
+                class="bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                  <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                  Following
                 </button>
                 ) : isFollowRequested ? (
-                  <button 
-                  onClick={handleReject}
-                  className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 items-center'>
-                    Requested
+                  <button
+                onClick={handleReject} 
+                class="bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                  <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                  Requested
                 </button>
                 ) : (
-                  <button 
-                  onClick={handleFollow}
-                  className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 items-center'>
-                    Follow
+                //   <button 
+                //   onClick={handleFollow}
+                //   className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 items-center'>
+                //     Follow
+                // </button>
+                  
+                <button
+                onClick={handleFollow} 
+                class="bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                  <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                  Follow
                 </button>
                 )}
               </div>
               <div>
-                <button className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-8 items-center'>
+                {/* <button className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-8 items-center'>
+                  Message
+                </button> */}
+
+                <button 
+                class="bg-neutral-950 ml-8 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                  <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                   Message
                 </button>
               </div>
@@ -155,9 +170,9 @@ function UserDetails({user, connections, posts}) {
             <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
               <button>Posts</button>
             </div>
-            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
+            {/* <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
               <button>Saved</button>
-            </div>
+            </div> */}
           </div>
         
           <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white p-2'>

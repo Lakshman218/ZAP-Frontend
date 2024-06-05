@@ -71,7 +71,7 @@ function Searchbar({closeSearchmodal}) {
           onClick={() => handleSearch(user._id)}
           // to={`/user-profile/${user._id}`} 
           key={user.id} 
-          className="flex items-center justify-between gap-3 mt-4 px-4">
+          className="flex items-center justify-between gap-3 mt-4 px-4 hover:bg-slate-100 rounded-md mr-3 py-1">
             <div className="flex cursor-pointer">
               <img className="flex w-8 h-8 rounded-full bg-black" src={user.profileImg} alt=""/>
             </div>

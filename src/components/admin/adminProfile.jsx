@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { AdminLogout } from '../../utils/context/reducers/adminAuthSlice'
+import { getDashboardDetails } from '../../services/admin/apiMethods'
 
 function AdminProfile() {
   const selectedAdmin = (state) => state.adminAuth.admin
@@ -16,6 +17,17 @@ function AdminProfile() {
     toast.info("Logout succussfull");
     navigate("/admin/login")
   }
+
+  const [isDashboardData, setDashboardDatas] = useState('')
+
+  useEffect(() => {
+    getDashboardDetails()
+      .then((response) => {
+        const dashboardDatas = response.data
+        setDashboardDatas(dashboardDatas)
+        console.log("dashboardDatas",dashboardDatas);
+      })
+  },[])
 
   return (
     <>
@@ -48,20 +60,26 @@ function AdminProfile() {
                     className=' lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-0 '>Logout</button>
                   </div>
                 </div>
-                <div className='flex justify-between  lg:mt-8 mt-2 cursor-pointer'>
-                  <div className='flex flex-col cursor-pointer items-center'>
-                    <p className="font-medium text-lg">0</p>
-                    <p className="text-sm">Users</p>
-                  </div>
-                  <div className='flex flex-col cursor-pointer items-center'>
-                    <p className="font-medium text-lg">0</p>
-                    <p className="text-sm">Posts</p>
-                  </div>
-                  <div className='flex flex-col cursor-pointer items-center'>
-                    <p className="font-medium text-lg">0</p>
-                    <p className="text-sm">Reports</p>
-                  </div>
-                </div> 
+                <div className='flex justify-between lg:mt-8 mt-2 cursor-pointer'>
+  <div className='flex flex-col cursor-pointer items-center'>
+    <div className="flex items-center justify-center w-16 h-16 rounded-full border-4 border-blue-500">
+      <p className="font-medium text-lg">{isDashboardData.totalUsers}</p>
+    </div>
+    <p className="text-sm mt-2">Users</p>
+  </div>
+  <div className='flex flex-col cursor-pointer items-center'>
+    <div className="flex items-center justify-center w-16 h-16 rounded-full border-4 border-yellow-300">
+      <p className="font-medium text-lg">{isDashboardData.totalPosts}</p>
+    </div>
+    <p className="text-sm mt-2">Posts</p>
+  </div>
+  <div className='flex flex-col cursor-pointer items-center'>
+    <div className="flex items-center justify-center w-16 h-16 rounded-full border-4 border-red-500">
+      <p className="font-medium text-lg">{isDashboardData.totalReports}</p>
+    </div>
+    <p className="text-sm mt-2">Reports</p>
+  </div>
+</div>
               </div>
             </div>
           </div>

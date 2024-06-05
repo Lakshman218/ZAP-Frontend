@@ -33,7 +33,28 @@ function MiniProfile() {
                     <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{user.userName}</h5>
                     <span className="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
                     <div className="flex mt-4 md:mt-6">
-                        <Link to={'/profile'} className='inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Profile</Link>
+                        {/* <Link to={'/profile'} className='inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Profile</Link> */}
+                        <Link to={'/profile'} className=''>
+                        <button
+                            class="overflow-hidden relative w-32 p-2 h-10 flex justify-center items-center bg-black text-white border-none rounded-md text-xl font-bold cursor-pointer z-10 group"
+                            >
+                            Profile
+                            <span
+                                class="absolute w-36 h-32 -top-8 -left-2 bg-sky-200 rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-right"
+                            ></span>
+                            <span
+                                class="absolute w-36 h-32 -top-8 -left-2 bg-sky-400 rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-700 duration-700 origin-right"
+                            ></span>
+                            <span
+                                class="absolute w-36 h-32 -top-8 -left-2 bg-sky-600 rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-1000 duration-500 origin-right"
+                            ></span>
+                            <span
+                                class="group-hover:opacity-100 group-hover:duration-1000 duration-100 opacity-0 absolute top-1.5 left-6 z-10 ml-3"
+                                >Profile</span
+                            >
+                        </button>
+
+                        </Link>
                     </div>
                 </div>
             </div>

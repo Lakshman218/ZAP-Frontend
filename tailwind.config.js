@@ -7,14 +7,13 @@ export default {
     "node_modules/flowbite-react/lib/esm/**/*.js",
   ],
   theme: {
-    extend: {
-      colors: {
-        black: '#000000', // Define black color
-      },
-    },
+    extend: {},
   },
+  // darkMode: 'media',
+
   plugins: [
-    flowbite.plugin(),
+    // flowbite.plugin(),
+    require('flowbite/plugin')
   ],
 }
 

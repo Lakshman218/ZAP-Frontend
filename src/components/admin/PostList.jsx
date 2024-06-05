@@ -73,9 +73,14 @@ import { adminPostBlock, adminPostList } from '../../services/admin/apiMethods';
         });
     };
 
-    return (
-      <div className="flex justify-start items-center w-full mr-24 lg:ml-10">
-        <div className="mt-10 flex justify-center items-center lg:w-full px-4 rounded-md">
+    return (  
+      <>
+        <div className='w-9/12'>
+        <div className=' flex justify-center items-center font-serif text-xl mt-6 '>
+          Posts List
+          </div>
+        <div className="flex justify-start items-center w-full mr-24 lg:ml-6">
+        <div className="mt-6 flex justify-center items-center lg:w-full px-4 rounded-md">
           <div className="flex justify-center border w-full p-4 bg-gray-200 rounded-md">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full lg:w-4/4 p-2 bg-white">
               <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
@@ -173,6 +178,8 @@ import { adminPostBlock, adminPostList } from '../../services/admin/apiMethods';
           message={modalMessage}
         />
       </div>
+        </div>
+      </>
     );
   };
 

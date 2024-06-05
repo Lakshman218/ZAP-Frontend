@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import  { addPost } from "../../services/user/apiMethods"
 import { useNavigate } from 'react-router-dom';
 import { initialValues, validationSchema } from '../../utils/validations/postValidation';
+import Loader from '../loader/loader';
 
 function AddPost({ closeAddPost }) {
   const selectedUser = (state) => state.auth.user || "";
@@ -13,6 +14,7 @@ function AddPost({ closeAddPost }) {
   const userId = user._id || "";
   const [selectedFiles, setSelectedFiles] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const resetState = () => {
     formik.resetForm();
@@ -35,6 +37,7 @@ function AddPost({ closeAddPost }) {
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: async () => {
+      setLoading(!loading)
       const { title, description, images } = formik.values;
       const imageUrls = [];
 
@@ -57,6 +60,7 @@ function AddPost({ closeAddPost }) {
         if (response.status === 200) {
           toast.info(response.data.message);
           resetState();
+          setLoading(!loading)
           handleCancelClick();
         } else {
           toast.error(response.data.message);
@@ -65,7 +69,6 @@ function AddPost({ closeAddPost }) {
         toast.error(error.message);
       }
 
-      fetchposts();
     },
   });
 
@@ -78,7 +81,7 @@ function AddPost({ closeAddPost }) {
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
       <div className='flex justify-center items-center h-full'>
-        <div className='bg-white p-10 space-y-4 w-full md:mx-80 rounded-md'>
+        <div className='dark:bg-black bg-white p-10 space-y-4 w-full md:mx-80 rounded-md'>
           <div className='flex justify-between items-center'>
             <h2 className='font-semibold text-xl'>Add Post</h2>
             <button onClick={closeAddPost} className="text-white px-2 py-2 rounded">
@@ -88,6 +91,13 @@ function AddPost({ closeAddPost }) {
             </button>
           </div>
           <div className='max-w-md mx-auto'>
+          {loading && 
+            <div className='relative flex flex-col justify-center z-0 items-center h-96'>
+              <Loader/>
+              <p className='mt-6'>Uploading...</p>
+            </div>
+          }
+          {!loading && 
             <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto">
               <div className="relative z-0 w-full mb-5 group">
                 <label htmlFor="custom-file-upload" className="block text-sm font-medium text-gray-700">
@@ -127,7 +137,7 @@ function AddPost({ closeAddPost }) {
                   <p className="font-medium">Selected Images:</p>
                   <div className="flex flex-wrap gap-4 mt-2 mb-2">
                     {selectedFiles.map((file, index) => (
-                      <div key={index} className="w-24 h-24 border border-gray-300 rounded-md overflow-hidden">
+                      <div key={index} className="w-36 h-32 border border-gray-300 rounded-md overflow-hidden">
                         <img src={URL.createObjectURL(file)} alt={`Image ${index}`} className="w-full h-full object-cover" />
                         <p className="text-xs text-center">{file.name}</p>
                       </div>
@@ -182,6 +192,7 @@ function AddPost({ closeAddPost }) {
                 Submit
               </button>
             </form>
+          }
           </div>
         </div>
       </div>

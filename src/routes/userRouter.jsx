@@ -11,6 +11,7 @@ import RenewPassword from "../pages/forgotPassword/renewPassword";
 import { adminLoginRouter, adminRouter } from "./adminRouter";
 import HomePage from "../pages/userHomePage/HomePage";
 import UserProfile from "../pages/userProfile/UserProfile";
+import Chat from "../pages/chat/Chat";
 
 
 const appRouter = createBrowserRouter([
@@ -35,6 +36,14 @@ const appRouter = createBrowserRouter([
         element: <UserProfile />,
       },
     ]
+  },
+  {
+    path: "/chat",
+    element: (
+      <Protect>
+        <Chat/>,
+      </Protect>
+    ),
   },
   
   {

@@ -99,3 +99,19 @@ export const adminReportList = () => {
     }
   })
 }
+
+export const getDashboardDetails = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      adminApiCalls("get",adminUrls.getDetails, null) 
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      reject(error)
+    }
+  })
+} 
