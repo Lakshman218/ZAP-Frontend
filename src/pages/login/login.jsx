@@ -151,9 +151,15 @@ function Login() {
               </div>
               
               <div className="flex items-center justify-between mb-3">
-                <button 
-                className="w-full bg-gray-500 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded focus:outline-none focus:shadow-outline" 
-                type="submit">Sign In</button>
+                {/* <button 
+                className=" bg-gray-500 hover:bg-blue-700 text-white font-bold w-full py-1.5 px-4 rounded focus:outline-none focus:shadow-outline" 
+                type="submit">Sign In
+                </button> */}
+                <button
+                  class=" z-30 w-full py-1.5 px-4 bg-gray-500 hover:bg-blue-700 rounded-md text-white relative font-bold font-sans overflow-hidden transition-all duration-700 "
+                >
+                  Sign In
+                </button>
               </div>
             </Form>
           </Formik>

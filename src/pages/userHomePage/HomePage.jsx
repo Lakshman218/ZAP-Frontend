@@ -28,6 +28,7 @@ function HomePage() {
     getAllPosts({ userId: userId })
      .then((response) => {
         const postDatas = response.data;
+        // console.log("postdatas for like",postDatas);
         setPosts(postDatas);
       })
      .catch((error) => {

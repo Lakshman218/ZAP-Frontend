@@ -2,24 +2,24 @@ import React, { useEffect, useRef, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'; 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { SavePost, deletePost } from '../../services/user/apiMethods';
+import { SavePost, deletePost, likePost } from '../../services/user/apiMethods';
 import { toast } from 'sonner';
 import { loginSuccuss, setPosts } from '../../utils/context/reducers/authSlice';
 import EditPost from './EditPost';
 import ReportModal from './ReportModal';
 import { Heart, MessageCircle, Share2 } from 'lucide-react';
-import '../homepost/HomePost.css'
+import LikedUsers from './LikedUsers';
+import ViewPost from './ViewPost';
 
 function HomePosts({post, fetchposts}) {
-
+  console.log("updatedpost for like", post);
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const selectedUser = (state) => state.auth.user
   const user = useSelector(selectedUser)
-  console.log("user auth", user);
   const userId = user._id
   const postIds = user.savedPost
-  console.log("post ids",postIds);
+  // console.log("post ids",postIds);
   const [isSavedByUser, setIsSavedByUser] = useState(
     user?.savedPost?.includes(post._id)
   )
@@ -32,7 +32,7 @@ function HomePosts({post, fetchposts}) {
 
   // navigate to user profile
   const handleSearch = (postUserId) => {
-    console.log("postUserId", postUserId);
+    // console.log("postUserId", postUserId);
     if(postUserId === userId) {
       navigate('/profile')
     } else {
@@ -42,12 +42,12 @@ function HomePosts({post, fetchposts}) {
 
   // save post
   const handleSave = (postId, userId) => {
-    console.log(postId, userId);
+    // console.log(postId, userId);
     try {
       SavePost({postId, userId})
         .then((response) => {
           const userData = response.data
-          console.log("userdata", userData);
+          // console.log("userdata", userData);
           dispatch(loginSuccuss({user: userData}))
           setIsSavedByUser(!isSavedByUser)
           toast.info(userData.message)
@@ -112,11 +112,60 @@ function HomePosts({post, fetchposts}) {
     setReportModal(!reportModal);
     handleClickOutside()
   }
+
+  // like post
+  const [likeCount, setLikeCount] = useState(post.likes.length);
+  const [likedUsers, setLikedUsers] = useState(post.likes);
+  const [isLikedByUser, setIsLikedByUser] = useState(post.likes.includes(userId));
+  const [showLikedUsersPopup, setShowLikedUsersPopup] = useState(false);
+
+  const handleLike = (postId, userId) => {
+    try {
+      likePost({ postId, userId })
+        .then((response) => {
+          const postData = response.data;
+          dispatch(setPosts({ posts: postData.posts }));
+          // console.log("post for like", post);
+
+          // Toggle the like state
+          setIsLikedByUser((prevIsLiked) => {
+            if (prevIsLiked) {
+              setLikedUsers((prevLikedUsers) =>
+                prevLikedUsers.filter((likedUser) => likedUser._id !== userId)
+              );
+              setLikeCount((prev) => prev - 1);
+            } else {
+              setLikedUsers((prevLikedUsers) => [
+                ...prevLikedUsers,
+                { _id: userId }, 
+              ]);
+              setLikeCount((prev) => prev + 1);
+            }
+            return !prevIsLiked;
+          });
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const handleLikedUsersPopup = () => {
+    setShowLikedUsersPopup(!showLikedUsersPopup);
+  };
+
+  // comment
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const handlePostPopup = () => {
+    setShowCommentModal(!showCommentModal)
+  }
   
   return (
 
     <div className="w-full lg:px-10 lg:p-0 mb-8 mr-2 h-max rounded-md border-none shadow-md bg-white border">
       
+      <div>
       <div className='flex justify-between items-center'>
         {/* user details */}
         <div
@@ -138,7 +187,7 @@ function HomePosts({post, fetchposts}) {
             {/* edit or delete post */}
           <div onClick={handleToggleDropdown} className='flex cursor-pointer'>
             <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" strokeLinecap="round" strokeWidth="3" d="M6 12h.01m6 0h.01m5.99 0h.01"/>
+              <path stroke="currentColor" strokeLinecap="round" strokeWidth="4" d="M6 12h.01m6 0h.01m5.99 0h.01"/>
             </svg>
           </div>
 
@@ -180,7 +229,9 @@ function HomePosts({post, fetchposts}) {
         
       </div>
     
-      <div className=" lg:p-4 sm:p-0"> 
+      <div
+        onDoubleClick={() => handleLike(post._id, user._id)} 
+        className=" lg:p-4 sm:p-0"> 
         <div id="controls-carousel" className="relative w-full bg-gray-200 " >
           <div className="relative h-56 overflow-hidden  md:h-96">
             <div className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" data-carousel-item>
@@ -207,79 +258,89 @@ function HomePosts({post, fetchposts}) {
             </span>
         </button>
       </div>
+      </div>
         
         <div className='text-gray-200  flex justify-between'>
           {/* like, comment, share */}
-          <div className='py-1 mt-2 flex gap-3'>
+          <div className='py-1 mt-0 flex gap-3'>
               
             <div className='group relative'>
-              <div className='transition-transform transform group-hover:scale-110 group-hover:text-red-600 duration-200'>
-                <Heart className='text-black hover:fill-red-600 hover:text-red-600' />
-              </div>
+              <button
+              onClick={() => handleLike(post._id, user._id)} 
+              className='transition-transform transform group-hover:scale-110 group-hover:text-red-600 duration-200'>
+                {console.log("isLikedByUser",isLikedByUser)}
+                {isLikedByUser ? 
+                <Heart className='text-red-600 fill-red-600'/> :
+                <Heart className='text-black hover:text-gray-600'/>}
+              </button>
             </div>
 
             <div className='group relative'>
-              <div className='transition-transform transform group-hover:scale-110 duration-200'>
-              <MessageCircle color='black'/>
-              </div>
+              <button
+              onClick={() => handlePostPopup()} 
+              className='transition-transform transform group-hover:scale-110 duration-200'>
+              <MessageCircle className='text-black hover:text-gray-600'/>
+              </button>
             </div>
               
             <div className='group relative'>
               <div className='transition-transform transform group-hover:scale-110 duration-200'>
-              <Share2 color='black'/>
+              <Share2 className='text-black hover:text-gray-600'/>
               </div>
             </div>
+            </div>
+            {/* save post */}
+
+            {(isSavedByUser ? (
+              // saved
+              <div 
+                onClick={() => handleSave(post._id, userId)}
+                className='py-1 mt-0 flex cursor-pointer relative group'>
+                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z"/>
+                </svg>
+                <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className='text-center'>Unsave Post</p>
+                </div>
+              </div>
+            ) : (
+              // save
+              <div 
+                onClick={() => handleSave(post._id, userId)} 
+                className='py-1 mt-0 flex cursor-pointer relative group'
+              >
+                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z"/>
+                </svg>
+                <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  Save Post
+                </div>
+              </div>
+            ))}
+
           </div>
-          {/* save post */}
-
-          {(isSavedByUser ? (
-            // saved
-          //   <div 
-          //   onClick={() => handleSave(post._id, userId)}
-          //   className='py-1 mt-2 flex cursor-pointer'>
-          //   <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-          //     <path d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z"/>
-          //   </svg>
-          // </div>
-          <div 
-              onClick={() => handleSave(post._id, userId)}
-              className='py-1 mt-2 flex cursor-pointer relative group'
-            >
-              <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z"/>
-              </svg>
-              <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className='text-center'>Unsave Post</p>
-              </div>
-            </div>
-          ) : (
-            // save
-          //   <div
-          //   onClick={() => handleSave(post._id, userId)} 
-          //   className='py-1 mt-2 flex cursor-pointer'>
-          //   <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          //     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z"/>
-          //   </svg>
-          // </div>
-            <div 
-              onClick={() => handleSave(post._id, userId)} 
-              className='py-1 mt-2 flex cursor-pointer relative group'
-            >
-              <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z"/>
-              </svg>
-              <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                Save Post
-              </div>
-            </div>
-          ))}
-
+          {likeCount > 0 ?
+            <div>
+              <span 
+              onClick={handleLikedUsersPopup}
+              className='font-semibold cursor-pointer ml-2'>
+                {likeCount} likes
+              </span>
+            </div> : '' 
+          }
+          <div className='text-black block pb-2'>
+            <p className='font-semibold'>{post.title}</p>
+            <p className='text-sm'>{post.description}</p>
+          </div>
         </div>
-        <div className='text-black block py-2'>
-          <p>{post.title}</p>
-          <p className='text-sm ml-2'>{post.description}</p>
-        </div>
-      </div>
+
+      {showCommentModal && (
+        <ViewPost post={post} onClose={handlePostPopup} />
+      )}
+
+      {showLikedUsersPopup && (
+        <LikedUsers likedUsers={likedUsers} onClose={handleLikedUsersPopup} />
+      )}
 
       {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} /> }
 

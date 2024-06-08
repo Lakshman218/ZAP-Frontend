@@ -457,3 +457,142 @@ export const reportPost = (postData) => {
     }
   })
 }
+
+// like post
+export const likePost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.likePost, postData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// get post comments
+export const getPostComments = (postId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("getting comment postid",postId);
+      const url = `${postUrls.getAllPostComments}/${postId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// add comment
+export const addComment = (commentData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.addComment, commentData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// reply comment
+export const replyComment = (commentData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.replyComment, commentData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// delete comment
+export const deleteComment = (commentId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("delete", postUrls.deleteComment, commentId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+export const getCommentsCount = (postId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrls.getCommentsCount}/${postId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+//  manage comment
+export const handleComment = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post",postUrls.handleComment, postData)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// manage like
+export const handleLike = (postData) => {
+  console.log("inlike",postData);
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post",postUrls.handleLike, postData)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}

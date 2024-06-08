@@ -23,6 +23,14 @@ export const postUrls = {
   savePost: "post/save-post",
   getSavedPosts: "post/user-saved-post",
   reportPost: "/post/report-post",
+  likePost: "/post/like-post",
+  getAllPostComments: "/post/get-post-comments",
+  addComment: "/post/add-comment",
+  replyComment: "/post/reply-comment",
+  deleteComment: "/post/delete-post-comment",
+  commentsCount: "/post/get-comments-count",
+  handleComment: "/post/handle-comment",
+  handleLike: "/post/handle-like",
 }
 
 export const connectionUrls = {

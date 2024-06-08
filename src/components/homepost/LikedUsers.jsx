@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { followUser, getUserConnection, rejectFollowRequest, unFollowUser } from '../../services/user/apiMethods';
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { followUser, getUserConnection, rejectFollowRequest, unFollowUser } from '../../services/user/apiMethods'
 
-function FollowingList(
-  { onClose, currentUser, setFollowingUsers, followingUsers }
-) {
-  console.log("following usrs data", followingUsers);
-  const navigate = useNavigate()
-  const selectUser = (state) => state.auth.user;
-  const user = useSelector(selectUser);
-  const userId = user._id || "";
+function LikedUsers({likedUsers, onClose}) {
+  const selectUser = (state) => state.auth.user
+  const user = useSelector(selectUser)
+  const userId = user._id || ''
   const [following, setFollowing] = useState([]);
   const [requested, setRequested] = useState([]);
 
@@ -29,14 +25,13 @@ function FollowingList(
       });
   },[])
 
-  const handleFollow = (selectedUserId) => {
-    followUser({userId, followingUser: selectedUserId})
+  const handleFollow = (likedUserId) => {
+    followUser({userId, followingUser: likedUserId})
       .then((response) => {
         if(response.data.followed) {
-          setFollowing([...following, selectedUserId])
-          // setFollowingUsers([...followingUsers, selectedUserId])
+          setFollowing([...following, likedUserId])
         } else {
-          setRequested((prevRequested) => [...prevRequested, selectedUserId])
+          setRequested((prevRequested) => [...prevRequested, likedUserId])
         }
       })
       .catch((error) => {
@@ -44,42 +39,38 @@ function FollowingList(
       });
   }
 
-  const handleUnFollow = (selectedUserId) => {
-    unFollowUser({userId, unfollowingUser:selectedUserId})
+  const handleUnFollow = (likedUserId) => {
+    unFollowUser({userId, unfollowingUser:likedUserId})
       .then((response) => {
-        setFollowing(following.filter((userId) => userId !== selectedUserId))
-        if(currentUser == userId) {
-          // setFollowingUsers(followingUsers.filter((user) => user._id !== selectedUserId))
-        }
+        setFollowing(following.filter((userId) => userId !== likedUserId))
       })
       .catch((error) => {
         console.log(error.message);
       });
   }
 
-  const hadleReject = (selectedUserId) => {
-    rejectFollowRequest({userId, requestedUser: selectedUserId}) 
+  const hadleReject = (likedUserId) => {
+    rejectFollowRequest({userId, requestedUser: likedUserId}) 
       .then((response) => {
-        setRequested(requested.filter((userid) => userid !== selectedUserId))
+        setRequested(requested.filter((userid) => userid !== likedUserId))
       })
       .catch((error) => {
         console.log(error.message);
       });
   }
 
-  const isFollowing = (selectedUserId) => {
-    return following.includes(selectedUserId)
+  const isFollowing = (likedUserId) => {
+    return following.includes(likedUserId)
   }
-  const isRequested = (selectedUserId) => {
-    return requested.includes(selectedUserId)
+  const isRequested = (likedUserId) => {
+    return requested.includes(likedUserId)
   }
-
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
       <div className='flex justify-center items-center h-full'>
         <div className='bg-white px-10 py-8 space-y-4 w-full max-w-md mx-auto rounded-md'>
           <div className='flex justify-between items-center'>
-            <h2 className='font-semibold text-xl'>Following</h2>
+            <h2 className='font-semibold text-xl'>Liked Users</h2>
             <button onClick={onClose} className="text-gray-800 dark:text-white px-2 py-2 rounded">
               <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6"/>
@@ -88,7 +79,7 @@ function FollowingList(
           </div>
           <hr className="border-t-2 border-gray-200" />
           <div className='space-y-4'>
-            {followingUsers.map((user) => (
+            {likedUsers.map((user) => (
               <div>
                 <div key={user.id} className='flex justify-between items-center'>
                   <Link
@@ -102,6 +93,7 @@ function FollowingList(
                     </div>
                     <div className='ml-4'>
                       <p className='text-black font-medium'>{user.userName}</p>
+                      {console.log("liked usrname", user.userName)}
                       <p className='text-gray-500 text-sm'>{user.name}</p>
                     </div>
                   </Link>
@@ -142,4 +134,4 @@ function FollowingList(
   )
 }
 
-export default FollowingList
+export default LikedUsers
