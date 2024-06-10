@@ -12,6 +12,7 @@ import { adminLoginRouter, adminRouter } from "./adminRouter";
 import HomePage from "../pages/userHomePage/HomePage";
 import UserProfile from "../pages/userProfile/UserProfile";
 import Chat from "../pages/chat/Chat";
+import Notification from "../components/notification/Notification";
 
 
 const appRouter = createBrowserRouter([
@@ -34,6 +35,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/user-profile/:userId",
         element: <UserProfile />,
+      },
+      {
+        path: "/notifications",
+        element: <Notification/>
       },
     ]
   },

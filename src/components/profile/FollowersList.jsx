@@ -119,7 +119,7 @@ function FollowersList(
                       <button
                       onClick={() => handleUnFollow(user._id)} 
                       className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 lg:w-24 rounded-md'>
-                      UnFollow  
+                      Following  
                     </button>
                     )}
                     {isRequested(user._id) && (

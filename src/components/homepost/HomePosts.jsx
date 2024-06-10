@@ -10,6 +10,7 @@ import ReportModal from './ReportModal';
 import { Heart, MessageCircle, Share2 } from 'lucide-react';
 import LikedUsers from './LikedUsers';
 import ViewPost from './ViewPost';
+import ConfirmationModal from './ConfirmationModal';
 
 function HomePosts({post, fetchposts}) {
   console.log("updatedpost for like", post);
@@ -81,22 +82,38 @@ function HomePosts({post, fetchposts}) {
   }, []);
 
   // delete post
-  const handleDeletePost = (postId, userId) => {
-    try {
-      deletePost({postId, userId})
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [postIdToDelete, setPostIdToDelete] = useState(null);
+
+  const openModal = (postId) => {
+    setPostIdToDelete(postId);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setPostIdToDelete(null);
+  };
+
+  const confirmDeletePost = () => {
+    if (postIdToDelete) {
+      deletePost({ postId: postIdToDelete, userId })
         .then((response) => {
-          const postData = response.data
-          dispatch(setPosts({posts: postData.posts}))
+          const postData = response.data;
+          dispatch(setPosts({ posts: postData.posts }));
           fetchposts()
-          toast.info("post deleted")
+          toast.info('Post deleted');
         })
         .catch((error) => {
           toast.error(error.message);
         });
-    } catch (error) {
-      console.log(error.message);
+      closeModal();
     }
-  }
+  };
+
+  const handleDeletePost = (postId, userId) => {
+    openModal(postId);
+  };
 
   // edit post
   const [IsEditPostOpen, setEditPostOpen] = useState(false)
@@ -114,10 +131,14 @@ function HomePosts({post, fetchposts}) {
   }
 
   // like post
+  const [showLikedUsersPopup, setShowLikedUsersPopup] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [likedUsers, setLikedUsers] = useState(post.likes);
   const [isLikedByUser, setIsLikedByUser] = useState(post.likes.includes(userId));
-  const [showLikedUsersPopup, setShowLikedUsersPopup] = useState(false);
+
+  useEffect(() => {
+    setIsLikedByUser(likedUsers.some((likedUser) => likedUser._id === user._id));
+  }, [likedUsers, user._id]);
 
   const handleLike = (postId, userId) => {
     try {
@@ -125,8 +146,7 @@ function HomePosts({post, fetchposts}) {
         .then((response) => {
           const postData = response.data;
           dispatch(setPosts({ posts: postData.posts }));
-          // console.log("post for like", post);
-
+          
           // Toggle the like state
           setIsLikedByUser((prevIsLiked) => {
             if (prevIsLiked) {
@@ -137,7 +157,7 @@ function HomePosts({post, fetchposts}) {
             } else {
               setLikedUsers((prevLikedUsers) => [
                 ...prevLikedUsers,
-                { _id: userId }, 
+                { _id: userId },
               ]);
               setLikeCount((prev) => prev + 1);
             }
@@ -199,10 +219,11 @@ function HomePosts({post, fetchposts}) {
                 Edit
               </button>
               <button
-              onClick={() => handleDeletePost(post._id, userId)} 
-              className='w-full px-4 py-2 text-left text-gray-800 hover:text-red-600 hover:bg-gray-200 rounded-md'>
+                onClick={() => handleDeletePost(post._id, userId)}
+                className="w-full px-4 py-2 text-left text-gray-800 hover:text-red-600 hover:bg-gray-200 rounded-md">
                 Delete
               </button>
+              
             </div>
           )}
         </div>
@@ -334,6 +355,13 @@ function HomePosts({post, fetchposts}) {
           </div>
         </div>
 
+        {<ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onConfirm={confirmDeletePost}
+        message="Are you sure you want to delete this post?"
+      />}
+
       {showCommentModal && (
         <ViewPost post={post} onClose={handlePostPopup} />
       )}
@@ -342,12 +370,11 @@ function HomePosts({post, fetchposts}) {
         <LikedUsers likedUsers={likedUsers} onClose={handleLikedUsersPopup} />
       )}
 
-      {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} /> }
+      {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchposts={fetchposts} /> }
 
       {reportModal && <ReportModal closeModal={handleReportModal} postId={post._id} userId={userId} /> }
 
     </div>
-
 )
 }
 

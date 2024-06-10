@@ -159,7 +159,7 @@ function AddPost({ closeAddPost }) {
                   placeholder=" "
                 />
                 <label htmlFor="title" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                  Title
+                  Title *
                 </label>
                 {formik.touched.title && formik.errors.title && (
                   <p className="text-red-600 text-xs">{formik.errors.title}</p>
@@ -178,7 +178,7 @@ function AddPost({ closeAddPost }) {
                   placeholder=" "
                 />
                 <label htmlFor="description" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                  Description
+                  Description *
                 </label>
                 {formik.touched.description && formik.errors.description && (
                   <p className="text-red-600 text-xs mb-4">{formik.errors.description}</p>

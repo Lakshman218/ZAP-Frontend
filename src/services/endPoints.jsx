@@ -28,6 +28,7 @@ export const postUrls = {
   addComment: "/post/add-comment",
   replyComment: "/post/reply-comment",
   deleteComment: "/post/delete-post-comment",
+  deleteReplyComment: "/post/delete-post-replyComment",
   commentsCount: "/post/get-comments-count",
   handleComment: "/post/handle-comment",
   handleLike: "/post/handle-like",

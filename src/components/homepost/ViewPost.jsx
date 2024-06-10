@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'; 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Heart, MessageCircle, Share2 } from 'lucide-react';
-import { SavePost, addComment, deletePost, getPostComments, handleComment, handleLike, likePost } from '../../services/user/apiMethods';
+import { CircleX, Heart, MessageCircle, Share2, Trash2, X } from 'lucide-react';
+import { SavePost, addComment, deleteComment, deletePost, deleteReplyComment, getPostComments, handleComment, handleLike, likePost, replyComment } from '../../services/user/apiMethods';
 import LikedUsers from './LikedUsers';
 import EditPost from './EditPost';
 import ReportModal from './ReportModal';
@@ -93,7 +93,6 @@ function ViewPost({post, onClose}) {
         .then((response) => {
           const postData = response.data
           dispatch(setPosts({posts: postData.posts}))
-          fetchposts()
           toast.info("post deleted")
         })
         .catch((error) => {
@@ -120,19 +119,22 @@ function ViewPost({post, onClose}) {
   }
 
   // like post
+  const [showLikedUsersPopup, setShowLikedUsersPopup] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [likedUsers, setLikedUsers] = useState(post.likes);
   const [isLikedByUser, setIsLikedByUser] = useState(post.likes.includes(userId));
-  const [showLikedUsersPopup, setShowLikedUsersPopup] = useState(false);
+
+  useEffect(() => {
+    setIsLikedByUser(likedUsers.some((likedUser) => likedUser._id === user._id));
+  }, [likedUsers, user._id]);
 
   const toHandleLike = (postId, userId) => {
     try {
-      console.log("in liked post");
       likePost({ postId, userId })
         .then((response) => {
           const postData = response.data;
           dispatch(setPosts({ posts: postData.posts }));
-
+          
           // Toggle the like state
           setIsLikedByUser((prevIsLiked) => {
             if (prevIsLiked) {
@@ -143,7 +145,7 @@ function ViewPost({post, onClose}) {
             } else {
               setLikedUsers((prevLikedUsers) => [
                 ...prevLikedUsers,
-                { _id: userId }, 
+                { _id: userId },
               ]);
               setLikeCount((prev) => prev + 1);
             }
@@ -163,6 +165,20 @@ function ViewPost({post, onClose}) {
 
   // comment
   const [comments, setComments] = useState([]);
+  const [replyComments, setReplyComments] = useState(false);
+  const [parentCommentId, setParentCommentId] = useState("");
+  const [parentCommentUser, setParentCommentUser] = useState("")
+
+  const handleReplyComments = (commentId, commentUsername) => {
+    setReplyComments(true)
+    setParentCommentId(commentId)
+    setParentCommentUser(commentUsername)
+  }
+  const handleCancelReplyComments = () => {
+    setReplyComments(false)
+    setParentCommentId("")
+    setParentCommentUser("")
+  }
 
   // get comment
   useEffect(() => {
@@ -216,6 +232,68 @@ function ViewPost({post, onClose}) {
     }
   };
 
+  const ReplyCommentHandleSubmit = (values, {resetForm}) => {
+    try {
+      const commentData = {
+        commentId: parentCommentId,
+        userId: userId,
+        replyComment: values.comment,
+      }
+      replyComment(commentData)
+        .then((response) => {
+          const data = response.data
+          if (response.status === 200) {
+            const commentData = data.comments;
+            setComments(commentData);
+            toast.success(data.message);
+            resetForm(); 
+            handleCancelReplyComments()
+          } else {
+            toast.error(data.message);
+          }
+        })
+    } catch (error) {
+      
+    }
+  }
+
+  const handleDeleteComments = (commentId) => {
+    deleteComment({commentId})
+      .then((response) => {
+        const data = response.data;
+        if (response.status === 200) {
+          const commentData = data.comments;
+          setComments(commentData);
+          toast.success(data.message);
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error?.message);
+        toast.error("An error occurred. Please try again.");
+      })
+  }
+
+  const handleDeleteReplyComments = (commentId, replyUser, replyTime) => {
+    deleteReplyComment({commentId, replyUser, replyTime})
+      .then((response) => {
+        const data = response.data;
+        if (response.status === 200) {
+          const commentData = data.comments;
+          setComments(commentData);
+          toast.success(data.message);
+        } else {
+          toast.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error?.message);
+        toast.error("An error occurred. Please try again.");
+      })
+  }
+
+  // manage comment 
   const manageComment = (postId, userId) => {
     console.log("in comment", postId);
     handleComment({postId, userId})
@@ -232,7 +310,7 @@ function ViewPost({post, onClose}) {
         console.error("Error handling comment:", error);
       });
   };
-
+  // manage like
   const manageLikes = (postId, userId) => {
     handleLike({postId, userId})
       .then((response) => {
@@ -422,30 +500,79 @@ function ViewPost({post, onClose}) {
                       {comments.map((comment) => (
                         <div key={comment._id} className="mb-4 flex flex-col">
                           {/* Display comment on the left */}
-                          <div className="flex justify-start mb-4">
+                          <div className="flex justify-start mb-2">
                             <img
                               src={comment.userId.profileImg}  
                               className="object-cover h-8 w-8 rounded-full"
                               alt=""
                             />
-                            <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
-                              <p className="text-sm font-medium">{comment.userId.userName}</p>
-                              <p className="text-sm">{comment.comment}</p>
+                            <div className='flex'>
+                              <div className="ml-2 py-2 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                                <p className="text-sm font-medium">{comment.userId.userName}</p>
+                                <p className="text-sm">{comment.comment}</p>
+                              </div>
+                              {user.userName == comment.userId.userName ? (
+                                <div className='flex justify-center items-center ml-2'>
+                                  <Trash2 
+                                  onClick={() => handleDeleteComments(comment._id)}
+                                  className='size-4 text-gray-700 cursor-pointer hover:text-red-500 hover:size-5'/>
+                                </div>
+                              ): ''}
                             </div>
                           </div>
 
-                          {/* Display reply on the right */}
-                          {comment.reply && (
-                            <div className="flex justify-end mb-4">
-                              <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
-                                <p className="text-sm">{comment.reply.comment}</p>
-                              </div>
-                              <img
-                                src={comment.reply.profileImg}  
-                                className="object-cover h-8 w-8 rounded-full"
-                                alt=""
-                              />
+                          {/* Display time and reply option */}
+                            <div className="flex items-center">
+                              <span className="text-xs text-gray-500">
+                                {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+                              </span>
+                              <button 
+                                onClick={() => {handleReplyComments(comment._id, comment.userId.userName)}}
+                                className="text-xs text-blue-500 hover:underline ml-2">
+                                Reply
+                              </button>
+                              {replyComments && comment._id === parentCommentId && (
+                                <button
+                                  onClick={() => handleCancelReplyComments()} 
+                                  className='ml-2'>
+                                  <CircleX className='size-5 text-red-500'/>
+                                </button>
+                              )}
                             </div>
+
+
+                          {/* Display reply on the right */}
+                          {comment.replyComments && comment.replyComments.length > 0 &&  (
+                            comment.replyComments.map((reply) => (
+                              <div key={reply._id}>
+                                {!reply.isReplyDeleted && (
+                                  <div className="flex flex-col mb-1">
+                                  <div className='flex justify-end mb-2'>
+                                    {user.userName == reply.userId.userName ? (
+                                      <div className='flex justify-center items-center mr-2'>
+                                        <Trash2 
+                                        onClick={() => handleDeleteReplyComments(comment._id, reply.userId._id, reply.timestamp)}
+                                        className='size-4 text-gray-700 hover:text-red-500 hover:size-5 cursor-pointer'/>
+                                      </div>
+                                    ): ''}
+                                    <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
+                                      <p className="text-sm font-medium">{reply.userId.userName}</p>
+                                      <p className="text-sm">{reply.replyComment}</p>
+                                    </div>
+                                    <img
+                                      src={reply.userId.profileImg}  
+                                      className="object-cover h-8 w-8 rounded-full"
+                                      alt={reply.userId.userName}  
+                                    />
+                                    
+                                  </div>
+                                  <span className="text-xs text-gray-500 flex justify-end mr-2">
+                                    {formatDistanceToNow(new Date(reply.timestamp), { addSuffix: true })}
+                                  </span>
+                                </div>
+                                )}
+                              </div>
+                            ))
                           )}
                         </div>
                       ))}
@@ -458,7 +585,7 @@ function ViewPost({post, onClose}) {
                     {/* like, comment, share */}
                     <div className='py-1 mt-0 flex gap-3'>
                       <div className='group relative'>
-                        <button onClick={() => handleLike(post._id, user._id)} className='transition-transform transform group-hover:scale-110 group-hover:text-red-600 duration-200'>
+                        <button onClick={() => toHandleLike(post._id, user._id)} className='transition-transform transform group-hover:scale-110 group-hover:text-red-600 duration-200'>
                           {isLikedByUser ? 
                             <Heart className='text-red-600 fill-red-600'/> :
                             <Heart className='text-black hover:text-gray-600'/>}
@@ -512,7 +639,54 @@ function ViewPost({post, onClose}) {
                     )}
                   </div>
 
-                  <Formik
+                  {replyComments && (
+                    <Formik
+                    initialValues={commentInitialValues}
+                    validationSchema={commentValidationSchema}
+                    onSubmit={ReplyCommentHandleSubmit}
+                    >
+                    {({ values }) => {
+                      const isCommentEmpty = !values.comment.trim();
+
+                      return (
+                        <Form>
+                          <div className="relative mt-4 pb-0">
+                            <Field
+                              name="comment"
+                              placeholder={`@${parentCommentUser}`}
+                              aria-label="Add a comment.."
+                              autoComplete="off"
+                              autoCorrect="off"
+                              className="block w-full rounded-2xl border border-neutral-300 bg-transparent py-3 pl-6 pr-20 text-base/6 text-neutral-950 ring-4 ring-transparent transition placeholder:text-neutral-500 focus:border-neutral-950 focus:outline-none focus:ring-neutral-950/5"
+                            />
+                            <div className="absolute inset-y-1 right-1 flex justify-end">
+                              <button
+                                type="submit"
+                                aria-label="Submit"
+                                className={`flex aspect-square h-full items-center justify-center rounded-xl transition ${
+                                  isCommentEmpty ? 'bg-neutral-950 hover:bg-neutral-800' : 'bg-blue-500 hover:bg-blue-400'
+                                } text-white`}
+                                disabled={isCommentEmpty}
+                              >
+                                <svg viewBox="0 0 16 6" aria-hidden="true" className="w-4">
+                                  <path
+                                    fill="currentColor"
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    d="M16 3 10 .5v2H0v1h10v2L16 3Z"
+                                  ></path>
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </Form>
+                      );
+                    }}
+                  </Formik>
+                  )}
+
+                  {!replyComments && (
+                    <Formik
                     initialValues={commentInitialValues}
                     validationSchema={commentValidationSchema}
                     onSubmit={commentHandleSubmit}
@@ -555,6 +729,7 @@ function ViewPost({post, onClose}) {
                       );
                     }}
                   </Formik>
+                  )}
 
                 </div>
               </div>

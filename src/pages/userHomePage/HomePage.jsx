@@ -7,6 +7,8 @@ import { getAllPosts } from '../../services/user/apiMethods'
 import Header from '../../components/header/header'
 import { toast } from 'sonner'
 import Loader from '../../components/loader/loader'
+import HomePostLoader from '../../components/loader/HomePostLoader'
+  
 
 function HomePage() {
   const selectedUser = (state) => state.auth.user;
@@ -24,24 +26,28 @@ function HomePage() {
   }, []);
 
   const fetchposts = () => {
-    setLoading(true)
+    setLoading(true);
     getAllPosts({ userId: userId })
-     .then((response) => {
+      .then((response) => {
         const postDatas = response.data;
-        // console.log("postdatas for like",postDatas);
         setPosts(postDatas);
       })
-     .catch((error) => {
+      .catch((error) => {
         toast.error(error.message);
+      })
+      .finally(() => {
+        // Set loading to false after 2 seconds
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000); // Adjust the time as needed
       });
-      setLoading(false)
   };
 
   return (
     <>
       {/* <div className="flex justify-between w-full"> */}
-        {loading && <Loader/> }
-        {!loading &&
+        
+
         <div className="flex flex-col mr-2 lg:ml-5" style={{width:'870px'}}>
           <div className="p-2 rounded-md  bg-white">
             <Header />
@@ -49,11 +55,18 @@ function HomePage() {
           <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white">
             {posts.map((post) => {
               // console.log("post in inside home", post);
-              return <HomePosts key={post._id} post={post} fetchposts={fetchposts} />;
+              return (
+                <div>
+                  {loading && <HomePostLoader/> }
+                  {!loading && 
+                    <HomePosts key={post._id} post={post} fetchposts={fetchposts} />
+                  }
+                </div>
+              )
             })}
           </div>
         </div>
-        }
+       
       {/* </div> */}
         <div className="hidden lg:flex fixed right-0">
           <MiniProfile />

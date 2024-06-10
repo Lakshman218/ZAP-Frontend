@@ -532,7 +532,23 @@ export const replyComment = (commentData) => {
 export const deleteComment = (commentId) => {
   return new Promise((resolve, reject) => {
     try {
-      apiCall("delete", postUrls.deleteComment, commentId)
+      apiCall("post", postUrls.deleteComment, commentId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+export const deleteReplyComment = (commentData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.deleteReplyComment, commentData)
         .then((response) => {
           resolve(response)
         })

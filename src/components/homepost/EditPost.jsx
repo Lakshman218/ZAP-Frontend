@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from '../../utils/context/reducers/authSlice';
 import { toast } from 'sonner';
 
-function EditPost({handlePostEdit, postId, userId}) {
+function EditPost({handlePostEdit, postId, userId, fetchposts}) {
   const dispatch = useDispatch()
   // const selectedUser = (state) => state.auth.user;
   // const user = useSelector(selectedUser);
@@ -57,6 +57,7 @@ function EditPost({handlePostEdit, postId, userId}) {
        .then((response) => {
         const PostData = response.data
         dispatch(setPosts({posts: PostData.posts}))
+        fetchposts()
         toast.info("Post updated successfully");
         resetState()
         handlePostEdit()
@@ -103,7 +104,7 @@ function EditPost({handlePostEdit, postId, userId}) {
                 type="text" 
                 name="title" id="title" 
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                <label htmlFor="title" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Title</label>
+                <label htmlFor="title" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Title *</label>
               {formik.touched.title && formik.errors.title && (
                 <p className="text-red-600 text-xs">
                   {formik.errors.title}
@@ -120,7 +121,7 @@ function EditPost({handlePostEdit, postId, userId}) {
                 name="description" 
                 id="description" 
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "></input>
-                <label htmlFor="description" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description</label>
+                <label htmlFor="description" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description *</label>
               {formik.touched.description &&
               formik.errors.description && (
                 <p className="text-red-600 text-xs mb-4">

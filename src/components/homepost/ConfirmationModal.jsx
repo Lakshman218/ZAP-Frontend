@@ -1,22 +1,23 @@
 import React from 'react';
 
-const ConfirmationModal = ({ show, onConfirm, onCancel, message }) => {
-  if (!show) return null;
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-4 rounded-md shadow-lg">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-black opacity-50"></div>
+      <div className="bg-white rounded-lg p-6 z-10">
         <p className="mb-4">{message}</p>
         <div className="flex justify-end">
           <button
-            onClick={onCancel}
-            className="mr-2 px-4 py-2 bg-gray-300 rounded-md"
+            onClick={onClose}
+            className="mr-4 px-4 py-2 text-sm text-gray-700 bg-white border rounded-lg hover:bg-gray-100"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 bg-red-600 text-white rounded-md"
+            className="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700"
           >
             Confirm
           </button>
@@ -25,5 +26,4 @@ const ConfirmationModal = ({ show, onConfirm, onCancel, message }) => {
     </div>
   );
 };
-
 export default ConfirmationModal;
