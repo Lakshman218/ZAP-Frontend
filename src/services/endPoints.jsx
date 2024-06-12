@@ -10,7 +10,8 @@ export const userUrls = {
   getUserDetails: "/user-details",
   editProfile: "/edit-profile",
   userSuggestions: "/user-suggestions",
-  userSearch: "/user-search"
+  userSearch: "/user-search",
+  getNotifications: "/get-notifications",
 }
 
 export const postUrls = {
@@ -41,6 +42,13 @@ export const connectionUrls = {
   rejectRequest: "/connection/reject-request",
   requestedUsers: "/connection//get-requested-users",
   getConnection: "/connection/get-connection",
+}
+
+export const chatUrls = {
+  getEligibleUsers: "/chat/chat-eligible-users",
+  addConversation: "/chat/add-conversation",
+  getUserConversation: "/chat/get-conversations",
+  findConversation: "/chat/find-conversation",
 }
 
 export const adminUrls = {

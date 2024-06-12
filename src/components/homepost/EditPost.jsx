@@ -71,8 +71,8 @@ function EditPost({handlePostEdit, postId, userId, fetchposts}) {
 
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
-      <div className='flex justify-center items-center h-full '> {/* Center the content vertically */}
-        <div className='bg-white p-10 space-y-4 w-full md:mx-80 rounded-md'> {/* Increased padding and max-width */}
+      <div className='flex justify-center items-center h-full '> 
+        <div className='bg-white p-10 space-y-4 w-full md:mx-80 rounded-md'> 
           <div className='flex justify-between items-center'>
             <h2 className='font-semibold text-xl'>Edit Post</h2>
             <div >

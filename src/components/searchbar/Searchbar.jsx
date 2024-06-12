@@ -45,7 +45,7 @@ function Searchbar({closeSearchmodal}) {
     <div className='fixed w-screen h-screen top-0  left-56 z-50 bg-black bg-opacity-30 backdrop-blur-md ml-12'>
       <div className="fixed w-96 h-screen top-0 flex flex-col  bg-white">
       
-        <div className='flex justify-between'>
+        <div className='flex justify-between p-2'>
           <div className="flex-grow flex items-center ml-2">
             <p className="font-semibold text-xl">Search</p>
           </div>
@@ -60,10 +60,10 @@ function Searchbar({closeSearchmodal}) {
           </div>
         </div>
 
-        <div className="flex justify-center items-start  h-14 p-2 border-t border-gray-400 ">
+        <div className="flex justify-center items-start  h-14 p-2 border-t border-gray-400 mr-2">
           <input 
           onChange={searchUser} 
-          type="search" placeholder="Search..." className="w-full max-w-md p-2 lg:mr-2 rounded-l-lg focus:outline-none" />
+          type="search" placeholder="Search..." className="w-full max-w-md p-2 lg:mr-0 rounded-l-lg focus:outline-none mt-1" />
         </div>
         {/* search result */}
         {users.map((user) => (
@@ -73,7 +73,7 @@ function Searchbar({closeSearchmodal}) {
           key={user.id} 
           className="flex items-center justify-between gap-3 mt-4 px-4 hover:bg-slate-100 rounded-md mr-3 py-1">
             <div className="flex cursor-pointer">
-              <img className="flex w-8 h-8 rounded-full bg-black" src={user.profileImg} alt=""/>
+              <img className="flex w-12  h-12 rounded-full bg-black" src={user.profileImg} alt=""/>
             </div>
             <div className="flex-1 flex-col w-auto ms-1 mb-0 cursor-pointer">
               <p className="text-lg font-semibold text-black truncate dark:text-white">{user.userName}</p>

@@ -1,5 +1,5 @@
 import { apiCall } from "./apiCalls";
-import { connectionUrls, postUrls, userUrls } from "../endPoints";
+import { chatUrls, connectionUrls, postUrls, userUrls } from "../endPoints";
 
 // User Register
 
@@ -607,6 +607,75 @@ export const handleLike = (postData) => {
       .catch((err) => {
         reject(err)
       })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// get notifications
+export const getNotifications = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.getNotifications, userId)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// get users for conversation
+export const getChatElibleUsers = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.getEligibleUsers, userId)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+export const addConversation = (conversationData) => {
+  // console.log("conversationData", conversationData);
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.addConversation, conversationData)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+//  get user conversation
+export const getUserConversations = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrls.getUserConversation}/${userId}`
+      apiCall("get", url, null)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
     } catch (error) {
       resolve({ status: 500, message: "Somethings wrong." });
     }

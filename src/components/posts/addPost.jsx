@@ -107,22 +107,10 @@ function AddPost({ closeAddPost }) {
                   <label htmlFor="custom-file-upload" className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Choose Files
                   </label>
-                  <input id="custom-file-upload" type="file" multiple className="hidden" onChange={handleFileChange} />
+                  <input id="custom-file-upload" type="file"  className="hidden" onChange={handleFileChange} />
                 </div>
               </div>
 
-              {/* {!formik.values.images.length && formik.errors.images && (
-                <div className="flex flex-col gap-10 items-center">
-                  <p className="text-red-600 text-xs">{formik.errors.images}</p>
-                  <p className="text-blue-700 mt-2">Select Image</p>
-                </div>
-              )}
-              {!formik.values.images.length && !formik.errors.images && (
-                <div className="flex flex-col gap-10 items-center">
-                  <p className="text-red-600 text-xs">{formik.errors.images}</p>
-                  <p className="text-blue-700 mt-2">Select Image</p>
-                </div>
-              )} */}
               {!selectedFiles.length && (
                 <div className="flex flex-col items-center">
                   <p className="text-red-600 text-xs">{formik.errors.images}</p>
