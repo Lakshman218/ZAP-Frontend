@@ -1,24 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Messages({
   user, currentChat
 }) {
 
+  const [person, setPerson] = useState(null)
+  useEffect(() => {
+    const currentPerson = currentChat?.members.find((m) => m._id != user._id)
+    setPerson(currentPerson)
+  }, [currentChat])
+
+  console.log("currentChat", currentChat);
+  console.log("person", person);
+
   return (
     <div className="relative flex flex-col flex-1">
         <div className="z-20 flex flex-grow-0 flex-shrink-0 w-full pr-3 bg-white border-b">
-          <div className="w-12 h-12 mx-4 my-2 bg-blue-500 bg-center bg-no-repeat bg-cover rounded-full cursor-pointer"
-            
-            >
-              <img className='rounded-full object-cover w-full h-full' src={user.profileImg} alt="" />
+          <div className="w-12 h-12 mx-4 my-2 bg-blue-500 bg-center bg-no-repeat bg-cover rounded-full cursor-pointer">
+            {person && (
+              <img
+              className="rounded-full object-cover w-full h-full"
+              src={person.profileImg}
+              alt=""/>
+            )}
           </div>
           <div className="flex flex-col justify-center flex-1 overflow-hidden cursor-pointer">
-            <div className="overflow-hidden text-base font-medium leading-tight text-gray-600 whitespace-no-wrap">{user.userName}</div>
+            <div className="overflow-hidden text-base font-medium leading-tight text-gray-600 whitespace-no-wrap">
+            {person ? person.userName : 'Loading...'}
+            </div>
             <div className="overflow-hidden text-sm font-medium leading-tight text-gray-600 whitespace-no-wrap">Online</div>
-          </div>
-          <div className="relative hidden w-48 pl-2 my-3 border-l-2 border-blue-500 cursor-pointer lg:block">
-            <div className="text-base font-medium text-blue-500">Pinned message</div>
-            <div className="text-sm font-normal text-gray-800">Today star contest</div>
           </div>
           <button className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
             <svg className="w-6 h-6 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

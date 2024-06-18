@@ -34,21 +34,6 @@ function RenewPassword() {
             onSubmit={submit}
             >
             <Form>
-              {/* <div className="mb-3">
-                <label className="block text-gray-500 text-xs font-semibold mb-2" htmlFor="password">New Password</label>
-                <Field 
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-                id="password" name="password" type="password" placeholder="Enter your password" autoComplete="off" />
-                <ErrorMessage name="password" component="div" className="text-red-600 text-xs" />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-500 text-xs font-semibold mb-2" htmlFor="confirmPassword">Confirm Password</label>
-                <Field 
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-                id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password" autoComplete="off" />
-                <ErrorMessage name="confirmPassword" component="div" className="text-red-600 text-xs" />
-              </div> */}
-
               <div className="relative z-0 w-full mb-4 group">
                 <Field 
                   type="password" 

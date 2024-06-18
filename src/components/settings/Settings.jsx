@@ -21,6 +21,11 @@ function Settings({onClose}) {
     setIsNotificationsEnabled(!isNotificationsEnabled);
   };
 
+  const handleLinkClick = () => {
+    navigate('/more')
+    onClose()
+  }
+
 
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
@@ -38,11 +43,6 @@ function Settings({onClose}) {
           <span className="flex border-t border-gray-400"></span>
 
           <div className='max-w-md mx-auto space-y-6'>
-            {/* Change Password */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-900 dark:text-gray-300">Change Password</span>
-              <button  className="text-blue-600 hover:text-blue-800">Change</button>
-            </div>
             
             {/* Toggle Notifications */}
             <div className="flex items-center justify-between">
@@ -58,17 +58,18 @@ function Settings({onClose}) {
               </label>
             </div>
 
+            {/* Change Password */}
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-300">Change Password</span>
+              <button onClick={handleLinkClick}  className="text-blue-600 hover:text-blue-800">Change</button>
+            </div>
+
             {/* Logout Button */}
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-900 dark:text-gray-300">Logout</span>
               <button onClick={handleLogout} className="text-blue-600 hover:text-blue-800">Logout</button>
             </div>
 
-            {/* Delete Account Button */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-900 dark:text-gray-300">Delete Account</span>
-              <button  className="text-red-600 hover:text-red-800">Delete</button>
-            </div>
           </div>
         </div>
       </div>

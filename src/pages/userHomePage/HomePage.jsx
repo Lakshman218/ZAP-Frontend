@@ -48,11 +48,11 @@ function HomePage() {
       {/* <div className="flex justify-between w-full"> */}
         
 
-        <div className="flex flex-col mr-2 lg:ml-5" style={{width:'870px'}}>
-          <div className="p-2 rounded-md  bg-white">
+        <div className="flex flex-col mr-2 lg:ml-10" style={{width:'870px'}}>
+          <div className="p-2 rounded-md  bg-white dark:bg-black">
             <Header />
           </div>
-          <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white">
+          <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-black">
             {posts.map((post) => {
               // console.log("post in inside home", post);
               return (

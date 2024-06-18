@@ -9,26 +9,10 @@ function MessageUsersModal({
   conversations,
   setConversations,
   setCurrentChat,
+  handleMessage,
 }) {
 
   const userId = user._id
-  const handleMessage = (sender) => {
-    const senderId = sender._id
-    addConversation({senderId: userId, receiverId: senderId})
-      .then((response) => {
-        const userData = response.data;
-        console.log("userdata in msg", userData);
-        const existChat = conversations.filter((conver) => conver._id === userData._id)
-        if(!existChat) {
-          setConversations((prev) => [...prev, userData])
-        }
-        setCurrentChat(userData)
-        setMessageUsersModal(false)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
 
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-40 backdrop-blur-md'>

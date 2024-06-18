@@ -42,8 +42,8 @@ function Searchbar({closeSearchmodal}) {
 
 
   return (
-    <div className='fixed w-screen h-screen top-0  left-56 z-50 bg-black bg-opacity-30 backdrop-blur-md ml-12'>
-      <div className="fixed w-96 h-screen top-0 flex flex-col  bg-white">
+    <div className='fixed w-screen h-screen top-0  left-64 z-50 bg-black bg-opacity-30 backdrop-blur-md ml-0 border-l-1'>
+      <div className="fixed w-full max-w-sm h-screen top-0 flex flex-col  bg-white">
       
         <div className='flex justify-between p-2'>
           <div className="flex-grow flex items-center ml-2">
@@ -60,7 +60,7 @@ function Searchbar({closeSearchmodal}) {
           </div>
         </div>
 
-        <div className="flex justify-center items-start  h-14 p-2 border-t border-gray-400 mr-2">
+        <div className="flex justify-center items-start  h-14 p-2 border-t border-gray-400 mx-2">
           <input 
           onChange={searchUser} 
           type="search" placeholder="Search..." className="w-full max-w-md p-2 lg:mr-0 rounded-l-lg focus:outline-none mt-1" />

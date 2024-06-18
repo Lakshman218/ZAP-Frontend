@@ -13,6 +13,8 @@ import HomePage from "../pages/userHomePage/HomePage";
 import UserProfile from "../pages/userProfile/UserProfile";
 import Chat from "../pages/chat/Chat";
 import Notification from "../components/notification/Notification";
+import More from "../components/more/More";
+import Explore from "../pages/explore/Explore";
 
 
 const appRouter = createBrowserRouter([
@@ -39,6 +41,14 @@ const appRouter = createBrowserRouter([
       {
         path: "/notifications",
         element: <Notification/>
+      },
+      {
+        path: "/explore",
+        element: <Explore />
+      },
+      {
+        path: "/more",
+        element: <More />
       },
     ]
   },

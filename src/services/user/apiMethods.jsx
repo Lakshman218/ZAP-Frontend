@@ -253,6 +253,24 @@ export const editProfile = (userData) => {
   })
 }
 
+// change password
+export const changePassword = (values) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.changePassword, values)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+
 // get user suggustions to miniprofile
 export const getUserSuggestions = (userId) => {
   return new Promise((resolve, reject) => {
@@ -562,9 +580,10 @@ export const deleteReplyComment = (commentData) => {
 }
 
 export const getCommentsCount = (postId) => {
+  console.log("cmt count postid in api",postId);
   return new Promise((resolve, reject) => {
     try {
-      const url = `${postUrls.getCommentsCount}/${postId}`
+      const url = `${postUrls.commentsCount}/${postId}`
       apiCall("get", url, null)
         .then((response) => {
           resolve(response)

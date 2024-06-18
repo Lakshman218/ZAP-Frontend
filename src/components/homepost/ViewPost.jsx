@@ -30,6 +30,8 @@ function ViewPost({
   manageComment,
   manageLikes,
   fetchposts,
+  commentsCount,
+  getCommentsCount,
 }) {
 
   const navigate = useNavigate()
@@ -54,7 +56,6 @@ function ViewPost({
 
   // navigate to user profile
   const handleSearch = (postUserId) => {
-    // console.log("postUserId", postUserId);
     if(postUserId === userId) {
       navigate('/profile')
     } else {
@@ -687,16 +688,21 @@ function ViewPost({
                   </div>
                  
                   <div className='flex'>
-                  {!isLikesEnabled && (
-                      <span className='font-semibold cursor-pointer ml-2 py-0 text-slate-600'>
-                       likes are hidden
-                    </span>
+                    {!isLikesEnabled && (
+                      <span className='font-semibold cursor-pointer ml-2 py-0 text-slate-600 '>
+                        likes are hidden
+                      </span>
                     )}
                     {isLikesEnabled && (
                       <span onClick={handleLikedUsersPopup} className='font-semibold cursor-pointer ml-2 py-0'>
                       {likeCount} likes
                     </span>
                     )}
+                    {/* {commentsCount > 0 && (
+                      <span className='font-semibold cursor-pointer ml-2 text-gray-700 hover:text-black'>
+                      & {commentsCount} comments
+                    </span>
+                    )} */}
                   </div>
 
                   {replyComments && (
@@ -746,7 +752,7 @@ function ViewPost({
                   )}
 
                   {!replyComments && (
-                    <Formik
+                  <Formik
                     initialValues={commentInitialValues}
                     validationSchema={commentValidationSchema}
                     onSubmit={commentHandleSubmit}

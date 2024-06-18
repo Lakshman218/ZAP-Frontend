@@ -38,8 +38,8 @@ function Notification({onClose}) {
   }
 
   return (
-    <div className='fixed w-screen h-screen top-0 left-56 z-50 bg-black bg-opacity-30 backdrop-blur-md ml-12'>
-      <div className="fixed w-96 px-2 h-screen top-0 flex flex-col bg-white">
+    <div className='fixed w-screen h-screen top-0 left-64 z-50 bg-black bg-opacity-30 backdrop-blur-md ml-0 border-l-1'>
+      <div className="fixed w-full max-w-sm px-2 h-screen top-0 flex flex-col bg-white">
         
         <div className='flex justify-between p-2 border-b'>
           <div className="flex-grow flex items-center ml-0">

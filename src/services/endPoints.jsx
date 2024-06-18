@@ -9,6 +9,7 @@ export const userUrls = {
   googleAuth: "/google-auth",
   getUserDetails: "/user-details",
   editProfile: "/edit-profile",
+  changePassword: "/change-password",
   userSuggestions: "/user-suggestions",
   userSearch: "/user-search",
   getNotifications: "/get-notifications",

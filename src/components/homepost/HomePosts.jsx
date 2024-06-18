@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'; 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { SavePost, deletePost, handleComment, handleLike, likePost } from '../../services/user/apiMethods';
+import { SavePost, deletePost, getCommentsCount, handleComment, handleLike, likePost } from '../../services/user/apiMethods';
 import { toast } from 'sonner';
 import { loginSuccuss, setPosts } from '../../utils/context/reducers/authSlice';
 import EditPost from './EditPost';
@@ -13,7 +13,7 @@ import ViewPost from './ViewPost';
 import ConfirmationModal from './ConfirmationModal';
 
 function HomePosts({post, fetchposts}) {
-  console.log("updatedpost for like", post);
+  // console.log("updatedpost for like", post);
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const selectedUser = (state) => state.auth.user
@@ -209,6 +209,22 @@ function HomePosts({post, fetchposts}) {
         console.error("Error handling like:", error);
       });
   };
+
+  // comments count
+  const [commentsCount, setCommentsCount] = useState('')
+  
+  useEffect(() => {
+    const postId = post._id
+    getCommentsCount(postId)
+    .then((response) => {
+      console.log("cnt looo",response.data.commentCounts);
+      setCommentsCount(response.data.commentCounts)
+      console.log("commentsCount",commentsCount);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  },[])
   
   return (
 
@@ -378,9 +394,18 @@ function HomePosts({post, fetchposts}) {
               </div>
               )}
               {isLikesEnabled && (
-                <span onClick={handleLikedUsersPopup} className='font-semibold cursor-pointer ml-2 py-0'>
-                {likeCount} likes
-              </span>
+                <div className='flex'>
+                  <span onClick={handleLikedUsersPopup} className='font-semibold cursor-pointer ml-2 py-0 text-gray-700 hover:text-black'>
+                    {likeCount} likes 
+                  </span>
+                  {commentsCount > 0 && (
+                    <span 
+                      onClick={() => handlePostPopup()} 
+                      className='font-semibold cursor-pointer ml-2 text-gray-700 hover:text-black'>
+                    & view all {commentsCount} comments
+                   </span>
+                  )}
+                </div>
               )}
             </div> : '' 
           }
@@ -414,6 +439,8 @@ function HomePosts({post, fetchposts}) {
           manageComment={manageComment}
           manageLikes={manageLikes}
           fetchposts={fetchposts}
+          commentsCount={commentsCount}
+          getCommentsCount={getCommentsCount}
         />
       )}
 

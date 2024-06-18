@@ -68,7 +68,7 @@ function SideNavBar() {
 
   return (
     // <div className="w-full max-w-xs block justify-end">
-    <div className="sm:w-0 md:w-4/12 max-w-72 block justify-end sm:p-0 md:p-2">
+    <div className="sm:w-0 md:w-4/12 max-w-64 block justify-end sm:p-0 md:p-2 ">
       <button
         type="button"
         className="inline-flex z-auto items-center p-0 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -92,7 +92,7 @@ function SideNavBar() {
 
         <aside
           id="logo-sidebar"
-          className={`pl-2 ml-0 border hover:shadow-md fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+          className={`pl-0 ml-0 border hover:shadow-md fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
             isSidebarOpen ? '' : '-translate-x-full sm:translate-x-0'
           }`}
           aria-label="Sidebar"
@@ -154,6 +154,18 @@ function SideNavBar() {
                 </li>
                 <li>
                     <Link
+                      to={'/explore'} 
+                      className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                      <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
+                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
+                      </svg>
+                      
+                      <span className="flex-1 ms-3 whitespace-nowrap text-lg">Explore</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link
                     to={"/chat" }
                     onClick={handleClose}
                     className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -171,16 +183,7 @@ function SideNavBar() {
                       </div> */}
                     </Link>
                 </li>
-                <li>
-                    <a href="#" className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                      <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
-                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
-                      </svg>
-                      
-                      <span className="flex-1 ms-3 whitespace-nowrap text-lg">Explore</span>
-                    </a>
-                </li>
+                
                 <li>
                     <div 
                       onClick={openNotification}
@@ -252,6 +255,23 @@ function SideNavBar() {
                   </div>
                 </li>
                 { isSettingsOpen && <Settings onClose={closeSettingsModal} /> }
+                <li>
+                  <Link
+                    to={'/more'}
+                    className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group cursor-pointer"
+                  >
+                    <svg
+                      className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 22 22"
+                    >
+                      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
+                    </svg>
+                    <span className="ms-3 text-lg">More</span>
+                  </Link>
+                </li>
               </ul>
           </div>
         </aside>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Person from './Person'
 import { MessageSquarePlus } from 'lucide-react'
 import MessageUsersModal from './MessageUsersModal';
-import { getChatElibleUsers } from '../../services/user/apiMethods';
+import { addConversation, getChatElibleUsers, getUserSearch } from '../../services/user/apiMethods';
 
 function ChatUsers({
   user,
@@ -24,6 +24,47 @@ function ChatUsers({
         console.log(error);
       });
   },[])
+
+  const [searchedusers, setSearchedUsers] = useState([])
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    if(searchQuery.length >= 2) {
+      getUserSearch({searchQuery: searchQuery})
+        .then((response) => {
+          setSearchedUsers(response.data.suggestedUsers)
+        })
+        .catch((error) => {
+          console.log(error.message);
+        })
+    } else {
+      setSearchedUsers([])
+    }
+  }, [searchQuery, setSearchQuery])
+  
+  const searchUser = (event) => {
+    setSearchQuery(event.target.value)
+  }
+
+  const userId = user._id
+  const handleMessage = (sender) => {
+    const senderId = sender._id
+    addConversation({senderId: userId, receiverId: senderId})
+      .then((response) => {
+        const userData = response.data.existConversation;
+        console.log("userdata in msg", userData);
+        const existChat = conversations.filter((conver) => conver._id === userData._id)
+        if(!existChat) {
+          setConversations((prev) => [...prev, userData])
+        }
+        setCurrentChat(userData)
+        setMessageUsersModal(false)
+        setSearchedUsers([])
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
     <div className="relative flex flex-col hidden h-full bg-white border-r border-gray-300 shadow-xl md:block transition-all duration-500 ease-in-out" style={{ width: '24rem', zIndex: 40 }} >
@@ -48,42 +89,81 @@ function ChatUsers({
                 </svg>
               </button>
             </span>
-            <input type="search" name="q"
+            <input onChange={searchUser} type="search" name="q"
                     className="w-full py-2 pl-12 text-sm text-white bg-gray-200 border border-transparent appearance-none rounded-tg focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue" style={{ borderRadius: '25px' }}
                     placeholder="Search..." autoComplete="off" />
           </div>
         </div>
       </div>
-      <div className="border-b shadow-b">
-        <ul className="flex flex-row items-center inline-block px-2 list-none select-none">
-          <li className="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
-            <a className="flex items-center justify-center block py-2 text-xs font-semibold leading-normal tracking-wide border-b-2 border-blue-500">
-              All
-            </a>
-          </li>
-          <li className="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
-            <a className="flex items-center justify-center block py-2 text-xs font-semibold leading-normal tracking-wide border-b-2 border-transparent">
-              Groups
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div className="relative mt-2 mb-4 overflow-x-hidden overflow-y-auto scrolling-touch lg:max-h-sm scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray">
-        <ul className="flex flex-col inline-block w-full h-screen px-2 select-none">
-            {console.log("conversations",conversations)}
-          {conversations && 
-            conversations.map((conversation) => (
-              <div onClick={() => setCurrentChat(conversation)}>
-                <Person
-                currentUser={user}
-                conversation={conversation}
-              />
-              </div>
-            ))
-          }
+      {searchedusers.length === 0 && (
+        <div>
+          <div className="border-b shadow-b">
+            <ul className="flex flex-row items-center inline-block px-2 list-none select-none">
+              <li className="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
+                <a className="flex items-center justify-center block py-2 text-xs font-semibold leading-normal tracking-wide border-b-2 border-blue-500">
+                  All
+                </a>
+              </li>
+              <li className="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
+                <a className="flex items-center justify-center block py-2 text-xs font-semibold leading-normal tracking-wide border-b-2 border-transparent">
+                  Groups
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="relative mt-2 mb-4 overflow-x-hidden overflow-y-auto scrolling-touch lg:max-h-sm scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray">
+            <ul className="flex flex-col inline-block w-full h-screen px-2 select-none">
+                {console.log("conversations",conversations)}
+              {conversations && 
+                conversations.map((conversation) => (
+                  <div onClick={() => setCurrentChat(conversation)}>
+                    <Person
+                    currentUser={user}
+                    conversation={conversation}
+                  />
+                  </div>
+                ))
+              }
 
-        </ul>
-      </div>
+            </ul>
+          </div>
+        </div>
+      )}
+      {searchedusers.length > 0 && (
+        <div>
+          <div className="border-b shadow-b">
+            <ul className="flex flex-row items-center inline-block px-2 list-none select-none">
+              <li className="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
+                <a className="flex items-center justify-center block py-2 text-xs font-semibold leading-normal tracking-wide border-b-2 border-blue-500">
+                  Searched Users
+                </a>
+              </li>
+            </ul>
+          </div>
+          {searchedusers.map((searchuser) => (
+          <div key={user.id} >
+            {searchuser._id != user._id && (
+              <div className="flex items-center justify-between gap-3 mt-4 px-6 hover:bg-slate-100 rounded-md mr-3 py-1">
+                <div className="flex cursor-pointer">
+                  <img className="flex w-10  h-10 rounded-full bg-black" src={searchuser.profileImg} alt=""/>
+                </div>
+                <div className="flex-1 flex-col w-auto ms-0 mb-0 cursor-pointer">
+                  <p className="text-md font-semibold text-black truncate dark:text-white">{searchuser.userName}</p>
+                  <p className='text-sm font-normal text-gray-900 truncate dark:text-white'>{searchuser.name}</p>
+                </div>
+                <div>
+                  <button 
+                    onClick={() => {handleMessage(searchuser)}}
+                    className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 lg:w-24 rounded-md'>
+                    Message
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+        </div>
+      )}
       <div className="fixed absolute bottom-0 right-0 z-40 mb-6 mr-4">
         <button
           onClick={() => setMessageUsersModal(true)} 
@@ -101,6 +181,7 @@ function ChatUsers({
                 conversations={conversations}
                 setConversations={setConversations}
                 setCurrentChat={setCurrentChat}
+                handleMessage={handleMessage}
               />
             )}
             
