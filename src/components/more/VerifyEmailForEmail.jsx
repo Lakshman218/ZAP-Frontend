@@ -1,12 +1,13 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup'
 import React, { useState } from 'react'
-import { forgotPassword } from '../../services/user/apiMethods';
+import { forgotPassword, postResendOTP, verifyEmailUpdate, verifyOTPForEmail, verifyOTPForPswd } from '../../services/user/apiMethods';
+// import { forgotPassword, postResendOTP, verifyEmailUpdate, verifyOTPForEmail } from '../../services/user/apiMethods';
 import { toast } from 'sonner';
 
-function VerifyEmail({onClose}) {
+function VerifyEmailForEmail({onClose, user}) {
 
-  const [otpField, setOtpField] = useState(true)
+  const [otpField, setOtpField] = useState(false)
   
   // verify email
   const emailInitialValues = {
@@ -20,7 +21,8 @@ function VerifyEmail({onClose}) {
 
   const handleVerifyEmail = (value, { resetForm }) => {
     console.log("email ", value);
-    forgotPassword({email: value.email})
+    const userId = user._id
+    verifyEmailUpdate({email: value.email, userId})
       .then((response) => {
         const data = response.data  
         toast.success(data.message)
@@ -44,8 +46,28 @@ function VerifyEmail({onClose}) {
     .length(4, "OTP must be exactly 4 digits"),
   });
 
-  const handleVerifyOTP = (otp) => {
+  const handleVerifyOTP = (otp, { resetForm }) => {
+    verifyOTPForEmail(otp)
+      .then((response) => {
+        if(response.status === 200) {
+          const data = response.data
+          resetForm()
+        }
+      })
+      .catch((error) => {
+        toast.error(error?.message)
+      })
+  }
 
+  // resend otp
+  const handleResendOTP = (value) => {
+    postResendOTP({email: value.email})
+    .then((response) => {
+      toast.success("OTP has been resend to " + response.data.email);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   return (
@@ -53,7 +75,7 @@ function VerifyEmail({onClose}) {
     <div className='flex justify-center items-center h-full'>
       <div className='bg-white p-10 space-y-4 w-full max-w-lg rounded-md'>
         <div className='flex justify-between items-center'>
-          {!otpField && <h2 className='font-semibold text-xl'>Verify Email</h2>}
+          {!otpField && <h2 className='font-semibold text-xl'>Verify New Email</h2>}
           {otpField && <h2 className='font-semibold text-xl'>Verify OTP</h2>}
           <button onClick={onClose} className="text-gray-800 dark:text-white px-2 py-2 rounded">
             <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -176,4 +198,4 @@ function VerifyEmail({onClose}) {
   )
 }
 
-export default VerifyEmail
+export default VerifyEmailForEmail

@@ -2,10 +2,13 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { initialValues, validationSchema } from '../../utils/validations/changePswdValidation'
-import { changePassword } from '../../services/user/apiMethods'
+import { pswdInitialValues, pswdValidationSchema } from '../../utils/validations/changePswdValidation'
+import { initialValues, validationSchema } from '../../utils/validations/renewPasswordValidation'
+import { changePassword, renewPassword } from '../../services/user/apiMethods'
 import { toast } from 'sonner'
-import VerifyEmail from './VerifyEmail'
+import VerifyEmailForEmail from './VerifyEmailForEmail'
+import VerifyEmailForPswd from './VerifyEmailForPswd'
+
 
 function More() {
   const selectedUser = (state) => state.auth.user
@@ -33,6 +36,29 @@ function More() {
   const [isverifyEmailModal, setVerifyEmailModal] = useState(false)
   const verifyEmailPopup = () => {
     setVerifyEmailModal(!isverifyEmailModal)
+  }
+  
+  const [isverifyEmailPswdModal, setVerifyEmailPswdModal] = useState(false)
+  const verifyEmailPswdPopup = () => {
+    setVerifyEmailPswdModal(!isverifyEmailPswdModal)
+  }
+
+  const [isForgotPswd, setForgotPswd] = useState(false)
+  const handleForgotPswd = () => {
+    setForgotPswd(!isForgotPswd)
+  }
+
+  const resetPasswordSubmit = (values, {resetForm}) => {
+    console.log("values for reset", values);
+    renewPassword(values)
+      .then((response) => {
+        toast.success(response?.data?.message)
+        resetForm()
+        handleForgotPswd()
+      })
+      .catch((error) => {
+        toast.error(error.message)
+      })
   }
 
   return (
@@ -63,11 +89,11 @@ function More() {
           </button>
         </div>
         <hr className="mt-4 mb-6" />
-        <p className="py-2 text-sm font-semibold">Password</p>
-        <div>
+        { !isForgotPswd && ( <div>
+          <p className="py-2 text-sm font-semibold">Change Your Password</p>
           <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
+            initialValues={pswdInitialValues}
+            validationSchema={pswdValidationSchema}
             onSubmit={submit}
           >
             <Form>
@@ -124,19 +150,98 @@ function More() {
               <p className="mt-2 text-xs">
                 Can't remember your current password.{" "}
                 <button
-                  onClick={verifyEmailPopup}
+                  onClick={verifyEmailPswdPopup}
                   type='button'
                   className="text-xs font-semibold text-sky-500 hover:text-sky-600 underline decoration-1"
                 >
                   Forgot Password
                 </button>
               </p>
-              <button className="mt-4 rounded-lg text-xs bg-sky-500 hover:bg-sky-600 px-4 py-2 text-white">
+              <button 
+                type='submit'
+                className="mt-4 rounded-lg text-xs bg-sky-500 hover:bg-sky-600 px-4 py-2 text-white">
                 Save Password
               </button>
             </Form>
           </Formik>
-        </div>
+        </div> )}
+
+        { isForgotPswd && ( <div>
+          <p className="py-2 text-sm font-semibold">Reset Your Password</p>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={resetPasswordSubmit}
+          >
+            <Form>
+              <div className="flex items-center">
+                <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
+                  <div>
+                    <label htmlFor="password">
+                      <span className="text-gray-500 text-xs">New Password</span>
+                      <div className="relative max-w-60 flex overflow-hidden rounded-md border-2 transition focus-within:border-green-600">
+                        <Field
+                          type={showPassword ? "text" : "password"}
+                          id="password"
+                          name="password"
+                          className="w-full max-w-60 flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                          placeholder="***********"
+                        />
+                      </div>
+                      <div className="h-4 mt-1">
+                        <ErrorMessage name="password" component="div" className="text-red-600 text-xs" />
+                      </div>
+                    </label>
+                  </div>
+                  <div>
+                    <label htmlFor="confirmPassword">
+                      <span className="text-gray-500 text-xs">Confirm Password</span>
+                      <div className="relative max-w-60 flex overflow-hidden rounded-md border-2 transition focus-within:border-green-600">
+                        <Field
+                          type={showPassword ? "text" : "password"}
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          className="w-full max-w-60 flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                          placeholder="***********"
+                        />
+                      </div>
+                      <div className="h-4 mt-1">
+                        <ErrorMessage name="confirmPassword" component="div" className="text-red-600 text-xs" />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <span onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? (
+                    <svg className="mt-5 ml-2 h-6 w-6 cursor-pointer text-xs font-semibold text-gray-600 underline decoration-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                      <path stroke="currentColor" strokeWidth="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                      <path stroke="currentColor" strokeWidth="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                    </svg>
+                  ) : (
+                    <svg className="mt-5 ml-2 h-6 w-6 cursor-pointer text-xs font-semibold text-gray-600 underline decoration-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                    </svg>
+                  )}
+                </span>
+              </div>
+              <p className="mt-2 text-xs">
+                Don't want to reset your password.{" "}
+                <button
+                  onClick={handleForgotPswd}
+                  type='button'
+                  className="text-xs font-semibold text-sky-500 hover:text-sky-600 underline decoration-1"
+                >
+                  Go back
+                </button>
+              </p>
+              <button
+                type='submit' 
+                className="mt-4 rounded-lg text-xs bg-sky-500 hover:bg-sky-600 px-4 py-2 text-white">
+                Reset Password
+              </button>
+            </Form>
+          </Formik>
+        </div> )}
         <hr className="mt-4 mb-4" />
 
         <div className="mb-6">
@@ -166,7 +271,10 @@ function More() {
           </button>
         </div>
       </div>
-      {isverifyEmailModal && <VerifyEmail onClose={verifyEmailPopup} /> }
+      
+        {isverifyEmailModal && <VerifyEmailForEmail onClose={verifyEmailPopup} user={user} /> }
+        {isverifyEmailPswdModal && <VerifyEmailForPswd onClose={verifyEmailPswdPopup} handleForgotPswd={handleForgotPswd} /> }
+      
     </div>
   )
 }

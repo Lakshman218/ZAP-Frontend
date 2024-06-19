@@ -13,6 +13,9 @@ export const userUrls = {
   userSuggestions: "/user-suggestions",
   userSearch: "/user-search",
   getNotifications: "/get-notifications",
+  verifyOtpEmail: "/verifyOTP-forEmail",
+  verifyEmailUpdate: "/verifyEmail-forEmail"
+  // verifyOtpPswd: "/verifyOTP-forPswd",
 }
 
 export const postUrls = {

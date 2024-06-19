@@ -700,3 +700,55 @@ export const getUserConversations = (userId) => {
     }
   })
 }
+
+export const verifyEmailUpdate = (values) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post',userUrls.verifyEmailUpdate, values)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// verifyOTP for emal
+
+export const verifyOTPForEmail = (otp) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post', userUrls.verifyOtpEmail, otp)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// verifyOTP for emal
+
+// export const verifyOTPForPswd = (otp) => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       apiCall('post', userUrls.verifyOtpPswd, otp)
+//         .then((response) => {
+//           resolve(response)
+//         })
+//         .catch((err) => {
+//           reject(err)
+//         })
+//     } catch (error) {
+//       resolve({status: 500, message: "Something wrong"})
+//     }
+//   })
+// }
