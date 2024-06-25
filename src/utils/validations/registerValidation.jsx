@@ -9,7 +9,8 @@ export const initialValues = {
 
 export const validationSchema = Yup.object({
   userName: Yup.string().trim()
-  .required("Username is required"),
+  .required("Username is required")
+  .min(3, "Username must be at least 3 characters"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),

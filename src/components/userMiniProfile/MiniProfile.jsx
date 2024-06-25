@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getUserSuggestions } from '../../services/user/apiMethods'
+import { followUser, getUserSuggestions } from '../../services/user/apiMethods'
 import { ArrowBigDownDash, UserRoundPlus } from 'lucide-react'
 
 
@@ -11,22 +11,35 @@ function MiniProfile() {
     const userId = user._id
     const [users, setUsers] = useState([])  
 
-    useEffect(() => {
-        // console.log("inside minprofile");   
-        getUserSuggestions(userId)
+    const fetchUserSuggestions = () => {
+        getUserSuggestions({ userId })
             .then((response) => {
-                setUsers(response.data.suggestedUsers)
-                // console.log("responsedata",response.data);
+                setUsers(response.data.suggestedUsers);
             })
             .catch((error) => {
-                console.log(error.message)
-            })
-    },[])
+                console.log(error.message);
+            });
+    };
+
+    useEffect(() => {
+        fetchUserSuggestions();
+    }, []);
+
+    const handleFollow = (suggestedUsers) => {
+        const followingUser = suggestedUsers
+        followUser({userId, followingUser})
+          .then((response) => {
+            fetchUserSuggestions()
+          })
+          .catch((error) => {
+            console.log(error.message);
+          })
+      }
     
     return (
         
-        <div className="w-full mr-2 max-w-xs block  justify-end p-4">
-            <div className=" w-full mb-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-black dark:border-gray-700">
+        <div className="lg:w-80 mr-2 max-w-xs block  justify-end p-4">
+            <div className=" w-full mb-2 max-w-sm rounded-md border-none shadow-md bg-white border dark:bg-black dark:border-gray-700">
                 <div className="flex justify-end px-4 pt-4">
                 </div>
                 <div className="flex flex-col items-center pb-6">
@@ -62,10 +75,10 @@ function MiniProfile() {
 
             {/* suggustions */}
 
-            <div className="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-black dark:border-gray-700">
+            <div className="w-full  max-w-md rounded-md border-none shadow-md bg-white border sm:p-8 dark:bg-black dark:border-gray-700">
                 <div className="flex items-center justify-between mb-4">
                     <h5 className="text-md font-semibold leading-none text-gray-700 dark:text-white">Suggested for you</h5>
-                    <span className="text-sm font-normal text-gray-700 hover:underline dark:text-blue-500 mr-1">
+                    <span className="text-sm font-normal text-gray-600 hover:underline dark:text-blue-500 mr-1">
                         <ArrowBigDownDash/>
                     </span>
                 </div>
@@ -89,7 +102,9 @@ function MiniProfile() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="inline-flex items-center text-base font-semibold text-black cursor-pointer dark:text-white text-center mb-1">
+                                    <div
+                                        onClick={() => handleFollow(suggestedUsers._id)} 
+                                        className="inline-flex items-center text-base font-semibold text-black cursor-pointer dark:text-white text-center mb-1">
                                         <UserRoundPlus className='rounded-full p-1 size-8  hover:text-blue-700 hover:bg-slate-200'/>
                                     </div>
                                 </div>

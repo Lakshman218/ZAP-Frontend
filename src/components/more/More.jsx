@@ -8,11 +8,14 @@ import { changePassword, renewPassword } from '../../services/user/apiMethods'
 import { toast } from 'sonner'
 import VerifyEmailForEmail from './VerifyEmailForEmail'
 import VerifyEmailForPswd from './VerifyEmailForPswd'
+import DeleteAccount from './DeleteAccount'
 
 
 function More() {
   const selectedUser = (state) => state.auth.user
   const user = useSelector(selectedUser)
+
+  // change password
   const [showPassword, setShowPassword] = useState(false);
   
   const submit = (values, { resetForm }) => {
@@ -48,6 +51,7 @@ function More() {
     setForgotPswd(!isForgotPswd)
   }
 
+  // reset password
   const resetPasswordSubmit = (values, {resetForm}) => {
     console.log("values for reset", values);
     renewPassword(values)
@@ -59,6 +63,12 @@ function More() {
       .catch((error) => {
         toast.error(error.message)
       })
+  }
+
+  // delete account
+  const [isDeleteAccount, setDeleteAccount] = useState(false)
+  const handleDeleteAccount = () => {
+    setDeleteAccount(!isDeleteAccount)
   }
 
   return (
@@ -266,7 +276,9 @@ function More() {
             need to get access to your data. We will completely wipe your data.
             There is no way to access your account after this action.
           </p>
-          <button className="ml-auto mb-10 text-xs font-semibold text-rose-600 underline decoration-2">
+          <button 
+            onClick={handleDeleteAccount}
+            className="ml-auto mb-10 text-xs font-semibold text-rose-600 underline decoration-2">
             Continue with deletion
           </button>
         </div>
@@ -274,6 +286,8 @@ function More() {
       
         {isverifyEmailModal && <VerifyEmailForEmail onClose={verifyEmailPopup} user={user} /> }
         {isverifyEmailPswdModal && <VerifyEmailForPswd onClose={verifyEmailPswdPopup} handleForgotPswd={handleForgotPswd} /> }
+
+        {isDeleteAccount && <DeleteAccount onClose={handleDeleteAccount} user={user} /> }
       
     </div>
   )

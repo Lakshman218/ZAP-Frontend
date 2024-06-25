@@ -4,9 +4,12 @@ import React, { useState } from 'react'
 import { forgotPassword, postResendOTP, verifyEmailUpdate, verifyOTPForEmail, verifyOTPForPswd } from '../../services/user/apiMethods';
 // import { forgotPassword, postResendOTP, verifyEmailUpdate, verifyOTPForEmail } from '../../services/user/apiMethods';
 import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
+import { loginSuccuss } from '../../utils/context/reducers/authSlice';
 
 function VerifyEmailForEmail({onClose, user}) {
 
+  const dispatch = useDispatch()
   const [otpField, setOtpField] = useState(false)
   
   // verify email
@@ -50,8 +53,11 @@ function VerifyEmailForEmail({onClose, user}) {
     verifyOTPForEmail(otp)
       .then((response) => {
         if(response.status === 200) {
-          const data = response.data
+          const userData = response.data
           resetForm()
+          onClose()
+          dispatch(loginSuccuss({user:userData}))
+          toast.success("Email has been updated")
         }
       })
       .catch((error) => {
@@ -101,7 +107,7 @@ function VerifyEmailForEmail({onClose, user}) {
                       <div className="relative mt-4 pb-0">
                         <Field
                           name="email"
-                          placeholder="Enter your email"
+                          placeholder="Enter your new email"
                           aria-label="Enter your email"
                           autoComplete="off"
                           autoCorrect="off"

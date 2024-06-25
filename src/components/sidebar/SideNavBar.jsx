@@ -60,7 +60,8 @@ function SideNavBar() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const openSettingsModal = () => {
     setIsSettingsOpen(true);
-    closeSidebar()
+    handleClose()
+    // closeSidebar()
   };
   const closeSettingsModal = () => {
     setIsSettingsOpen(false);
@@ -114,7 +115,7 @@ function SideNavBar() {
               </div>
             </div>
 
-              <ul className="space-y-0 font-medium">
+              <ul className="space-y-0 font-medium mt-2">
                 <li>
                   <Link
                     to={"/" }
@@ -155,6 +156,7 @@ function SideNavBar() {
                 <li>
                     <Link
                       to={'/explore'} 
+                      onClick={handleClose}
                       className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
                       aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -258,6 +260,7 @@ function SideNavBar() {
                 <li>
                   <Link
                     to={'/more'}
+                    onClick={handleClose}
                     className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group cursor-pointer"
                   >
                     <svg

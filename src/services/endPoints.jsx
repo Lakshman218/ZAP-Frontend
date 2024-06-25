@@ -14,8 +14,10 @@ export const userUrls = {
   userSearch: "/user-search",
   getNotifications: "/get-notifications",
   verifyOtpEmail: "/verifyOTP-forEmail",
-  verifyEmailUpdate: "/verifyEmail-forEmail"
+  verifyEmailUpdate: "/verifyEmail-forEmail",
   // verifyOtpPswd: "/verifyOTP-forPswd",
+  deleteAccount: "/delete-account",
+  getAllUsers: "/get-users",
 }
 
 export const postUrls = {
@@ -37,6 +39,7 @@ export const postUrls = {
   commentsCount: "/post/get-comments-count",
   handleComment: "/post/handle-comment",
   handleLike: "/post/handle-like",
+  getExplorePost: "/post/get-explore-post",
 }
 
 export const connectionUrls = {

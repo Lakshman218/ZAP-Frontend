@@ -217,7 +217,6 @@ function HomePosts({post, fetchposts}) {
     const postId = post._id
     getCommentsCount(postId)
     .then((response) => {
-      console.log("cnt looo",response.data.commentCounts);
       setCommentsCount(response.data.commentCounts)
       console.log("commentsCount",commentsCount);
     })

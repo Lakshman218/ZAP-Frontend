@@ -8,6 +8,7 @@ import Header from '../../components/header/header'
 import { toast } from 'sonner'
 import Loader from '../../components/loader/loader'
 import HomePostLoader from '../../components/loader/HomePostLoader'
+import emptypost from "../../../public/images/userNopost.jpg"
   
 
 function HomePage() {
@@ -36,10 +37,9 @@ function HomePage() {
         toast.error(error.message);
       })
       .finally(() => {
-        // Set loading to false after 2 seconds
         setTimeout(() => {
           setLoading(false);
-        }, 1000); // Adjust the time as needed
+        }, 1000); 
       });
   };
 
@@ -52,19 +52,28 @@ function HomePage() {
           <div className="p-2 rounded-md  bg-white dark:bg-black">
             <Header />
           </div>
-          <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-black">
-            {posts.map((post) => {
-              // console.log("post in inside home", post);
-              return (
-                <div>
-                  {loading && <HomePostLoader/> }
-                  {!loading && 
-                    <HomePosts key={post._id} post={post} fetchposts={fetchposts} />
-                  }
-                </div>
-              )
-            })}
-          </div>
+          
+          
+          {posts.length === 0 ? (
+            <div className='flex flex-col justify-center items-center mt-4  text-black w-full h-auto'>
+              {/* <img className='w-96' src={emptypost} alt="" />
+              <p className='text-gray-500'>Build your connections and share your moments.</p> */}
+            </div>
+          ) : (
+            <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-black">
+              {posts.map((post) => {
+                // console.log("post in inside home", post);
+                return (
+                  <div>
+                    {loading && <HomePostLoader/> }
+                    {!loading && 
+                      <HomePosts key={post._id} post={post} fetchposts={fetchposts} />
+                    }
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
        
       {/* </div> */}

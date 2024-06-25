@@ -52,10 +52,13 @@ function ChatUsers({
     addConversation({senderId: userId, receiverId: senderId})
       .then((response) => {
         const userData = response.data.existConversation;
-        console.log("userdata in msg", userData);
+        console.log("response from addconversation", userData);
         const existChat = conversations.filter((conver) => conver._id === userData._id)
-        if(!existChat) {
+        console.log("existchat data",existChat);
+        if(existChat.length === 0) {
+          console.log("if chat exist fun");
           setConversations((prev) => [...prev, userData])
+          console.log("");
         }
         setCurrentChat(userData)
         setMessageUsersModal(false)
@@ -113,7 +116,7 @@ function ChatUsers({
           </div>
           <div className="relative mt-2 mb-4 overflow-x-hidden overflow-y-auto scrolling-touch lg:max-h-sm scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray">
             <ul className="flex flex-col inline-block w-full h-screen px-2 select-none">
-                {console.log("conversations",conversations)}
+                {/* {console.log("conversations",conversations)} */}
               {conversations && 
                 conversations.map((conversation) => (
                   <div onClick={() => setCurrentChat(conversation)}>

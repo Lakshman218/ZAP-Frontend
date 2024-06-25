@@ -326,7 +326,7 @@ export const getUserDetails = (userId) => {
 export const getUserConnection = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log("userid in getting cnnt", userId);
+      // console.log("userid in getting cnnt", userId);
       apiCall("post", connectionUrls.getConnection, userId)
         .then((response) => {
           resolve(response)
@@ -580,7 +580,6 @@ export const deleteReplyComment = (commentData) => {
 }
 
 export const getCommentsCount = (postId) => {
-  console.log("cmt count postid in api",postId);
   return new Promise((resolve, reject) => {
     try {
       const url = `${postUrls.commentsCount}/${postId}`
@@ -752,3 +751,55 @@ export const verifyOTPForEmail = (otp) => {
 //     }
 //   })
 // }
+
+// delete account
+export const deleteAccount = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post', userUrls.deleteAccount, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+export const getExplorePosts = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      // console.log("userid in getallpost",userId);
+      apiCall("post", postUrls.getExplorePost, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+export const getAllUsers = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      // console.log("userid in getallpost",userId);
+      apiCall("post", userUrls.getAllUsers, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 function Messages({
   user, currentChat
 }) {
-
+  console.log("currentChat in message", currentChat);
   const [person, setPerson] = useState(null)
   useEffect(() => {
     const currentPerson = currentChat?.members.find((m) => m._id != user._id)

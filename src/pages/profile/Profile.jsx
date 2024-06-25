@@ -93,7 +93,7 @@ function Profile() {
         <div>
           <div className='flex w-full justify-center mb-6'>
             <div className='flex bg-white w-full rounded-md shadow-md'>
-              <div className='lg:flex lg:p-8 ml-4 justify-center gap-8'>
+              <div className='lg:flex lg:p-8 lg:ml-4 justify-center gap-8'>
                 <div className="flex lg:ml-8 justify-center">
                   <img
                     className=" h-40 w-40 rounded-full"
@@ -124,12 +124,12 @@ function Profile() {
                     </div>
                   </div>  
                 </div>
-                <div className='flex lg:ml-4'>
+                <div className='flex lg:ml-4 py-4 lg:py-0'>
                 <div>
                   <button 
                   onClick={handleEditModal}
                   // className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 '>
-                  class="bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                  class="lg:bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                     <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                     Edit Profile
                   </button>
@@ -138,7 +138,7 @@ function Profile() {
                   <button 
                   onClick={handleLogout}
                   // className=' lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 '>
-                  class="bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                  class="lg:bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                     <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                     Logout
                   </button>
@@ -152,18 +152,20 @@ function Profile() {
           <div className='w-full mt-5 rounded-md bg-white'>
             <div className='flex justify-between px-10 gap-10 p-2 font-normal text-lg'>
               <div
-                className={`bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
+                onClick={() => setCurrentView('posts')}
+                className={`bg-white w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
                   currentView === 'posts' ? 'border-b-2 border-blue-500' : ''
                 }`}
               >
-                <button onClick={() => setCurrentView('posts')}>Posts</button>
+                Posts
               </div>
               <div
-                className={`bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
+                onClick={() => setCurrentView('saved')}
+                className={`bg-white w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
                   currentView === 'saved' ? 'border-b-2 border-blue-500' : ''
                 }`}
               >
-                <button onClick={() => setCurrentView('saved')}>Saved</button>
+                Saved
               </div>
             </div>
 
@@ -174,7 +176,7 @@ function Profile() {
                   <p>Create your first post.</p>
                 </div>
               ) : (
-                <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white p-2'>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white p-2'>
                   {posts.map((post) => (
                     <div key={post._id}>
                       <PostGallery post={post} />
@@ -188,7 +190,7 @@ function Profile() {
                 <p>No saved post</p>
               </div>
             ) : (
-              <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white p-2'>
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white p-2'>
                 {savedPost.map((post) => (
                   <div key={post._id}>
                     <PostGallery post={post} />
