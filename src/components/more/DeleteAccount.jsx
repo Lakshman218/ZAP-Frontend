@@ -81,14 +81,14 @@ function DeleteAccount({onClose, user}) {
                   placeholder="Enter your username"
                 />
               </div>
-              {inputValue === user.userName ? (
+              {inputValue === user.userName ? ( 
                 <button
                 onClick={submitDeleteAccount} 
                 className='relative max-w-96 w-96 py-2 px-2 justify-center flex rounded-md border-2 mt-4 bg-red-700 text-white '>
                 Delete Account
               </button>
               ) : (
-                <button className='relative max-w-96 w-96 py-2 px-2 justify-center flex rounded-md border-2 mt-4 bg-red-400'>
+                <button className='relative max-w-96 w-96 py-2 px-2 justify-center flex rounded-md border-2 mt-4 bg-red-500'>
                 Delete Account
               </button>
               )}

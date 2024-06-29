@@ -87,12 +87,12 @@ function Profile() {
   }
 
   return (
-      <div className='w-full p-4 mr-2'>
+      <div className='w-full p-4 mr-2 bg-white dark:bg-black'>
         {loading && <Loader/> }
         {!loading && 
         <div>
           <div className='flex w-full justify-center mb-6'>
-            <div className='flex bg-white w-full rounded-md shadow-md'>
+            <div className='flex bg-white dark:bg-black w-full rounded-md shadow-md dark:shadow-gray-500'>
               <div className='lg:flex lg:p-8 lg:ml-4 justify-center gap-8'>
                 <div className="flex lg:ml-8 justify-center">
                   <img
@@ -101,7 +101,7 @@ function Profile() {
                     alt=""
                   />
                 </div>
-                <div className='block ml-10'>
+                <div className='block ml-10 text-black dark:text-white'>
                   <div className='font-semibold text-3xl pb-2'>{user.userName}</div>
                   <div className='pb-0'>{user.name}</div>
                   <div className='pb-1'>{user.bio}</div>
@@ -149,11 +149,11 @@ function Profile() {
           </div>
           
           
-          <div className='w-full mt-5 rounded-md bg-white'>
+          <div className='w-full h-screen mt-5 rounded-md bg-white dark:bg-black'>
             <div className='flex justify-between px-10 gap-10 p-2 font-normal text-lg'>
               <div
                 onClick={() => setCurrentView('posts')}
-                className={`bg-white w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
+                className={`w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 bg-white dark:bg-black text-black dark:text-white ${
                   currentView === 'posts' ? 'border-b-2 border-blue-500' : ''
                 }`}
               >
@@ -161,7 +161,7 @@ function Profile() {
               </div>
               <div
                 onClick={() => setCurrentView('saved')}
-                className={`bg-white w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
+                className={`w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 bg-white dark:bg-black text-black dark:text-white ${
                   currentView === 'saved' ? 'border-b-2 border-blue-500' : ''
                 }`}
               >
@@ -171,12 +171,12 @@ function Profile() {
 
             {currentView === 'posts' ? (
               posts.length === 0 ? (
-                <div className='flex flex-col justify-center items-center mt-4 text-black w-full h-auto'>
+                <div className='flex flex-col justify-center items-center mt-4 text-black dark:text-white w-full h-auto'>
                   <img className='w-96' src={emptypost} alt="" />
                   <p>Create your first post.</p>
                 </div>
               ) : (
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white p-2'>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2'>
                   {posts.map((post) => (
                     <div key={post._id}>
                       <PostGallery post={post} />
@@ -190,7 +190,7 @@ function Profile() {
                 <p>No saved post</p>
               </div>
             ) : (
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white p-2'>
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2'>
                 {savedPost.map((post) => (
                   <div key={post._id}>
                     <PostGallery post={post} />

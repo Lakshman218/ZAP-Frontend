@@ -227,7 +227,7 @@ function HomePosts({post, fetchposts}) {
   
   return (
 
-    <div className="w-full lg:px-10 lg:p-0 mb-8 mr-2 h-max rounded-md border-none shadow-md bg-white border">
+    <div className="w-12/12 lg:px-10 lg:p-0 mb-8 mr-2 h-max rounded-md border-none shadow-md bg-white dark:bg-black border dark:shadow-gray-500">
       
       <div>
       <div className='flex justify-between items-center'>
@@ -235,12 +235,12 @@ function HomePosts({post, fetchposts}) {
         <div
         onClick={() => handleSearch(postUserId._id)} 
         className='flex cursor-pointer'>
-          <div className="flex items-center justify-center bg-white rounded-full w-12 h-12 overflow-hidden ">
+          <div className="flex items-center justify-center bg-white dark:bg-black rounded-full w-12 h-12 overflow-hidden ">
             <img className='rounded-full object-cover w-full h-full' src={profileImg} alt="" />
           </div>
           <div className=' mb-1'>
-            <p className='text-black lg:ml-4 ml-2 font-medium lg:text-xl'>{userName}</p>
-            <p className='text-black lg:ml-4 ml-2 font-normal lg:text-sm'>{postDate}</p>
+            <p className='text-black dark:text-white lg:ml-4 ml-2 font-medium lg:text-xl'>{userName}</p>
+            <p className='text-black dark:text-white lg:ml-4 ml-2 font-normal lg:text-sm'>{postDate}</p>
           </div>
         </div>
 
@@ -256,15 +256,15 @@ function HomePosts({post, fetchposts}) {
           </div>
 
           {isDropdownOpen && (
-            <div ref={dropdownRef} className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10'>
+            <div ref={dropdownRef} className='absolute right-0 mt-2 w-48 bg-white dark:bg-black rounded-md shadow-lg z-10'>
               <button
               onClick={() => handlePostEdit(post._id)} 
-              className='w-full px-4 py-2 text-left text-gray-800 hover:text-blue-600 hover:bg-gray-200 rounded-md'>
+              className='w-full px-4 py-2 text-left text-gray-800 dark:text-white hover:text-blue-600 hover:bg-gray-200 rounded-md'>
                 Edit
               </button>
               <button
                 onClick={() => handleDeletePost(post._id, userId)}
-                className="w-full px-4 py-2 text-left text-gray-800 hover:text-red-600 hover:bg-gray-200 rounded-md">
+                className="w-full px-4 py-2 text-left text-gray-800 dark:text-white hover:text-red-600 hover:bg-gray-200 rounded-md">
                 Delete
               </button>
               
@@ -290,14 +290,15 @@ function HomePosts({post, fetchposts}) {
               </div>
             )}
           </div>
-        )}
-        
+        )}  
       </div>
+
+      {/* post image start here */}
     
-      <div
+      {/* <div
         onDoubleClick={() => toHandleLike(post._id, user._id)} 
         className=" lg:p-4 sm:p-0"> 
-        <div id="controls-carousel" className="relative w-full bg-gray-200 rounded-md " >
+        <div id="controls-carousel" className="relative w-full bg-gray-200 dark:bg-black rounded-md " >
           <div className="relative h-56 overflow-hidden  md:h-96 rounded-md">
             <div className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" data-carousel-item>
               {imageUrlArray.map((imageUrl, index) => {
@@ -306,24 +307,63 @@ function HomePosts({post, fetchposts}) {
             </div>
           </div>
       
-        <button type="button" className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+          <button type="button" className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                  <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                  </svg>
+                  <span className="sr-only">Previous</span>
+              </span>
+          </button>
+          <button type="button" className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                  <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                  </svg>
+                  <span className="sr-only">Next</span>
+              </span>
+          </button>
+        </div>
+      </div> */}
+
+      <div
+        onDoubleClick={() => toHandleLike(post._id, user._id)} 
+        className="lg:px-4 lg:py-2 sm:p-0"> 
+        <div id="controls-carousel" className="relative w-full bg-white border-2 border-gray-200 dark:border-gray-800 dark:bg-black rounded-md">
+          <div className="relative h-[28rem] overflow-hidden rounded-md"> 
+            {imageUrlArray.map((imageUrl, index) => (
+              <div 
+                key={index} 
+                className="absolute block w-full h-full"
+                data-carousel-item
+              >
+                <img 
+                  src={imageUrl} 
+                  alt={`post ${index}`} 
+                  className="object-contain w-full h-full"
+                />
+              </div>
+            ))}
+          </div>
+          <button type="button" className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                </svg>
-                <span className="sr-only">Previous</span>
+              <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+              </svg>
+              <span className="sr-only">Previous</span>
             </span>
-        </button>
-        <button type="button" className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+          </button>
+          <button type="button" className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                </svg>
-                <span className="sr-only">Next</span>
+              <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+              </svg>
+              <span className="sr-only">Next</span>
             </span>
-        </button>
+          </button>
+        </div>
       </div>
-      </div>
+
         
         <div className='text-gray-200  flex justify-between'>
           {/* like, comment, share */}
@@ -335,7 +375,7 @@ function HomePosts({post, fetchposts}) {
               className='transition-transform transform group-hover:scale-110 group-hover:text-red-600 duration-200'>
                 {isLikedByUser ? 
                 <Heart className='text-red-600 fill-red-600'/> :
-                <Heart className='text-black hover:text-gray-600'/>}
+                <Heart className='text-black dark:text-white hover:text-gray-600'/>}
               </button>
             </div>
 
@@ -343,13 +383,13 @@ function HomePosts({post, fetchposts}) {
               <button
               onClick={() => handlePostPopup()} 
               className='transition-transform transform group-hover:scale-110 duration-200'>
-              <MessageCircle className='text-black hover:text-gray-600'/>
+              <MessageCircle className='text-black dark:text-white hover:text-gray-600'/>
               </button>
             </div>
               
             <div className='group relative'>
               <div className='transition-transform transform group-hover:scale-110 duration-200'>
-              <Share2 className='text-black hover:text-gray-600'/>
+              <Share2 className='text-black dark:text-white hover:text-gray-600'/>
               </div>
             </div>
             </div>
@@ -394,13 +434,13 @@ function HomePosts({post, fetchposts}) {
               )}
               {isLikesEnabled && (
                 <div className='flex'>
-                  <span onClick={handleLikedUsersPopup} className='font-semibold cursor-pointer ml-2 py-0 text-gray-700 hover:text-black'>
+                  <span onClick={handleLikedUsersPopup} className='font-semibold cursor-pointer ml-2 py-0 text-gray-700 dark:text-white hover:text-black'>
                     {likeCount} likes 
                   </span>
                   {commentsCount > 0 && (
                     <span 
                       onClick={() => handlePostPopup()} 
-                      className='font-semibold cursor-pointer ml-2 text-gray-700 hover:text-black'>
+                      className='font-semibold cursor-pointer ml-2 text-gray-700 dark:text-white hover:text-black'>
                     & view all {commentsCount} comments
                    </span>
                   )}
@@ -408,7 +448,7 @@ function HomePosts({post, fetchposts}) {
               )}
             </div> : '' 
           }
-          <div className='text-black block pb-2'>
+          <div className='text-black dark:text-white block pb-2'>
             <p className='font-semibold'>{post.title}</p>
             <p className='text-sm'>{post.description}</p>
           </div>

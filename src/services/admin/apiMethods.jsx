@@ -115,3 +115,36 @@ export const getDashboardDetails = () => {
     }
   })
 } 
+
+export const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      // console.log("in get all useres");
+      adminApiCalls("get", adminUrls.getAllUsers, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+export const chartData = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      adminApiCalls("get", adminUrls.chartData, null)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}

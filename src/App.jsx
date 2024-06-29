@@ -19,7 +19,7 @@ function  App() {
   return (
     <>
       <Protect>
-        <div className='flex'>
+        <div className='flex bg-white dark:bg-black'>
           <SideNavBar />
           <Outlet/>
         </div>

@@ -40,8 +40,8 @@ function Person({conversation, currentUser}) {
                 </div>
               </div>
               <div className="flex justify-between text-sm leading-none truncate">
-                <span>Writing...</span>
-                <span className="flex items-center justify-center w-5 h-5 text-xs text-right text-white bg-green-500 rounded-full">2</span>
+                <span>Typing...</span>
+                {/* <span className="flex items-center justify-center w-5 h-5 text-xs text-right text-white bg-green-500 rounded-full">2</span> */}
               </div>
             </div>
           </div>

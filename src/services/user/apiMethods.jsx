@@ -648,58 +648,6 @@ export const getNotifications = (userId) => {
   })
 }
 
-// get users for conversation
-export const getChatElibleUsers = (userId) => {
-  return new Promise((resolve, reject) => {
-    try {
-      apiCall("post", chatUrls.getEligibleUsers, userId)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-    } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
-    }
-  })
-}
-
-export const addConversation = (conversationData) => {
-  // console.log("conversationData", conversationData);
-  return new Promise((resolve, reject) => {
-    try {
-      apiCall("post", chatUrls.addConversation, conversationData)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-    } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
-    }
-  })
-}
-
-//  get user conversation
-export const getUserConversations = (userId) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const url = `${chatUrls.getUserConversation}/${userId}`
-      apiCall("get", url, null)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-    } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
-    }
-  })
-}
-
 export const verifyEmailUpdate = (values) => {
   return new Promise((resolve, reject) => {
     try {
@@ -799,6 +747,111 @@ export const getAllUsers = (userId) => {
         })
     } catch (error) {
       resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// get users for conversation
+export const getChatElibleUsers = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.getEligibleUsers, userId)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+export const addConversation = (conversationData) => {
+  // console.log("conversationData", conversationData);
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.addConversation, conversationData)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+//  get user conversation
+export const getUserConversations = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrls.getUserConversation}/${userId}`
+      apiCall("get", url, null)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// find conversation
+export const findConversation = (conversationData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrls.findConversation}/${conversationData.firstUser}/${conversationData.secondUser}`
+      apiCall("post", url, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status:500, message: "Something wrong"})
+    }
+  })
+}
+
+// add new message
+export const addMessage = (formData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.addMessage, formData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status:500, message: "Something wrong"})
+    }
+  })
+}
+
+// get user conversations
+export const getUserMessages = (conversationId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrls.getMessages}/${conversationId}`
+      apiCall("post", url, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status:500, message: "Something wrong"})
     }
   })
 }

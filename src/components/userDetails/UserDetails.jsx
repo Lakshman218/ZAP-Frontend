@@ -76,9 +76,9 @@ function UserDetails({user, connections, posts}) {
   }
 
   return (
-    <div className='w-full p-4 mr-2'>
+    <div className='w-full h-screen p-4 mr-2 bg-white dark:bg-black'>
       <div className='flex w-full justify-center mb-6'>
-          <div className='flex bg-white w-full rounded-md shadow-md'>
+          <div className='flex bg-white dark:bg-black w-full rounded-md shadow-md dark:shadow-gray-500'>
             <div className='lg:flex lg:p-8 ml-4 justify-center gap-8'>
               <div className="flex lg:ml-8 justify-center">
                 <img
@@ -87,7 +87,7 @@ function UserDetails({user, connections, posts}) {
                   alt="Profile image"
                 />
               </div>
-              <div className='block ml-10'>
+              <div className='block ml-10 text-black dark:text-white'>
                 <div className='font-semibold text-3xl pb-2'>{user.userName}</div>
                 <div className='pb-0'>{user.name}</div>
                 <div className='pb-1'>{user.bio}</div>
@@ -165,9 +165,10 @@ function UserDetails({user, connections, posts}) {
           <img className='w-96' src={emptypost} alt="" />
         </div>
         ) : (
-        <div className='w-full mt-5  rounded-md  bg-white'>
+        <div className='w-full mt-5  rounded-md  bg-white dark:bg-black flex justify-center'>
+          <div className='w-full'>
           <div className='flex justify-between px-10  gap-10 p-2 font-normal text-lg'>
-            <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
+            <div className='bg-white dark:bg-black dark:text-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
               <button>Posts</button>
             </div>
             {/* <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
@@ -175,7 +176,7 @@ function UserDetails({user, connections, posts}) {
             </div> */}
           </div>
         
-          <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white p-2'>
+          <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2 '>
             {
               posts.map((post) => (
                 <div key={post._id}>
@@ -183,6 +184,7 @@ function UserDetails({user, connections, posts}) {
                 </div>
               ))
             }
+          </div>
           </div>
         </div>
       )}

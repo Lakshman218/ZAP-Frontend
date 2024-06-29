@@ -11,6 +11,8 @@ function Chat() {
   const userId = user._id
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+  const [messages, setMessages] = useState([])
+  const [lastMessages, setLastMessages] = useState([])
 
   
 
@@ -26,6 +28,8 @@ function Chat() {
 
       {currentChat && (
         <Messages 
+          messages={messages}
+          setMessages={setMessages}
           user={user}
           currentChat={currentChat}
         />

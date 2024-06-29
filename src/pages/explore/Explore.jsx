@@ -33,7 +33,7 @@ function Explore() {
         .then((response)  => {
           const data = response.data
           console.log("user data", data);
-          setUsers(data.connection)
+          setUsers(data.users);
         })
         .catch((error) => {
           console.log(error);
@@ -51,11 +51,11 @@ function Explore() {
   }, [userId])
   return (
     <div>
-      <div className='w-full mt-5 rounded-md bg-white px-10'>
-        <div className='flex justify-between px-10 gap-10 p-0 font-normal text-lg'>
+      <div className='w-full mt-5 rounded-md bg-white dark:bg-black lg:px-10'>
+        <div className='flex justify-between lg:px-10 gap-10 p-0 font-normal text-lg'>
           <div
             onClick={() => setCurrentView('posts')}
-            className={`bg-white w-full cursor-pointer text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
+            className={`bg-white dark:bg-black dark:text-white w-full cursor-pointer text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
               currentView === 'posts' ? 'border-b-2 border-blue-500' : ''
             }`}
           >
@@ -63,7 +63,7 @@ function Explore() {
           </div>
           <div
             onClick={() => setCurrentView('Users')}
-            className={`bg-white w-full cursor-pointer text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
+            className={`bg-white dark:bg-black dark:text-white w-full cursor-pointer text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${
               currentView === 'Users' ? 'border-b-2 border-blue-500' : ''
             }`}
           > 
@@ -78,12 +78,12 @@ function Explore() {
               <p>Create your first post.</p> */}
             </div>
           ) : (
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white p-2 mt-2 lg:px-10'>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
               {posts.map((post) => (
                 <div>
                   {loading && <ProfilePostLoader/> }
                   {!loading && (
-                    <div key={post._id} style={{width: '360px'}}>
+                    <div key={post._id} style={{width: '340px'}}>
                       <ExploreGallery post={post} />
                     </div>
                   ) }
@@ -97,9 +97,9 @@ function Explore() {
             <p>No users</p>
           </div>
         ) : (
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white p-2 mt-2 lg:px-10'>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black p-2 mt-2 lg:px-10'>
             {users.map((user) => (
-              <div key={user._id}>
+              <div key={user._id} style={{width: '340px'}}>
                 <UsersGallery user={user} />
               </div>
             ))}

@@ -39,11 +39,11 @@ function Notification({onClose}) {
 
   return (
     <div className='fixed w-screen h-screen top-0 left-64 z-50 bg-black bg-opacity-30 backdrop-blur-md ml-0 border-l-1'>
-      <div className="fixed w-full max-w-sm px-2 h-screen top-0 flex flex-col bg-white">
+      <div className="fixed w-full max-w-sm px-2 h-screen top-0 flex flex-col bg-white dark:bg-black">
         
         <div className='flex justify-between p-2 border-b'>
           <div className="flex-grow flex items-center ml-0">
-            <p className="font-semibold text-xl">Notifications</p>
+            <p className="font-semibold text-xl dark:text-white">Notifications</p>
           </div>
           <div className="flex justify-end p-2">
             <button 
@@ -66,13 +66,13 @@ function Notification({onClose}) {
             {notifications.map((notification) => (
               <div
                 key={notification._id} 
-                className="w-full py-2 mt-6 bg-white rounded shadow flex items-center hover:bg-gray-100">
+                className="w-full py-2 mt-6 bg-white dark:bg-black rounded shadow flex items-center hover:bg-gray-100 dark:hover:bg-slate-800">
                 <div 
                   onClick={() => goProfile(notification.senderId._id)}
                   tabIndex="0" 
                   aria-label="group icon" 
                   role="img" 
-                  className="focus:outline-none w-12 h-10 border rounded-full border-gray-200 flex items-center justify-center cursor-pointer">
+                  className="focus:outline-none w-12 h-10 border rounded-full border-gray-200 dark:border-black flex items-center justify-center cursor-pointer">
                   <img 
                     className='focus:outline-none w-10 h-10 border rounded-full border-gray-200 flex items-center justify-center' 
                     src={notification.senderId.profileImg} 
@@ -80,7 +80,7 @@ function Notification({onClose}) {
                   />
                 </div>
                 <div className="pl-3 w-full">
-                  <div className="flex items-center justify-between w-full cursor-pointer">
+                  <div className="flex items-center justify-between w-full cursor-pointer text-black dark:text-white">
                     <p tabIndex="0" className="focus:outline-none text-sm leading-none">
                       <span 
                         onClick={() => goProfile(notification.senderId._id)}

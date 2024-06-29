@@ -5,7 +5,7 @@ import { followUser, getUserSuggestions } from '../../services/user/apiMethods'
 import { ArrowBigDownDash, UserRoundPlus } from 'lucide-react'
 
 
-function MiniProfile() {    
+function MiniProfile({fetchposts}) {    
     const selectedUser = (state) => state.auth.user
     const user = useSelector(selectedUser)
     const userId = user._id
@@ -30,6 +30,7 @@ function MiniProfile() {
         followUser({userId, followingUser})
           .then((response) => {
             fetchUserSuggestions()
+            fetchposts()
           })
           .catch((error) => {
             console.log(error.message);
@@ -39,14 +40,14 @@ function MiniProfile() {
     return (
         
         <div className="lg:w-80 mr-2 max-w-xs block  justify-end p-4">
-            <div className=" w-full mb-2 max-w-sm rounded-md border-none shadow-md bg-white border dark:bg-black dark:border-gray-700">
+            <div className=" w-full mb-2 max-w-sm rounded-md border-none shadow-md bg-white border dark:bg-black dark:border-gray-700 dark:shadow-gray-500">
                 <div className="flex justify-end px-4 pt-4">
                 </div>
                 <div className="flex flex-col items-center pb-6">
                     <img src={user.profileImg} className='w-24 h-24 mb-3 rounded-full shadow-lg' alt="" />
                     <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{user.userName}</h5>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
-                    <div className="flex mt-4 md:mt-6">
+                    <span className="text-sm text-gray-900 dark:text-gray-400">{user.name}</span>
+                    <div className="flex mt-4 md:mt-4">
                         {/* <Link to={'/profile'} className='inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Profile</Link> */}
                         <Link to={'/profile'} className=''>
                         <button
@@ -75,7 +76,7 @@ function MiniProfile() {
 
             {/* suggustions */}
 
-            <div className="w-full  max-w-md rounded-md border-none shadow-md bg-white border sm:p-8 dark:bg-black dark:border-gray-700">
+            <div className="w-full  max-w-md rounded-md border-none shadow-md bg-white border sm:p-8 dark:bg-black dark:border-gray-700 dark:shadow-gray-500">
                 <div className="flex items-center justify-between mb-4">
                     <h5 className="text-md font-semibold leading-none text-gray-700 dark:text-white">Suggested for you</h5>
                     <span className="text-sm font-normal text-gray-600 hover:underline dark:text-blue-500 mr-1">
@@ -87,7 +88,11 @@ function MiniProfile() {
                         <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                             <li className="py-3 sm:py-2">
                                 <div className="flex items-center justify-between gap-3">
-                                    <div className='flex'>
+                                    <Link 
+                                    to={user._id === suggestedUsers._id
+                                        ? "/profile"
+                                        : `/user-profile/${suggestedUsers._id}`}
+                                    className='flex'>
                                         <div className="flex-shrink-0">
                                             <img className="w-11 h-11 rounded-full bg-black" src={suggestedUsers.profileImg} alt="" />
                                         </div>
@@ -101,7 +106,7 @@ function MiniProfile() {
                                                 </p>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                     <div
                                         onClick={() => handleFollow(suggestedUsers._id)} 
                                         className="inline-flex items-center text-base font-semibold text-black cursor-pointer dark:text-white text-center mb-1">

@@ -56,6 +56,8 @@ export const chatUrls = {
   addConversation: "/chat/add-conversation",
   getUserConversation: "/chat/get-conversations",
   findConversation: "/chat/find-conversation",
+  addMessage: "/chat/add-message",
+  getMessages: "/chat/get-messages",
 }
 
 export const adminUrls = {
@@ -65,5 +67,7 @@ export const adminUrls = {
   postList: "/admin/get-posts",
   reportList: "/admin/get-reports",
   postBlock: "/admin/post-block",
-  getDetails: "/admin/get-details"
+  getDetails: "/admin/get-details",
+  getAllUsers: "/admin/get-all-users",
+  chartData:'/admin/chart-data',
 }

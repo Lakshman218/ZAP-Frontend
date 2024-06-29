@@ -388,8 +388,8 @@ function ViewPost({
           <div className='flex justify-between items-center'>
             <h2 className='font-semibold text-xl'></h2>
             <div>
-              <button onClick={onClose} className="text-white px-0 py-0 rounded">
-                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <button onClick={onClose} className="text-white dark:text-black px-0 py-0 rounded">
+                <svg className="w-6 h-6 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                 </svg>
               </button>

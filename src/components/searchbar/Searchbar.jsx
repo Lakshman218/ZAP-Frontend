@@ -43,11 +43,11 @@ function Searchbar({closeSearchmodal}) {
 
   return (
     <div className='fixed w-screen h-screen top-0  left-64 z-50 bg-black bg-opacity-30 backdrop-blur-md ml-0 border-l-1'>
-      <div className="fixed w-full max-w-sm h-screen top-0 flex flex-col  bg-white">
+      <div className="fixed w-full max-w-sm h-screen top-0 flex flex-col  bg-white dark:bg-black">
       
         <div className='flex justify-between p-2'>
           <div className="flex-grow flex items-center ml-2">
-            <p className="font-semibold text-xl">Search</p>
+            <p className="font-semibold text-xl text-black dark:text-white">Search</p>
           </div>
           <div className="flex justify-end p-2">
             <button 
@@ -71,7 +71,7 @@ function Searchbar({closeSearchmodal}) {
           onClick={() => handleSearch(user._id)}
           // to={`/user-profile/${user._id}`} 
           key={user.id} 
-          className="flex items-center justify-between gap-3 mt-4 px-4 hover:bg-slate-100 rounded-md mr-3 py-1">
+          className="flex items-center justify-between gap-3 mt-4 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md mr-3 py-1">
             <div className="flex cursor-pointer">
               <img className="flex w-12  h-12 rounded-full bg-black" src={user.profileImg} alt=""/>
             </div>

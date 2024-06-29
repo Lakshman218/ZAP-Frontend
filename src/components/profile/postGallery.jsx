@@ -19,7 +19,7 @@ function PostGallery({ post }) {
       {imageUrlArray.map((imageUrl, index) => (
         <div
           key={index}
-          style={{height: '256px'}}
+          style={{height: '286px'}}
           className="relative overflow-hidden w-full rounded-lg transition-transform duration-300"
         >
           <img
@@ -30,6 +30,22 @@ function PostGallery({ post }) {
         </div>
       ))}
     </div>
+
+    // <div className="flex flex-wrap gap-4">
+    // {imageUrlArray.map((imageUrl, index) => (
+    //   <div
+    //     key={index}
+    //     style={{ height: '256px' }}
+    //     className="relative overflow-hidden w-full rounded-lg transition-transform duration-300"
+    //   >
+    //     <img
+    //       className="w-full h-full rounded-md object-contain transition-transform duration-300 transform hover:scale-125"
+    //       src={imageUrl}
+    //       alt={`Post ${index}`}
+    //     />
+    //   </div>
+    // ))}
+    // </div>
   );
 }
 

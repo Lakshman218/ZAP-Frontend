@@ -78,7 +78,7 @@ function HomePage() {
        
       {/* </div> */}
         <div className="hidden lg:flex fixed right-0">
-          <MiniProfile />
+          <MiniProfile fetchposts={fetchposts} />
         </div>
     </>
   );
