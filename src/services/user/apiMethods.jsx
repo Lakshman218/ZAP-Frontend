@@ -843,7 +843,7 @@ export const getUserMessages = (conversationId) => {
   return new Promise((resolve, reject) => {
     try {
       const url = `${chatUrls.getMessages}/${conversationId}`
-      apiCall("post", url, null)
+      apiCall("get", url, null)
         .then((response) => {
           resolve(response)
         })
@@ -852,6 +852,23 @@ export const getUserMessages = (conversationId) => {
         })
     } catch (error) {
       resolve({status:500, message: "Something wrong"})
+    }
+  })
+}
+
+// getlast messages
+export const getLastMessages = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", chatUrls.lastMessages, null)
+       .then((response) => {
+          resolve((response))
+       })
+       .catch((err) => {
+        reject(err)
+       })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
     }
   })
 }

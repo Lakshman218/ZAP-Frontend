@@ -10,6 +10,7 @@ function ChatUsers({
   conversations,
   setConversations,
   setCurrentChat,
+  lastMessages,
 }) {
   const [messageUsersModal, setMessageUsersModal] = useState(false);
   const [chatEligibleUsers, setChatEligibleUsers] = useState([]);
@@ -52,11 +53,8 @@ function ChatUsers({
     addConversation({senderId: userId, receiverId: senderId})
       .then((response) => {
         const userData = response.data.existConversation;
-        console.log("response from addconversation", userData);
         const existChat = conversations.filter((conver) => conver._id === userData._id)
-        console.log("existchat data",existChat);
         if(existChat.length === 0) {
-          console.log("if chat exist fun");
           setConversations((prev) => [...prev, userData])
           console.log("");
         }
@@ -123,6 +121,7 @@ function ChatUsers({
                     <Person
                     currentUser={user}
                     conversation={conversation}
+                    lastMessages={lastMessages}
                   />
                   </div>
                 ))

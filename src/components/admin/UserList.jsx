@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 const UserList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 5;
+  const usersPerPage = 4;
   const [loading, setLoading] = useState(false);
   const [userStates, setUserStates] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);

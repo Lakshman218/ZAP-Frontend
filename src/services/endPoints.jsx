@@ -58,6 +58,7 @@ export const chatUrls = {
   findConversation: "/chat/find-conversation",
   addMessage: "/chat/add-message",
   getMessages: "/chat/get-messages",
+  lastMessages: "/chat/get-last-messages",
 }
 
 export const adminUrls = {
@@ -68,6 +69,5 @@ export const adminUrls = {
   reportList: "/admin/get-reports",
   postBlock: "/admin/post-block",
   getDetails: "/admin/get-details",
-  getAllUsers: "/admin/get-all-users",
   chartData:'/admin/chart-data',
 }

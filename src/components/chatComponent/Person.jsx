@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react'
 
-function Person({conversation, currentUser}) {
+function Person({conversation, currentUser, lastMessages}) {
 
   const [user, setUser] = useState(null)
   const conversationId = conversation._id
   const userId = currentUser._id
+  const [lastMessageText, setLastMessageText] = useState("");
 
   useEffect(() => {
     if(conversation) {
       console.log("if conversation", conversation);
       const person = conversation.members.find((m) => m._id !== currentUser._id)
       setUser(person)
-      console.log("user in msg",user);
+      const lastMessage = lastMessages.find(
+        (message) => message.conversationId === conversation?._id
+      )
+      if(lastMessage) {
+        setLastMessageText(lastMessage.text)
+      }
     }
   }, [conversation, currentUser])
 
@@ -40,7 +46,7 @@ function Person({conversation, currentUser}) {
                 </div>
               </div>
               <div className="flex justify-between text-sm leading-none truncate">
-                <span>Typing...</span>
+                <span>{ lastMessageText }</span>
                 {/* <span className="flex items-center justify-center w-5 h-5 text-xs text-right text-white bg-green-500 rounded-full">2</span> */}
               </div>
             </div>

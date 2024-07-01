@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { AdminLogout } from '../../utils/context/reducers/adminAuthSlice'
 import { getDashboardDetails } from '../../services/admin/apiMethods'
+import ProfileChart from './ProfileChart'
 
 function AdminProfile() {
   const selectedAdmin = (state) => state.adminAuth.admin
@@ -18,7 +19,7 @@ function AdminProfile() {
     navigate("/admin/login")
   }
 
-  const [isDashboardData, setDashboardDatas] = useState('')
+  const [isDashboardData, setDashboardDatas] = useState(null)
 
   useEffect(() => {
     getDashboardDetails()
@@ -27,18 +28,21 @@ function AdminProfile() {
         setDashboardDatas(dashboardDatas)
         // console.log("dashboardDatas",dashboardDatas);
       })
+      .catch((error) => {
+        console.error("Error fetching dashboard data:", error)
+      })
   },[])
 
   return (
     <>
-      <div className='lg:w-full p-4 mr-2'>
+      <div className='lg:w-full px-4 py-2 mr-2'>
         <div className='flex w-full justify-center mb-6'>
           <div className='flex bg-white w-full rounded-md shadow-md'>
-            <div className='lg:flex lg:p-8 lg:ml-8 justify-center gap-8'>
-              <div className="flex lg:ml-8 ml-10 justify-center">
+            <div className='lg:flex lg:p-8 lg:ml-0 justify-center gap-8'>
+              <div className="flex lg:ml-0 ml-10 justify-center">
                 <img
                   className=" h-40 w-40 rounded-full"
-                  src={admin.profileImg}
+                  src={ admin.profileImg }
                   alt=""
                 />
               </div>
@@ -62,24 +66,29 @@ function AdminProfile() {
                 <div className='flex justify-between lg:mt-8 mt-2 cursor-pointer'>
                   <div className='flex flex-col cursor-pointer items-center'>
                     <div className="flex items-center justify-center w-16 h-16 rounded-full border-4 border-blue-500">
-                      <p className="font-medium text-lg">{isDashboardData.totalUsers}</p>
+                      <p className="font-medium text-lg">{isDashboardData ? isDashboardData.totalUsers : '...'}</p>
                     </div>
                     <p className="text-sm mt-2">Users</p>
                   </div>
                   <div className='flex flex-col cursor-pointer items-center'>
                     <div className="flex items-center justify-center w-16 h-16 rounded-full border-4 border-yellow-300">
-                      <p className="font-medium text-lg">{isDashboardData.totalPosts}</p>
+                      <p className="font-medium text-lg">{isDashboardData ? isDashboardData.totalPosts : '...'}</p>
                     </div>
                     <p className="text-sm mt-2">Posts</p>
                   </div>
                   <div className='flex flex-col cursor-pointer items-center'>
                     <div className="flex items-center justify-center w-16 h-16 rounded-full border-4 border-red-500">
-                      <p className="font-medium text-lg">{isDashboardData.totalReports}</p>
+                      <p className="font-medium text-lg">{isDashboardData ? isDashboardData.totalReports : '...'}</p>
                     </div>
                     <p className="text-sm mt-2">Reports</p>
                   </div>
                 </div>
               </div>
+
+              <div className='flex justify-center'>
+                {isDashboardData && <ProfileChart isDashboardData={isDashboardData} />}
+              </div>
+
             </div>
           </div>
           
