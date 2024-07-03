@@ -30,7 +30,7 @@ function Chat() {
 
     getLastMessages()
       .then((response) => {
-        console.log("res for last msg", response.data);
+        console.log("res for last msg", response.data.lastMessages);
         setLastMessages(response.data.lastMessages)
       })
 

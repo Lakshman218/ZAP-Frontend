@@ -1,20 +1,23 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { pswdInitialValues, pswdValidationSchema } from '../../utils/validations/changePswdValidation'
 import { initialValues, validationSchema } from '../../utils/validations/renewPasswordValidation'
-import { changePassword, renewPassword } from '../../services/user/apiMethods'
+import { changePassword, renewPassword, switchAccountPrivate } from '../../services/user/apiMethods'
 import { toast } from 'sonner'
 import VerifyEmailForEmail from './VerifyEmailForEmail'
 import VerifyEmailForPswd from './VerifyEmailForPswd'
 import DeleteAccount from './DeleteAccount'
+import { loginSuccuss } from '../../utils/context/reducers/authSlice'
 
 
 function More() {
   const selectedUser = (state) => state.auth.user
   const user = useSelector(selectedUser)
-
+  const dispatch = useDispatch()
+  console.log("user in more", user);
+  const userId = user._id
   // change password
   const [showPassword, setShowPassword] = useState(false);
   
@@ -71,18 +74,45 @@ function More() {
     setDeleteAccount(!isDeleteAccount)
   }
 
+  // private account
+  const [isPrivate, setIsPrivate] = useState(user.isPrivate);
+  const managePrivateAccount = () => {
+    const userId = user._id
+    switchAccountPrivate({userId})
+      .then((response) => {
+        const data = response.data
+        setIsPrivate(!isPrivate)
+        toast.success(data.message)
+        dispatch(loginSuccuss({user: data.userDetails}))
+      })
+  }
+
   return (
     <div className="ml-5">
       <div className="h-5/6 my-4 w-8/12 col-span-8 fixed   rounded-xl bg-white border:none  sm:px-8 ">
         <div className="pt-4">
           <h1 className="py-2 text-lg font-semibold">Account settings</h1>
-          <div className='flex items-center justify-between gap-3 mt-4 rounded-md '>
-            <div className="flex cursor-pointer">
-              <img className="flex w-14  h-14 rounded-full bg-black" src={user.profileImg} alt=""/>
+          <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 '>
+            <div className='flex gap-3'>
+              <div className="flex cursor-pointer">
+                <img className="flex w-14  h-14 rounded-full bg-black" src={user.profileImg} alt=""/>
+              </div>
+              <div className="flex-1 flex-col w-auto ms-1 mb-0 cursor-pointer">
+                <p className="text-lg font-semibold text-black truncate dark:text-white">{user.userName}</p>
+                <Link to={'/profile'} className='text-xs font-semibold text-sky-500 truncate dark:text-white  hover:text-sky-600'>Edit Profile</Link>
+              </div>
             </div>
-            <div className="flex-1 flex-col w-auto ms-1 mb-0 cursor-pointer">
-              <p className="text-lg font-semibold text-black truncate dark:text-white">{user.userName}</p>
-              <Link to={'/profile'} className='text-xs font-semibold text-sky-500 truncate dark:text-white  hover:text-sky-600'>Edit Profile</Link>
+            <div className="flex items-center justify-between px-0 py-0">
+              <span className="text-md font-medium text-gray-900 dark:text-gray-300 mr-2">Private Account</span>
+              <label className="inline-flex items-center cursor-pointer mt-1">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={isPrivate}
+                  onChange={() => managePrivateAccount()}
+                />
+                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+              </label>
             </div>
           </div>
         </div>

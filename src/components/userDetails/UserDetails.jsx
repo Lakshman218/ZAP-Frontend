@@ -5,6 +5,7 @@ import emptypost from '../../../public/images/userNopost.jpg'
 import { useSelector } from 'react-redux';
 import FollowersList from '../profile/FollowersList';
 import FollowingList from '../profile/FollowingList';
+import { toast } from 'sonner';
 
 function UserDetails({user, connections, posts}) {
   console.log("connetions data", connections);
@@ -21,18 +22,18 @@ function UserDetails({user, connections, posts}) {
   useEffect(() => {
     const followingUserId = user?._id
     getUserConnection({userId: followingUserId})
-      .then((response) => {
-        const connectionData = response.data.connection
-        setFollowers(connectionData.followers)
-        setFollowing(connectionData.following)
-        setIsFollowed(connections.followers.includes(userId))
-        setIsFollowRequested(connections.requested.includes(userId))
-      })
-      .catch((error) => {
-        console.log(error.message);
-      })
+    .then((response) => {
+      const connectionData = response.data.connection
+      setFollowers(connectionData.followers)
+      setFollowing(connectionData.following)
+      setIsFollowed(connections.followers.includes(userId))
+      setIsFollowRequested(connections.requested.includes(userId))
+    })
+    .catch((error) => {
+      console.log(error.message);
+    })
   },[])
-
+  
   const handleFollow = () => {
     const followingUser = user._id
     followUser({userId, followingUser})
@@ -57,8 +58,9 @@ function UserDetails({user, connections, posts}) {
       })
   }
   const handleReject = () => {
-    const requestedUser = user._id
-    rejectFollowRequest(userId, requestedUser) 
+    const userId = user._id
+    const requestedUser = userData._id
+    rejectFollowRequest({userId, requestedUser}) 
       .then((response) => {
         console.log(response.data);
         setIsFollowRequested(false)
@@ -69,10 +71,18 @@ function UserDetails({user, connections, posts}) {
   }
 
   const handleFollowingModal = () => {
-    setIsFollowingModal(!isFollowingModal)
+    {isFollowed || !user.isPrivate ? (
+      setIsFollowingModal(!isFollowingModal)
+    ): (
+      toast.error("This account is private")
+    )}
   } 
   const handleFollowersModal = () => {
-    setIsFollowersgModal(!isFollowersgModal)
+    {isFollowed || !user.isPrivate ? (
+      setIsFollowersgModal(!isFollowersgModal)
+    ): (
+      toast.error("This account is private")
+    )}
   }
 
   return (
@@ -158,36 +168,52 @@ function UserDetails({user, connections, posts}) {
           </div>
         </div>
 
-    
-      {posts.length === 0? (
+      {!isFollowed && user.isPrivate ? (
         <div className='flex flex-col justify-center items-center mt-0 left-10 fixed text-black w-full h-auto '>
-          <p>Empty post</p>
-          <img className='w-96' src={emptypost} alt="" />
-        </div>
-        ) : (
-        <div className='w-full mt-5  rounded-md  bg-white dark:bg-black flex justify-center'>
-          <div className='w-full'>
-          <div className='flex justify-between px-10  gap-10 p-2 font-normal text-lg'>
-            <div className='bg-white dark:bg-black dark:text-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
-              <button>Posts</button>
+          <div className='flex items-center gap-2'>
+            <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+            </svg>
+            <span>
+              <p className='font-semibold'>This account is private</p>
+              <p>Follow to see their photos and videos.</p>
+            </span>
+          </div>
+      </div>
+      ): (
+        <div>
+          {posts.length === 0? (
+            <div className='flex flex-col justify-center items-center mt-0 left-10 fixed text-black w-full h-auto '>
+              <p>Empty post</p>
+              <img className='w-96' src={emptypost} alt="" />
             </div>
-            {/* <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
-              <button>Saved</button>
-            </div> */}
-          </div>
-        
-          <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2 '>
-            {
-              posts.map((post) => (
-                <div key={post._id}>
-                  <PostGallery post={post}/> 
+            ) : (
+            <div className='w-full mt-5  rounded-md  bg-white dark:bg-black flex justify-center'>
+              <div className='w-full'>
+              <div className='flex justify-between px-10  gap-10 p-2 font-normal text-lg'>
+                <div className='bg-white dark:bg-black dark:text-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
+                  <button>Posts</button>
                 </div>
-              ))
-            }
-          </div>
-          </div>
+                {/* <div className='bg-white w-full text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400'>
+                  <button>Saved</button>
+                </div> */}
+              </div>
+            
+              <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2 '>
+                {
+                  posts.map((post) => (
+                    <div key={post._id}>
+                      <PostGallery post={post}/> 
+                    </div>
+                  ))
+                }
+              </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      )}            
+      
 
         {isFollowersgModal && <FollowersList 
         followers={followers}

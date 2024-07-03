@@ -18,6 +18,7 @@ export const userUrls = {
   // verifyOtpPswd: "/verifyOTP-forPswd",
   deleteAccount: "/delete-account",
   getAllUsers: "/get-users",
+  switchToPrivate: "/switch-to-private"
 }
 
 export const postUrls = {
@@ -43,12 +44,12 @@ export const postUrls = {
 }
 
 export const connectionUrls = {
+  getConnection: "/connection/get-connection",
   follow: "/connection/follow",
   unFollow: "/connection/unFollow",
   acceptRequest: "/connection/accept-request",
   rejectRequest: "/connection/reject-request",
-  requestedUsers: "/connection//get-requested-users",
-  getConnection: "/connection/get-connection",
+  requestedUsers: "/connection/get-requested-users",
 }
 
 export const chatUrls = {
@@ -59,6 +60,8 @@ export const chatUrls = {
   addMessage: "/chat/add-message",
   getMessages: "/chat/get-messages",
   lastMessages: "/chat/get-last-messages",
+  setMessageRead: "/chat/set-message-read",
+  getUnreadMessages:'/chat/get-unread-messages',
 }
 
 export const adminUrls = {

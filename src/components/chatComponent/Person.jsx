@@ -12,9 +12,11 @@ function Person({conversation, currentUser, lastMessages}) {
       console.log("if conversation", conversation);
       const person = conversation.members.find((m) => m._id !== currentUser._id)
       setUser(person)
+      console.log("last messages", lastMessages);
       const lastMessage = lastMessages.find(
         (message) => message.conversationId === conversation?._id
       )
+      console.log("last message", lastMessage)
       if(lastMessage) {
         setLastMessageText(lastMessage.text)
       }

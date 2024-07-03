@@ -374,6 +374,25 @@ export const unFollowUser = (data) => {
   })
 }
 
+// get all follow requested users
+export const getRequestedUsers = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log(userId);
+
+      apiCall("post", connectionUrls.requestedUsers, userId)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  });
+};
+
 // reject follow request
 export const rejectFollowRequest = (data) => {
   return new Promise((resolve, reject) => {
@@ -825,6 +844,7 @@ export const findConversation = (conversationData) => {
 export const addMessage = (formData) => {
   return new Promise((resolve, reject) => {
     try {
+      console.log("formdata in api", formData);
       apiCall("post", chatUrls.addMessage, formData)
         .then((response) => {
           resolve(response)
@@ -861,12 +881,63 @@ export const getLastMessages = () => {
   return new Promise((resolve, reject) => {
     try {
       apiCall("get", chatUrls.lastMessages, null)
-       .then((response) => {
+      .then((response) => {
+        resolve((response))
+     })
+     .catch((err) => {
+      reject(err)
+     })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// set message read
+export const setMessageRead = (messageData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("patch", chatUrls.setMessageRead, messageData)
+        .then((response) => {
           resolve((response))
-       })
-       .catch((err) => {
+      })
+      .catch((err) => {
         reject(err)
-       })
+      })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// get unread messages
+export const getUnReadMessages = (messageData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.getUnreadMessages, messageData)
+        .then((response) => {
+          resolve((response))
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// make account
+export const switchAccountPrivate = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("patch", userUrls.switchToPrivate, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
     } catch (error) {
       resolve({ status: 500, message: "Somethings wrong." });
     }
