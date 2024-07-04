@@ -11,6 +11,7 @@ import { Heart, MessageCircle, Share2 } from 'lucide-react';
 import LikedUsers from './LikedUsers';
 import ViewPost from './ViewPost';
 import ConfirmationModal from './ConfirmationModal';
+import SharePost from '../sharePost/SharePost';
 
 function HomePosts({post, fetchposts}) {
   // console.log("updatedpost for like", post);
@@ -224,6 +225,12 @@ function HomePosts({post, fetchposts}) {
       console.log(err);
     })
   },[])
+
+  // share post
+  const [sharePostModal, setSharePostModal] = useState(false)
+  const handleSharePostModal = () => {
+    setSharePostModal(!sharePostModal)
+  }
   
   return (
 
@@ -388,9 +395,9 @@ function HomePosts({post, fetchposts}) {
             </div>
               
             <div className='group relative'>
-              <div className='transition-transform transform group-hover:scale-110 duration-200'>
-              <Share2 className='text-black dark:text-white hover:text-gray-600'/>
-              </div>
+              <button onClick={handleSharePostModal} className='transition-transform transform group-hover:scale-110 duration-200'>
+                <Share2 className='text-black dark:text-white hover:text-gray-600'/>
+              </button>
             </div>
             </div>
             {/* save post */}
@@ -485,6 +492,10 @@ function HomePosts({post, fetchposts}) {
 
       {showLikedUsersPopup && (
         <LikedUsers likedUsers={likedUsers} onClose={handleLikedUsersPopup} />
+      )}
+
+      {sharePostModal && (
+        <SharePost onClose={handleSharePostModal} post={post} />
       )}
 
       {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchposts={fetchposts} /> }

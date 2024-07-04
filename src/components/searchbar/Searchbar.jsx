@@ -68,10 +68,10 @@ function Searchbar({closeSearchmodal}) {
         {/* search result */}
         {users.map((user) => (
           <div 
-          onClick={() => handleSearch(user._id)}
-          // to={`/user-profile/${user._id}`} 
-          key={user.id} 
-          className="flex items-center justify-between gap-3 mt-4 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md mr-3 py-1">
+            onClick={() => handleSearch(user._id)}
+            // to={`/user-profile/${user._id}`} 
+            key={user.id} 
+            className="flex items-center justify-between gap-3 mt-4 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md mr-3 py-1">
             <div className="flex cursor-pointer">
               <img className="flex w-12  h-12 rounded-full bg-black" src={user.profileImg} alt=""/>
             </div>

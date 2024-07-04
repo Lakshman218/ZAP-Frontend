@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { addMessage, getUserMessages } from '../../services/user/apiMethods';
 import { toast } from 'sonner';
 import data from "@emoji-mart/data";
@@ -6,8 +6,10 @@ import Picker from "@emoji-mart/react";
 import SendedChat from './SendedChat';
 import RecievedChat from './RecievedChat';
 import VoiceRecorder from './VoiceRecorder';
+import { Video } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-function Messages({ user, currentChat, messages, setMessages })
+function Messages({ user, currentChat, messages, setMessages, socket, shareUser, isSharePost, setSharePost })
 {
 
   const [newMessage, setNewMessage] = useState("");
@@ -17,6 +19,8 @@ function Messages({ user, currentChat, messages, setMessages })
   const [video, setVideo] = useState(null);
   const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
   const [isRecording, setIsRecording] = useState(false)
+  const scrollRef = useRef();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const friend = currentChat?.members.find((m) => m._id !== user._id);
@@ -24,12 +28,45 @@ function Messages({ user, currentChat, messages, setMessages })
     const currentChatId = currentChat?._id;
     getUserMessages(currentChatId)
     .then((response) => {
-      setMessages(response.data.messages)
-      console.log("user messages", response.data.messages);
+      setMessages(response.data)
+      console.log("user messages", response.data);
       })
   }, [currentChat]);
 
-  const handleSubmit = (file) => {
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  function randomID(len) {
+    let result = "";
+    if (result) return result;
+    const chars =
+        "12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJL",
+      maxPos = chars.length;
+    len = len || 5;
+    for (let i = 0; i < len; i++) {
+      result += chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return result;
+  }
+
+  const handleVideoCall = () => {
+    const roomId = randomID(10)
+    const receiverId = friend?._id
+    const emitData = {
+      senderId: user._id,
+      senderName: user.userName,
+      senderProfile: user.profileImg,
+      receiverId,
+      roomId: roomId,
+    };
+    socket.current.emit("videoCallRequest", emitData);
+    navigate(`/video-call/${roomId}/${user._id}`);
+  }
+
+  const handleSubmit = (file, isSharePost) => {
     const formData = new FormData();
     const currentChatId = currentChat._id;
     const userId = user._id;
@@ -57,19 +94,21 @@ function Messages({ user, currentChat, messages, setMessages })
     formData.append("text", newMessage);
     formData.append("messageType", messageType);
 
-    // const message = {
-    //   conversationId: currentChatId,
-    //   sender: userId,
-    //   text: newMessage,
-    //   messageType: messageType,
-    // }
+    const receiverId = receiver ? receiver._id : null
+    socket.current.emit("sendMessage", {
+      senderId: userId,
+      receiverId,
+      text: newMessage,
+      messageType,
+      file: file?.name,
+    })
 
     addMessage(formData)
       .then((response) => {
         console.log("response after adding", response.data);
         toast.info("message has been sent");
         setNewMessage("");
-        setMessages([...messages, response.data.savedMessages]);
+        setMessages([...messages, response.data]);
       })
       .catch((error) => {
         console.error("Error sending message:", error);
@@ -110,6 +149,9 @@ function Messages({ user, currentChat, messages, setMessages })
     handleSubmit(audioFile)
   }
 
+  const cancelSharePost = () => {
+    setSharePost(null)
+  }
 
   return (
     <div className="relative flex flex-col flex-1">
@@ -129,7 +171,20 @@ function Messages({ user, currentChat, messages, setMessages })
           </div>
           <div className="overflow-hidden text-sm font-medium leading-tight text-gray-600 whitespace-no-wrap">Online</div>
         </div>
-        <button className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
+        <button 
+          onClick={handleVideoCall}
+          className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
+          <svg
+            className="w-6 h-6 text-gray-600 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <Video/>
+          </svg>
+        </button>
+        {/* <button className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
           <svg
             className="w-6 h-6 text-gray-600 fill-current"
             xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +197,7 @@ function Messages({ user, currentChat, messages, setMessages })
               d="M11,20 L13,20 C13.5522847,20 14,20.4477153 14,21 C14,21.5128358 13.6139598,21.9355072 13.1166211,21.9932723 L13,22 L11,22 C10.4477153,22 10,21.5522847 10,21 C10,20.4871642 10.3860402,20.0644928 10.8833789,20.0067277 L11,20 L13,20 L11,20 Z M3.30352462,2.28241931 C3.6693482,1.92735525 4.23692991,1.908094 4.62462533,2.21893936 L4.71758069,2.30352462 L21.2175807,19.3035246 C21.6022334,19.6998335 21.5927842,20.332928 21.1964754,20.7175807 C20.8306518,21.0726447 20.2630701,21.091906 19.8753747,20.7810606 L19.7824193,20.6964754 L18.127874,18.9919007 L18,18.9999993 L4,18.9999993 C3.23933773,18.9999993 2.77101468,18.1926118 3.11084891,17.5416503 L3.16794971,17.4452998 L5,14.6972244 L5,8.9999993 C5,7.98873702 5.21529462,7.00715088 5.62359521,6.10821117 L3.28241931,3.69647538 C2.89776658,3.3001665 2.90721575,2.66707204 3.30352462,2.28241931 Z M7.00817933,8.71121787 L7,9 L7,14.6972244 C7,15.0356672 6.91413188,15.3676193 6.75167088,15.6624466 L6.66410059,15.8066248 L5.86851709,17 L16.1953186,17 L7.16961011,7.7028948 C7.08210009,8.02986218 7.02771758,8.36725335 7.00817933,8.71121787 Z M12,2 C15.7854517,2 18.8690987,5.00478338 18.995941,8.75935025 L19,9 L19,12 C19,12.5522847 18.5522847,13 18,13 C17.4871642,13 17.0644928,12.6139598 17.0067277,12.1166211 L17,12 L17,9 C17,6.23857625 14.7614237,4 12,4 C11.3902636,4 10.7970241,4.10872043 10.239851,4.31831953 C9.72293204,4.51277572 9.14624852,4.25136798 8.95179232,3.734449 C8.75733613,3.21753002 9.01874387,2.6408465 9.53566285,2.4463903 C10.3171048,2.15242503 11.1488212,2 12,2 Z"
             />
           </svg>
-        </button>
+        </button> */}
         <button className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
           <svg
             className="w-6 h-6 text-gray-600 fill-current"
@@ -175,7 +230,7 @@ function Messages({ user, currentChat, messages, setMessages })
           </svg>
         </button>
       </div>
-      <div className="flex flex-col flex-1 pt-4 overflow-hidden bg-gray-200 rounded-t-xl">
+      <div className="flex flex-col flex-1 pt-4 overflow-hidden bg-gray-200 rounded-t-xl" ref={scrollRef}>
         <div className="relative flex flex-col flex-1 px-4 overflow-x-hidden overflow-y-auto bg-gray-200 scrollbar">
           <div className="flex justify-center w-full py-2">
             <button className="flex self-center text-xs text-gray-500 focus:outline-none hover:underline">
@@ -357,6 +412,48 @@ function Messages({ user, currentChat, messages, setMessages })
                   setNewMessage((prevMessage) => prevMessage + emoji.native);
                 }}
               />
+            </div>
+          )}
+
+          {isSharePost && (
+            <div
+            style={{
+              position: "absolute",
+              bottom: "70px", 
+              left: "0",
+              zIndex: "10",
+            }} 
+            >
+              <div className='flex gap-4'>
+                <button
+                  class="w-28 h-12 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 hover:drop-shadow-2xl hover:shadow-[#7dd3fc] hover:cursor-pointer"
+                >
+                  Send
+                </button>
+                <button
+                  onClick={cancelSharePost}
+                  class="flex justify-center items-center gap-2 w-28 h-12 cursor-pointer rounded-md shadow-2xl text-white font-semibold bg-gradient-to-r from-[#fb7185] via-[#e11d48] to-[#be123c] hover:shadow-xl hover:shadow-red-500 hover:scale-105 duration-300 hover:from-[#be123c] hover:to-[#fb7185]"
+                >
+                  <svg viewBox="0 0 15 15" class="w-5 fill-white">
+                    <svg
+                      class="w-6 h-6"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                      ></path>
+                    </svg>
+                    Button
+                  </svg>
+                </button>
+
+              </div>
             </div>
           )}
         </div>

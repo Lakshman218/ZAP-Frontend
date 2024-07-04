@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import appRouter from './routes/userRouter';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Toaster } from 'sonner';
+import { SocketProvider } from './utils/context/SocketContext/SocketContext';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -15,9 +16,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <Toaster richColors position="top-right" />
     <PersistGate loading={null} persistor={persistor} >
-      <RouterProvider router={appRouter}>
-        <App />
-      </RouterProvider>
+      <SocketProvider>
+        <RouterProvider router={appRouter}>
+          <App />
+        </RouterProvider>
+      </SocketProvider>
     </PersistGate>
   </Provider>
 )

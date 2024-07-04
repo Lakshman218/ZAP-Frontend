@@ -2,6 +2,7 @@ import React from 'react'
 import { formatDistanceToNow } from "date-fns";
 
 function RecievedChat({message}) {
+  // console.log("messages in chat", message);
   return (
     <div className='w-full flex items-start'>
       <div>

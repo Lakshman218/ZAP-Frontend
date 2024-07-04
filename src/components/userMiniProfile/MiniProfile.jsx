@@ -14,7 +14,7 @@ function MiniProfile({fetchposts}) {
     const fetchUserSuggestions = () => {
         getUserSuggestions({ userId })
             .then((response) => {
-                setUsers(response.data.suggestedUsers);
+                setUsers(response.data);
             })
             .catch((error) => {
                 console.log(error.message);

@@ -16,6 +16,7 @@ import Notification from "../components/notification/Notification";
 import More from "../components/more/More";
 import Explore from "../pages/explore/Explore";
 import Notifications from "../components/notification/Notifications";
+import ProtectedVideoCall from "../components/chatComponent/ProtectedVideoCall";
 
 
 const appRouter = createBrowserRouter([
@@ -61,6 +62,10 @@ const appRouter = createBrowserRouter([
         <Chat/>,
       </Protect>
     ),
+  },
+  {
+    path: "/video-call/:roomId/:userId",
+    element: <ProtectedVideoCall />
   },
   
   {

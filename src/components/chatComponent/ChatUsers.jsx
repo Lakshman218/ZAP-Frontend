@@ -19,7 +19,7 @@ function ChatUsers({
     const userId = user._id
     getChatElibleUsers({userId})
       .then((response) => {
-        setChatEligibleUsers(response.data.users)
+        setChatEligibleUsers(response.data)
       })
       .catch((error) => {
         console.log(error);
@@ -52,7 +52,7 @@ function ChatUsers({
     const senderId = sender._id
     addConversation({senderId: userId, receiverId: senderId})
       .then((response) => {
-        const userData = response.data.existConversation;
+        const userData = response.data;
         const existChat = conversations.filter((conver) => conver._id === userData._id)
         if(existChat.length === 0) {
           setConversations((prev) => [...prev, userData])
@@ -105,11 +105,11 @@ function ChatUsers({
                   All
                 </a>
               </li>
-              <li className="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
+              {/* <li className="flex-auto px-1 mx-1 -mb-px text-center rounded-t-lg cursor-pointer last:mr-0 hover:bg-gray-200">
                 <a className="flex items-center justify-center block py-2 text-xs font-semibold leading-normal tracking-wide border-b-2 border-transparent">
                   Groups
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className="relative mt-2 mb-4 overflow-x-hidden overflow-y-auto scrolling-touch lg:max-h-sm scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray">
