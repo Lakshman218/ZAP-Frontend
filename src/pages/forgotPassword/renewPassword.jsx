@@ -27,7 +27,7 @@ function RenewPassword() {
   return (
     <div className="flex flex-col md:flex-row justify-center bg-white h-screen">
       {/* Left side: Login form */}
-      <div className="flex items-center justify-center md:w-1/2 ">
+      <div className="flex items-center justify-center md:w-1/2 hover:scale-105 transition-transform duration-500">
         <div className="max-w-md w-full p-8 shadow-lg">
           <h2 className="text-2xl font-semibold text-center mb-4">Reset Password</h2>
 

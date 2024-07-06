@@ -42,7 +42,8 @@ function FollowRequest() {
   return (
 
     <div className=''>
-      <div>
+      {requests.length > 0 ? (
+        <div>
         {requests.map((request) => {
           console.log("in request", request);
           return (
@@ -56,6 +57,13 @@ function FollowRequest() {
           );
         })}
       </div>
+      ): (
+        <div className="flex items-center justify-between">
+          <hr className="w-full"/>
+          <p tabIndex="0" className="focus:outline-none text-sm flex flex-shrink-0 leading-normal px-3 py-16 text-gray-500">Empty :(</p>
+          <hr className="w-full"/>
+        </div>
+      )}
     </div>
   )
 }

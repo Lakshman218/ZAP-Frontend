@@ -7,6 +7,7 @@ function ProtectedVideoCall() {
   const {  userId } = useParams();
   const selectUser = (state) => state.auth.user;
   const user = useSelector(selectUser);
+  console.log("user in room", user);
   const loggedInUserId = user._id
   if(loggedInUserId === userId) {
     return <VideoCall />

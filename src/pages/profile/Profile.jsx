@@ -206,12 +206,14 @@ function Profile() {
         handleEditModal={handleEditModal} />}
 
         {isFollowersgModal && <FollowersList 
+        callGetUserConnection={getUserConnection}
         followers={followers}
         followingUsers={following}
         setFollowingUsers={setFollowing}
         onClose={handleFollowersModal} /> }
 
         {isFollowingModal && <FollowingList 
+        callGetUserConnection={getUserConnection}
         currentUser={userId}
         followingUsers={following}
         setFollowingUsers={setFollowing}

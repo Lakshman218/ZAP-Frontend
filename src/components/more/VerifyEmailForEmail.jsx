@@ -1,8 +1,8 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup'
 import React, { useState } from 'react'
-// import { forgotPassword, postResendOTP, verifyEmailUpdate, verifyOTPForEmail, verifyOTPForPswd } from '../../services/user/apiMethods';
-import { forgotPassword, postResendOTP, verifyEmailUpdate, verifyOTPForEmail } from '../../services/user/apiMethods';
+import { forgotPassword, postResendOTP, verifyEmailUpdate, verifyOTPForEmail, verifyOTPForPswd } from '../../services/user/apiMethods';
+// import { forgotPassword, postResendOTP, verifyEmailUpdate, verifyOTPForEmail } from '../../services/user/apiMethods';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { loginSuccuss } from '../../utils/context/reducers/authSlice';

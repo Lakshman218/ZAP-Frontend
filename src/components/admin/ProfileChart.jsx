@@ -33,8 +33,8 @@ const ProfileChart = ({isDashboardData}) => {
             show: true,
             label: 'Total',
             formatter: function (w) {
-              // Custom formatter function
-              return isDashboardData.totalUsers+isDashboardData.totalPosts+isDashboardData.totalReports; // Sum of series values
+              return ; 
+              // return isDashboardData.totalUsers+isDashboardData.totalPosts+isDashboardData.totalReports; 
             },
           },
         },

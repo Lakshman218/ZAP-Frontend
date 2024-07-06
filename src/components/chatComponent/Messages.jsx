@@ -9,9 +9,10 @@ import VoiceRecorder from './VoiceRecorder';
 import { Video } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-function Messages({ user, currentChat, messages, setMessages, socket, shareUser, isSharePost, setSharePost })
+function Messages({ user, currentChat, messages, setMessages, socket, shareUser, isSharePost, setSharePost, onlineUsers })
 {
 
+  const [isOnline, setIsOnline] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [friend, setFriend] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -26,12 +27,19 @@ function Messages({ user, currentChat, messages, setMessages, socket, shareUser,
     const friend = currentChat?.members.find((m) => m._id !== user._id);
     setFriend(friend);
     const currentChatId = currentChat?._id;
+    setIsOnline(() => {
+      if(onlineUsers.find((user) => user.userId === friend._id)) {
+        return true 
+      } else {
+        return false
+      }
+    })
     getUserMessages(currentChatId)
     .then((response) => {
       setMessages(response.data)
       console.log("user messages", response.data);
       })
-  }, [currentChat]);
+  }, [currentChat, onlineUsers]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -66,14 +74,19 @@ function Messages({ user, currentChat, messages, setMessages, socket, shareUser,
     navigate(`/video-call/${roomId}/${user._id}`);
   }
 
-  const handleSubmit = (file, isSharePost) => {
+  const handleSubmit = (file) => {
     const formData = new FormData();
     const currentChatId = currentChat._id;
     const userId = user._id;
     const receiver = currentChat.members.find((member) => member !== user._id);
     let messageType = "";
-
-    if (file) {
+  
+    if (isSharePost) {
+      console.log("share post id", isSharePost);
+      messageType = "sharePost";
+      formData.append("sharedPost", isSharePost); // Convert to string before appending
+      formData.append("text", "post shared"); // Append "post shared" to the text field
+    } else if (file) {
       if (file.type.startsWith("image/")) {
         messageType = "image";
       } else if (file.type.startsWith("video/")) {
@@ -87,22 +100,23 @@ function Messages({ user, currentChat, messages, setMessages, socket, shareUser,
       // setNewMessage(messageType);
     } else {
       messageType = "text";
+      formData.append("text", newMessage); // Append the text message
     }
-
+  
     formData.append("conversationId", currentChatId);
     formData.append("sender", userId);
-    formData.append("text", newMessage);
     formData.append("messageType", messageType);
-
-    const receiverId = receiver ? receiver._id : null
+  
+    const receiverId = receiver ? receiver._id : null;
     socket.current.emit("sendMessage", {
       senderId: userId,
       receiverId,
-      text: newMessage,
+      text: isSharePost ? "post shared" : newMessage, // Emit "post shared" or the actual text
       messageType,
       file: file?.name,
-    })
-
+      sharedPost: isSharePost ? JSON.stringify(isSharePost) : null,
+    });
+  
     addMessage(formData)
       .then((response) => {
         console.log("response after adding", response.data);
@@ -113,6 +127,10 @@ function Messages({ user, currentChat, messages, setMessages, socket, shareUser,
       .catch((error) => {
         console.error("Error sending message:", error);
       });
+      if(isSharePost) {
+        navigate('/')
+        setSharePost(null);
+      }
   };
 
   const handleKeyPress = (e) => {
@@ -151,6 +169,7 @@ function Messages({ user, currentChat, messages, setMessages, socket, shareUser,
 
   const cancelSharePost = () => {
     setSharePost(null)
+    navigate('/')
   }
 
   return (
@@ -169,7 +188,13 @@ function Messages({ user, currentChat, messages, setMessages, socket, shareUser,
           <div className="overflow-hidden text-base font-medium leading-tight text-gray-600 whitespace-no-wrap">
             {friend ? friend.userName : 'Loading...'}
           </div>
-          <div className="overflow-hidden text-sm font-medium leading-tight text-gray-600 whitespace-no-wrap">Online</div>
+          <div className="overflow-hidden text-sm font-medium leading-tight text-gray-600 whitespace-no-wrap">
+            {isOnline ? (
+              <span>Online</span>
+            ): (
+              <span>Offline</span>
+            )}
+          </div>
         </div>
         <button 
           onClick={handleVideoCall}
@@ -237,10 +262,10 @@ function Messages({ user, currentChat, messages, setMessages, socket, shareUser,
               See all messages
             </button>
           </div>
-          {/* <div className="self-center px-2 py-1 mx-0 my-1 text-xs text-gray-700 bg-white border border-gray-200 rounded-full shadow rounded-tg">
+          <div className="self-center px-2 py-1 mx-0 my-1 text-xs text-gray-700 bg-white border border-gray-200 rounded-full shadow rounded-tg">
             {currentChat?.createdAt &&
               new Date(currentChat.createdAt).toLocaleDateString()}
-          </div> */}
+          </div>
           <div className="flex flex-col">
             {/* Render message list */}
             
@@ -417,15 +442,23 @@ function Messages({ user, currentChat, messages, setMessages, socket, shareUser,
 
           {isSharePost && (
             <div
+            // style={{
+            //   position: "absolute",
+            //   bottom: "70px", 
+            //   left: "0",
+            //   zIndex: "10",
+            // }} 
             style={{
               position: "absolute",
-              bottom: "70px", 
-              left: "0",
+              bottom: "70px",
+              left: "50%",
+              transform: "translateX(-50%)",
               zIndex: "10",
-            }} 
+            }}
             >
               <div className='flex gap-4'>
                 <button
+                  onClick={handleSubmit}
                   class="w-28 h-12 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 hover:drop-shadow-2xl hover:shadow-[#7dd3fc] hover:cursor-pointer"
                 >
                   Send

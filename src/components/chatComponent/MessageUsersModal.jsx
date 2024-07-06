@@ -17,7 +17,7 @@ function MessageUsersModal({
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-40 backdrop-blur-md'>
     <div className='flex justify-center items-center h-full'>
-      <div className='bg-white p-10 space-y-4 w-full max-w-md rounded-md'>
+      <div className='bg-white p-8 space-y-4 w-full   max-w-md rounded-md'>
         <div className='flex justify-between items-center'>
           <h2 className='font-semibold text-xl'>New Message</h2>
           
@@ -30,7 +30,7 @@ function MessageUsersModal({
 
         <span className="flex border-t border-gray-400"></span>
 
-        <div className='h-64'>
+        <div className='h-64 overflow-y-auto px-2'>
           {chatEligibleUsers.map((user) => (
             <div key={user.id} className='flex justify-between items-center mb-4'>
               <Link

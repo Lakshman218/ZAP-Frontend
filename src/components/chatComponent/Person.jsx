@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
-function Person({conversation, currentUser, lastMessages}) {
+function Person({conversation, currentUser, lastMessages, onlineUsers}) {
 
   const [user, setUser] = useState(null)
   const conversationId = conversation._id
+  const [isOnline, setIsOnline] = useState(false);
   const userId = currentUser._id
   const [lastMessageText, setLastMessageText] = useState("");
 
   useEffect(() => {
     if(conversation) {
-      // console.log("if conversation", conversation);
       const person = conversation.members.find((m) => m._id !== currentUser._id)
       setUser(person)
       // console.log("last messages", lastMessages);
@@ -19,8 +19,15 @@ function Person({conversation, currentUser, lastMessages}) {
       if(lastMessage) {
         setLastMessageText(lastMessage.text)
       }
+      setIsOnline(() => {
+        if(onlineUsers.find((user) => user.userId === person._id)) {
+          return true 
+        } else {
+          return false
+        }
+      })
     }
-  }, [conversation, currentUser])
+  }, [conversation, currentUser, onlineUsers])
 
   return (
     <div>
@@ -29,9 +36,11 @@ function Person({conversation, currentUser, lastMessages}) {
           <div className="flex justify-between w-full">
             <div className="relative flex items-center justify-center w-12 h-12 ml-2 mr-3 text-xl font-semibold text-white bg-blue-500 rounded-full flex-no-shrink">
               <img className="object-cover w-12 h-12 rounded-full" src={user?.profileImg} alt=""/>
-              <div className="absolute bottom-0 right-0 flex items-center justify-center bg-white rounded-full" style={{ width: '0.80rem', height: '0.80rem' }}>
-                <div className="bg-green-500 rounded-full" style={{ width: '0.6rem', height: '0.6rem' }}></div>
-              </div>
+              {isOnline && (
+                <div className="absolute bottom-0 right-0 flex items-center justify-center bg-white rounded-full" style={{ width: '0.80rem', height: '0.80rem' }}>
+                  <div className="bg-green-500 rounded-full" style={{ width: '0.6rem', height: '0.6rem' }}></div>
+                </div>
+              )}
             </div>
             <div className="items-center flex-1 min-w-0">
               <div className="flex justify-between mb-1">

@@ -1,8 +1,8 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup'
 import React, { useState } from 'react'
-// import { forgotOTP, forgotPassword, postResendOTP, verifyOTPForPswd } from '../../services/user/apiMethods';
-import { forgotOTP, forgotPassword, postResendOTP } from '../../services/user/apiMethods';
+import { forgotOTP, forgotPassword, postResendOTP, verifyOTPForPswd } from '../../services/user/apiMethods';
+// import { forgotOTP, forgotPassword, postResendOTP } from '../../services/user/apiMethods';
 import { toast } from 'sonner';
 
 function VerifyEmailForPswd({onClose, handleForgotPswd}) {

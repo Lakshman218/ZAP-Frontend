@@ -7,6 +7,7 @@ import { addConversation, getChatElibleUsers, getUserSearch } from '../../servic
 
 function ChatUsers({
   user,
+  onlineUsers,
   conversations,
   setConversations,
   setCurrentChat,
@@ -120,6 +121,7 @@ function ChatUsers({
                   <div onClick={() => setCurrentChat(conversation)}>
                     <Person
                     currentUser={user}
+                    onlineUsers={onlineUsers}
                     conversation={conversation}
                     lastMessages={lastMessages}
                   />
