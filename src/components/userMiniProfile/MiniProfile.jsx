@@ -5,7 +5,6 @@ import { followUser, getUserSuggestions } from '../../services/user/apiMethods'
 import { ArrowBigDownDash, UserRoundPlus } from 'lucide-react'
 import { toast } from 'sonner'
 
-
 function MiniProfile({ fetchposts }) {
     const selectedUser = (state) => state.auth.user;
     const user = useSelector(selectedUser);

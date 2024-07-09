@@ -38,7 +38,7 @@ function AddPost({ closeAddPost }) {
     validationSchema: validationSchema,
     onSubmit: async () => {
       setLoading(!loading)
-      const { title, description, images } = formik.values;
+      const { title, images } = formik.values;
       const imageUrls = [];
 
       for (const imageFile of images) {
@@ -56,7 +56,7 @@ function AddPost({ closeAddPost }) {
       }
 
       try {
-        const response = await addPost({ userId, imgUrl: imageUrls, title, description });
+        const response = await addPost({ userId, imgUrl: imageUrls, title });
         if (response.status === 200) {
           toast.info(response.data.message);
           resetState();
@@ -134,7 +134,7 @@ function AddPost({ closeAddPost }) {
                 </div>
               )}
 
-              <div className="relative z-0 w-full mb-5 group">
+              <div className="relative z-0 w-full mb-5 group mt-4">
                 <input
                   value={formik.values.title}
                   onChange={formik.handleChange}
@@ -154,7 +154,7 @@ function AddPost({ closeAddPost }) {
                 )}
               </div>
 
-              <div className="relative z-0 w-full mb-5 group">
+              {/* <div className="relative z-0 w-full mb-5 group">
                 <input
                   value={formik.values.description}
                   onChange={formik.handleChange}
@@ -171,7 +171,7 @@ function AddPost({ closeAddPost }) {
                 {formik.touched.description && formik.errors.description && (
                   <p className="text-red-600 text-xs mb-4">{formik.errors.description}</p>
                 )}
-              </div>
+              </div> */}
 
               <button
                 type="submit"

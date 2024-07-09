@@ -21,7 +21,6 @@ function EditPost({handlePostEdit, postId, userId, fetchposts}) {
         setPost(post); 
         formik.setValues({
           title: post.title,
-          description: post.description,
           imgUrl: post.imgUrl
         });
       })
@@ -32,28 +31,22 @@ function EditPost({handlePostEdit, postId, userId, fetchposts}) {
 
   const resetState=()=>{
     formik.values.title='';
-    formik.values.description = '';
   }
 
   const formik = useFormik({
     initialValues: {
       title: '',
-      description: '',
     },
     validationSchema: Yup.object({
       title: Yup.string()
         .trim() 
         .required("Title is required")
         .matches(/^\S+.*\S$/, "Title cannot contain only spaces"),
-      description: Yup.string()
-        .trim() 
-        .required("Description is required")
-        .matches(/^\S+.*\S$/, "Description cannot contain only spaces"),
     }),
     onSubmit: async() => {
-      const {title, description} = formik.values;
-      console.log("come here..", postId, title, description);
-      editPost({ postId, userId, title, description  })
+      const {title} = formik.values;
+      console.log("come here..", postId, title);
+      editPost({ postId, userId, title  })
        .then((response) => {
         const PostData = response.data
         dispatch(setPosts({posts: PostData.posts}))
@@ -96,7 +89,7 @@ function EditPost({handlePostEdit, postId, userId, fetchposts}) {
             <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto">
             
               {/* Title Input */}
-              <div className="relative z-0 w-full mb-5 group">
+              <div className="relative z-0 w-full mb-5 group mb-2">
                 <input 
                 value={formik.values.title}
                 onChange={formik.handleChange}
@@ -108,24 +101,6 @@ function EditPost({handlePostEdit, postId, userId, fetchposts}) {
               {formik.touched.title && formik.errors.title && (
                 <p className="text-red-600 text-xs">
                   {formik.errors.title}
-                </p>
-              )}
-              </div>
-
-              {/* Description Input */}
-              <div className="relative z-0 w-full mb-5 group">
-                <input 
-                value={formik.values.description}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                name="description" 
-                id="description" 
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "></input>
-                <label htmlFor="description" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description *</label>
-              {formik.touched.description &&
-              formik.errors.description && (
-                <p className="text-red-600 text-xs mb-4">
-                  {formik.errors.description}
                 </p>
               )}
               </div>

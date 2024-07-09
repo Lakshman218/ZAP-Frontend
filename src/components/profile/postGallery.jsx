@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ShowPost from '../homepost/ShowPost';
 
-function PostGallery({ post }) {
+function PostGallery({ post, fetchposts }) {
+
+  const [showPostModal, setShowPostModal] = useState(false)
+  const handleModal = () => {
+    setShowPostModal(!showPostModal)
+  }
   const imageUrlArray = post.imgUrl; 
   // console.log("imageurl in postgallery", imageUrlArray);
 
@@ -18,9 +24,10 @@ function PostGallery({ post }) {
     <div className="flex flex-wrap gap-4">
       {imageUrlArray.map((imageUrl, index) => (
         <div
+          onClick={handleModal}
           key={index}
           style={{height: '286px'}}
-          className="relative overflow-hidden w-full rounded-lg transition-transform duration-300"
+          className="relative overflow-hidden w-full rounded-lg transition-transform duration-300 cursor-pointer"
         >
           <img
             className="w-full h-full rounded-md object-cover transition-transform duration-300 transform hover:scale-125"
@@ -29,6 +36,8 @@ function PostGallery({ post }) {
           />
         </div>
       ))}
+
+      {showPostModal && <ShowPost post={post} fetchposts={fetchposts} onClose={handleModal} /> }
     </div>
 
     // <div className="flex flex-wrap gap-4">

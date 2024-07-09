@@ -61,9 +61,9 @@ function Notifications() {
                     tabIndex="0" 
                     aria-label="group icon" 
                     role="img" 
-                    className="focus:outline-none w-12 h-10 border rounded-full border-gray-200 dark:border-black flex items-center justify-center cursor-pointer">
+                    className="focus:outline-none ml-2 w-14 h-12 border rounded-full border-gray-200 dark:border-black flex items-center justify-center cursor-pointer">
                     <img 
-                      className='focus:outline-none w-10 h-10 border rounded-full border-gray-200 flex items-center justify-center' 
+                      className='focus:outline-none w-12 h-12 border rounded-full border-gray-200 flex items-center justify-center' 
                       src={notification.senderId.profileImg} 
                       alt="" 
                     />

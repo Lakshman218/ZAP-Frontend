@@ -6,6 +6,7 @@ import Searchbar from '../searchbar/Searchbar';
 import Notification from '../notification/Notification';
 import Settings from '../settings/Settings';
 
+
 function SideNavBar() {
   const navigate = useNavigate()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -242,6 +243,7 @@ function SideNavBar() {
                   </div>
                 </li>
                 {isAddPostOpen && {handleClose  } && <AddPost closeAddPost={closeAddPostModal} />}
+                
               </ul>
               <ul className="pt-4 mt-4 space-y-0 font-medium border-t border-gray-200 dark:border-gray-700">
                 <li>

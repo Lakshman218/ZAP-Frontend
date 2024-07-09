@@ -20,14 +20,12 @@ function Explore() {
   useEffect(() => {
     try {
       setLoading(true)
-      getExplorePosts({userId})
-        .then((response) => {
-          const postsData = response.data;
-          setPosts(postsData);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+      
+      try {
+        fetchPosts();
+      } catch (error) {
+        console.log(error);
+      }
 
       getAllUsers({userId})
         .then((response)  => {
@@ -49,6 +47,18 @@ function Explore() {
       console.log(error);
     }
   }, [userId])
+
+  const fetchPosts = () => {
+    getExplorePosts({userId})
+      .then((response) => {
+        const postsData = response.data;
+        setPosts(postsData);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
   return (
     <div>
       <div className='w-full mt-5 rounded-md bg-white dark:bg-black lg:px-10'>
@@ -84,7 +94,7 @@ function Explore() {
                   {loading && <ProfilePostLoader/> }
                   {!loading && (
                     <div key={post._id} style={{width: '340px'}}>
-                      <ExploreGallery post={post} />
+                      <ExploreGallery post={post} fetchposts={fetchPosts} />
                     </div>
                   ) }
                 </div>

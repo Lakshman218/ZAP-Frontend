@@ -62,7 +62,7 @@ function SendedChat({ message }) {
                   className="rounded-lg object-cover w-full h-full mb-1"
                 />
                 <p className="font-bold text-sm">{message?.sharedPost?.title}</p>
-                <p className="mb-0 text-sm">{message?.sharedPost?.description}</p>
+                {/* <p className="mb-0 text-sm">{message?.sharedPost?.description}</p> */}
               </div>
             </div>
           )}

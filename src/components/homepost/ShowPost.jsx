@@ -2,37 +2,24 @@ import React, { useEffect, useRef, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'; 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from "yup";
+import { toast } from 'sonner';
+import { Formik, Form, Field } from "formik";
+import { data } from 'autoprefixer';
 import { CircleX, Heart, MessageCircle, Share2, Trash2, X } from 'lucide-react';
 import { SavePost, addComment, deleteComment, deletePost, deleteReplyComment, getPostComments, handleComment, handleLike, likePost, replyComment } from '../../services/user/apiMethods';
 import LikedUsers from './LikedUsers';
 import EditPost from './EditPost';
 import ReportModal from './ReportModal';
-import { toast } from 'sonner';
-import { loginSuccuss, setPosts } from '../../utils/context/reducers/authSlice';
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
-import { data } from 'autoprefixer';
 import ConfirmationModal from './ConfirmationModal';
+import { loginSuccuss, setPosts } from '../../utils/context/reducers/authSlice';
 
-function ViewPost({
+function ShowPost({
   post, 
   onClose,
-  toHandleLike, 
-  isLikedByUser, 
-  likeCount, 
-  likedUsers,
-  handleLikedUsersPopup, 
-  showLikedUsersPopup,
-  isSavedByUser,
-  handleSave,
-  isCommentsEnabled,
-  isLikesEnabled,
-  manageComment,
-  manageLikes,
   fetchposts,
-  commentsCount,
-  getCommentsCount,
-}) {
+}) 
+{
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -50,9 +37,9 @@ function ViewPost({
   const postIds = user.savedPost
   // const poststage = user.hideComment
  
-  // const [isSavedByUser, setIsSavedByUser] = useState(
-  //   user?.savedPost?.includes(post._id)
-  // )
+  const [isSavedByUser, setIsSavedByUser] = useState(
+    user?.savedPost?.includes(post._id)
+  )
 
   // navigate to user profile
   const handleSearch = (postUserId) => {
@@ -64,29 +51,29 @@ function ViewPost({
   }
 
   // save post
-  // const handleSave = (postId, userId) => {
-  //   // console.log(postId, userId);
-  //   try {
-  //     SavePost({postId, userId})
-  //       .then((response) => {
-  //         const userData = response.data
-  //         // console.log("userdata", userData);
-  //         dispatch(loginSuccuss({user: userData}))
-  //         setIsSavedByUser(!isSavedByUser)
-  //         toast.info(userData.message)
-  //       })
-  //       .catch((error) => {
-  //         toast.error(error.message);
-  //       });
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // }
+  const handleSave = (postId, userId) => {
+    // console.log(postId, userId);
+    try {
+      SavePost({postId, userId})
+        .then((response) => {
+          const userData = response.data
+          // console.log("userdata", userData);
+          dispatch(loginSuccuss({user: userData}))
+          setIsSavedByUser(!isSavedByUser)
+          toast.info(userData.message)
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   // handle dropdown
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const [isCommentsEnabled, setIsCommentsEnabled] = useState(!post.hideComment);
-  // const [isLikesEnabled, setIsLikesEnabled] = useState(!post.hideLikes);
+  const [isCommentsEnabled, setIsCommentsEnabled] = useState(!post.hideComment);
+  const [isLikesEnabled, setIsLikesEnabled] = useState(!post.hideLikes);
   const dropdownRef = useRef(null);
 
   const handleToggleDropdown = () => {
@@ -173,49 +160,49 @@ function ViewPost({
   }
 
   // like post
-  // const [showLikedUsersPopup, setShowLikedUsersPopup] = useState(false);
-  // const [likeCount, setLikeCount] = useState(post.likes.length);
-  // const [likedUsers, setLikedUsers] = useState(post.likes);
-  // const [isLikedByUser, setIsLikedByUser] = useState(post.likes.includes(userId));
+  const [showLikedUsersPopup, setShowLikedUsersPopup] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes.length);
+  const [likedUsers, setLikedUsers] = useState(post.likes);
+  const [isLikedByUser, setIsLikedByUser] = useState(post.likes.includes(userId));
 
-  // useEffect(() => {
-  //   setIsLikedByUser(likedUsers.some((likedUser) => likedUser._id === user._id));
-  // }, [likedUsers, user._id]);
+  useEffect(() => {
+    setIsLikedByUser(likedUsers.some((likedUser) => likedUser._id === user._id));
+  }, [likedUsers, user._id]);
 
-  // const toHandleLike = (postId, userId) => {
-  //   try {
-  //     likePost({ postId, userId })
-  //       .then((response) => {
-  //         const postData = response.data;
-  //         dispatch(setPosts({ posts: postData.posts }));
+  const toHandleLike = (postId, userId) => {
+    try {
+      likePost({ postId, userId })
+        .then((response) => {
+          const postData = response.data;
+          dispatch(setPosts({ posts: postData.posts }));
           
-  //         // Toggle the like state
-  //         setIsLikedByUser((prevIsLiked) => {
-  //           if (prevIsLiked) {
-  //             setLikedUsers((prevLikedUsers) =>
-  //               prevLikedUsers.filter((likedUser) => likedUser._id !== userId)
-  //             );
-  //             setLikeCount((prev) => prev - 1);
-  //           } else {
-  //             setLikedUsers((prevLikedUsers) => [
-  //               ...prevLikedUsers,
-  //               { _id: userId },
-  //             ]);
-  //             setLikeCount((prev) => prev + 1);
-  //           }
-  //           return !prevIsLiked;
-  //         });
-  //       })
-  //       .catch((error) => {
-  //         toast.error(error.message);
-  //       });
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
-  // const handleLikedUsersPopup = () => {
-  //   setShowLikedUsersPopup(!showLikedUsersPopup);
-  // };
+          // Toggle the like state
+          setIsLikedByUser((prevIsLiked) => {
+            if (prevIsLiked) {
+              setLikedUsers((prevLikedUsers) =>
+                prevLikedUsers.filter((likedUser) => likedUser._id !== userId)
+              );
+              setLikeCount((prev) => prev - 1);
+            } else {
+              setLikedUsers((prevLikedUsers) => [
+                ...prevLikedUsers,
+                { _id: userId },
+              ]);
+              setLikeCount((prev) => prev + 1);
+            }
+            return !prevIsLiked;
+          });
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const handleLikedUsersPopup = () => {
+    setShowLikedUsersPopup(!showLikedUsersPopup);
+  };
 
   // comment
   const [comments, setComments] = useState([]);
@@ -348,38 +335,38 @@ function ViewPost({
   }
 
   // manage comment 
-  // const manageComment = (postId, userId) => {
-  //   console.log("in comment", postId);
-  //   handleComment({postId, userId})
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         setIsCommentsEnabled(!isCommentsEnabled);
-  //       }
-  //       const postData = response.data;
-  //       dispatch(setPosts({ posts: postData.posts }));
-  //       console.log("data",postData);
-  //       toast.success(postData.message)
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error handling comment:", error);
-  //     });
-  // };
+  const manageComment = (postId, userId) => {
+    console.log("in comment", postId);
+    handleComment({postId, userId})
+      .then((response) => {
+        if (response.status === 200) {
+          setIsCommentsEnabled(!isCommentsEnabled);
+        }
+        const postData = response.data;
+        dispatch(setPosts({ posts: postData.posts }));
+        console.log("data",postData);
+        toast.success(postData.message)
+      })
+      .catch((error) => {
+        console.error("Error handling comment:", error);
+      });
+  };
 
   // manage like
-  // const manageLikes = (postId, userId) => {
-  //   handleLike({postId, userId})
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         setIsLikesEnabled(!isLikesEnabled);
-  //       }
-  //       const postData = response.data;
-  //       dispatch(setPosts({ posts: postData.posts }));
-  //       toast.success(postData.message)
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error handling like:", error);
-  //     });
-  // };
+  const manageLikes = (postId, userId) => {
+    handleLike({postId, userId})
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLikesEnabled(!isLikesEnabled);
+        }
+        const postData = response.data;
+        dispatch(setPosts({ posts: postData.posts }));
+        toast.success(postData.message)
+      })
+      .catch((error) => {
+        console.error("Error handling like:", error);
+      });
+  };
 
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
@@ -807,4 +794,4 @@ function ViewPost({
   )
 }
 
-export default ViewPost
+export default ShowPost

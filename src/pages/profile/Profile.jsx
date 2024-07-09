@@ -11,7 +11,6 @@ import FollowingList from '../../components/profile/FollowingList'
 import FollowersList from '../../components/profile/FollowersList'
 import Loader from '../../components/loader/loader'
 
-
 function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -179,7 +178,7 @@ function Profile() {
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2'>
                   {posts.map((post) => (
                     <div key={post._id}>
-                      <PostGallery post={post} />
+                      <PostGallery post={post} fetchposts={getUserPost}/>
                     </div>
                   ))}
                 </div>

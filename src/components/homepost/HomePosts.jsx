@@ -455,9 +455,9 @@ function HomePosts({post, fetchposts}) {
               )}
             </div> : '' 
           }
-          <div className='text-black dark:text-white block pb-2'>
+          <div className='text-black dark:text-white block pb-2 ml-2'>
             <p className='font-semibold'>{post.title}</p>
-            <p className='text-sm'>{post.description}</p>
+            {/* <p className='text-sm'>{post.description}</p> */}
           </div>
         </div>
 

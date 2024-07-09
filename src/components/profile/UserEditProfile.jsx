@@ -86,10 +86,12 @@ function UserEditProfile({user, handleEditModal}) {
         })
         .catch((error) => {
           toast.error(error.message)
+          setLoading(false)
           console.log(err);
         })
       } catch (error) { 
         console.error("Error updating profile:", error);
+        setLoading(false)
         // toast.error("Failed to update profile");
         return
       }
