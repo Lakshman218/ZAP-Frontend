@@ -59,6 +59,27 @@ function Chat() {
       });
     }
   },[shareUser])
+
+  const { MessageThisUser } = location.state || {};
+  useEffect(() => {
+    if(MessageThisUser) {
+      const userId = user._id
+      const senderId = MessageThisUser._id
+      addConversation({senderId: userId, receiverId: senderId})
+      .then((response) => {
+        const userData = response.data;
+        const existChat = conversations.filter((conver) => conver._id === userData._id)
+        if(existChat.length === 0) {
+          setConversations((prev) => [...prev, userData])
+          console.log("");
+        }
+        setCurrentChat(userData)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  }, [MessageThisUser])
     
   useEffect(() => {
 
@@ -160,6 +181,7 @@ function Chat() {
           currentChat={currentChat}
           socket={socket}
           shareUser={shareUser}
+          MessageThisUser={MessageThisUser}
           isSharePost={isSharePost}
           setSharePost={setSharePost}
         />

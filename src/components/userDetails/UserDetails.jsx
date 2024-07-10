@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import FollowersList from '../profile/FollowersList';
 import FollowingList from '../profile/FollowingList';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 function UserDetails({user, connections, posts}) {
   console.log("connetions data", connections);
@@ -18,6 +19,7 @@ function UserDetails({user, connections, posts}) {
   const [following, setFollowing] = useState([]);
   const [isFollowingModal, setIsFollowingModal] = useState(false);
   const [isFollowersgModal, setIsFollowersgModal] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const followingUserId = user?._id
@@ -84,6 +86,15 @@ function UserDetails({user, connections, posts}) {
       toast.error("This account is private")
     )}
   }
+
+  const handleNavigate = (user) => {
+    console.log("to messg this user");
+    if (user) {
+      navigate('/chat', { state: { MessageThisUser: user } });
+    } else {
+      toast("Something went wrong");
+    }
+  };
 
   return (
     <div className='w-full h-screen p-4 mr-2 bg-white dark:bg-black'>
@@ -158,7 +169,8 @@ function UserDetails({user, connections, posts}) {
                 </button> */}
 
                 <button 
-                class="bg-neutral-950 ml-8 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                  onClick={() => handleNavigate(user)}
+                  class="bg-neutral-950 ml-8 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                   <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                   Message
                 </button>

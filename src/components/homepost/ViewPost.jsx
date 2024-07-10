@@ -384,7 +384,8 @@ function ViewPost({
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
       <div className='flex justify-center items-center h-full'> 
-        <div className='bg-white px-6 py-2 space-y-0 w-full md:mx-52 rounded-md'> 
+        {/* <div className='bg-white px-6 py-2 space-y-0 w-full md:mx-52 rounded-md'>  */}
+        <div className='bg-white px-6 py-2 space-y-0 w-full md:mx-52 rounded-md max-h-screen overflow-y-auto'>
           <div className='flex justify-between items-center'>
             <h2 className='font-semibold text-xl'></h2>
             <div>
@@ -395,9 +396,10 @@ function ViewPost({
               </button>
             </div>
           </div>
-          <div className='max-w-full mx-auto flex justify-between'>
+          <div className='max-w-full mx-auto lg:flex justify-between'>
             {/* left side */}
             <div className="w-full lg:w-7/12 mr-2">
+            {/* <div className="hidden lg:block w-full lg:w-7/12 lg:mr-2"> */}
               <div className="w-full lg:px-2 lg:p-0 mb-2 h-max rounded-md border-none shadow-md bg-white border">
                 <div>
                   <div className='flex justify-between items-center'>
@@ -511,7 +513,7 @@ function ViewPost({
             </div>
 
             {/* right side */}
-            <div className="w-full lg:w-6/12 ml-2">
+            <div className="w-full lg:w-6/12 lg:ml-2">
               <div className="w-full h-max rounded-md border-none shadow-md bg-white border px-4 p-1">
 
                 <div className='flex'>
@@ -533,9 +535,7 @@ function ViewPost({
                     </div> */}
                 </div>
 
-                
-
-                <div className="mb-10 max-h-96 h-96 overflow-auto">
+                <div className="mb-10 max-h-96 lg:h-96 lg:overflow-auto">
                   {!isCommentsEnabled && (
                     <div className="flex items-center justify-center">
                       <div>
