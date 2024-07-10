@@ -98,24 +98,24 @@ function UserDetails({user, connections, posts}) {
                 />
               </div>
               <div className='block ml-10 text-black dark:text-white'>
-                <div className='font-semibold text-3xl pb-2'>{user.userName}</div>
-                <div className='pb-0'>{user.name}</div>
-                <div className='pb-1'>{user.bio}</div>
+                <div className='font-semibold text-3xl pb-2'>{user?.userName}</div>
+                <div className='pb-0'>{user?.name}</div>
+                <div className='pb-1'>{user?.bio}</div>
                 <div className='flex justify-between  mt-2 cursor-pointer gap-10'>
                   <div className='flex flex-col cursor-pointer items-center'>
-                    <p className="font-medium text-lg">{posts.length}</p>
+                    <p className="font-medium text-lg">{posts?.length}</p>
                     <p className="text-sm">Posts</p>
                   </div>
                   <div
                   onClick={handleFollowersModal} 
                   className='flex flex-col cursor-pointer items-center'>
-                    <p className="font-medium text-lg">{followers.length}</p>
+                    <p className="font-medium text-lg">{followers?.length}</p>
                     <p className="text-sm">Followers</p>
                   </div>
                   <div
                   onClick={handleFollowingModal} 
                   className='flex flex-col cursor-pointer items-center'>
-                    <p className="font-medium text-lg">{following.length}</p>
+                    <p className="font-medium text-lg">{following?.length}</p>
                     <p className="text-sm">Following</p>
                   </div>
                 </div>  
@@ -168,7 +168,7 @@ function UserDetails({user, connections, posts}) {
           </div>
         </div>
 
-      {!isFollowed && user.isPrivate ? (
+      {!isFollowed && user?.isPrivate ? (
         <div className='flex flex-col justify-center items-center mt-0 left-10 fixed text-black w-full h-auto '>
           <div className='flex items-center gap-2'>
             <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@ function UserDetails({user, connections, posts}) {
       </div>
       ): (
         <div>
-          {posts.length === 0? (
+          {posts?.length === 0? (
             <div className='flex flex-col justify-center items-center mt-0 left-10 fixed text-black w-full h-auto '>
               <p>Empty post</p>
               <img className='w-96' src={emptypost} alt="" />

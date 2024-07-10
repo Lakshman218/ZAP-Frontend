@@ -98,29 +98,29 @@ function Profile() {
         <div className="flex lg:ml-8 justify-center">
           <img
             className="h-40 w-40 rounded-full"
-            src={user.profileImg}
+            src={user?.profileImg}
             alt=""
           />
         </div>
         <div className='block lg:ml-10 ml-4 lg:text-start text-center text-black dark:text-white'>
-          <div className='font-semibold text-3xl pb-2'>{user.userName}</div>
-          <div className='pb-0'>{user.name}</div>
-          <div className='pb-1'>{user.bio}</div>
+          <div className='font-semibold text-3xl pb-2'>{user?.userName}</div>
+          <div className='pb-0'>{user?.name}</div>
+          <div className='pb-1'>{user?.bio}</div>
           <div className='flex justify-between mt-2 cursor-pointer'>
             <div className='flex flex-col cursor-pointer items-center'>
-              <p className="font-medium text-lg">{posts.length}</p>
+              <p className="font-medium text-lg">{posts?.length}</p>
               <p className="text-sm">Posts</p>
             </div>
             <div 
               onClick={handleFollowersModal}
               className='flex flex-col cursor-pointer items-center'>
-              <p className="font-medium text-lg">{followers.length}</p>
+              <p className="font-medium text-lg">{followers?.length}</p>
               <p className="text-sm">Followers</p>
             </div>
             <div 
               onClick={handleFollowingModal}
               className='flex flex-col cursor-pointer items-center'>
-              <p className="font-medium text-lg">{following.length}</p>
+              <p className="font-medium text-lg">{following?.length}</p>
               <p className="text-sm">Following</p>
             </div>
           </div>  
@@ -169,7 +169,7 @@ function Profile() {
           </div>
 
           {currentView === 'posts' ? (
-            posts.length === 0 ? (
+            posts?.length === 0 ? (
               <div className='flex flex-col justify-center items-center mt-4 text-black dark:text-white w-full h-auto'>
                 <img className='w-96' src={emptypost} alt="" />
                 <p>Create your first post.</p>
@@ -183,7 +183,7 @@ function Profile() {
                 ))}
               </div>
             )
-          ) : savedPost.length === 0 ? (
+          ) : savedPost?.length === 0 ? (
             <div className='flex flex-col justify-center items-center mt-4 text-black w-full h-auto'>
               <img className='w-96' src={emptypost} alt="" />
               <p>No saved post</p>
