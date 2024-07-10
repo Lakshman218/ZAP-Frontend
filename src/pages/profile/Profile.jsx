@@ -175,10 +175,17 @@ function Profile() {
                 <p>Create your first post.</p>
               </div>
             ) : (
+              // <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
+              //   {posts.map((post) => (
+              //     <div key={post._id}>
+              //       <PostGallery post={post} fetchposts={getUserPost}/>
+              //     </div>
+              //   ))}
+              // </div>
               <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
-                {posts.map((post) => (
+                {Array.isArray(posts) && posts.map((post) => (
                   <div key={post._id}>
-                    <PostGallery post={post} fetchposts={getUserPost}/>
+                    <PostGallery post={post} fetchposts={getUserPost} />
                   </div>
                 ))}
               </div>
@@ -189,8 +196,15 @@ function Profile() {
               <p>No saved post</p>
             </div>
           ) : (
+            // <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
+            //   {savedPost.map((post) => (
+            //     <div key={post._id}>
+            //       <PostGallery post={post} />
+            //     </div>
+            //   ))}
+            // </div>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
-              {savedPost.map((post) => (
+              {Array.isArray(savedPost) && savedPost.map((post) => (
                 <div key={post._id}>
                   <PostGallery post={post} />
                 </div>
