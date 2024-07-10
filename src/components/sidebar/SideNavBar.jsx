@@ -5,7 +5,7 @@ import logoImg from "../../../public/images/zap.jpg"
 import Searchbar from '../searchbar/Searchbar';
 import Notification from '../notification/Notification';
 import Settings from '../settings/Settings';
-import CreatePost from '../posts/CreatePost';
+
 
 
 function SideNavBar() {
@@ -243,8 +243,8 @@ function SideNavBar() {
                     <span className="ms-3 text-lg">Create</span>
                   </div>
                 </li>
-                {/* {isAddPostOpen && {handleClose  } && <AddPost closeAddPost={closeAddPostModal} />} */}
-                {isAddPostOpen && {handleClose  } && <CreatePost closeAddPost={closeAddPostModal} />}
+                {isAddPostOpen && {handleClose  } && <AddPost closeAddPost={closeAddPostModal} />}
+
                 
               </ul>
               <ul className="pt-4 mt-4 space-y-0 font-medium border-t border-gray-200 dark:border-gray-700">
