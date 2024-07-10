@@ -61,8 +61,8 @@ function Explore() {
 
   return (
     <div>
-      <div className='w-full mt-5 rounded-md bg-white dark:bg-black lg:px-10'>
-        <div className='flex justify-between lg:px-10 gap-10 p-0 font-normal text-lg'>
+      <div className='w-full mt-5 rounded-md bg-white dark:bg-black lg:px-10 lg:pr-0 pr-4'>
+        <div className='flex justify-between lg:px-10 gap-10 p-0 font-normal text-lg w-full'>
           <div
             onClick={() => setCurrentView('posts')}
             className={`bg-white dark:bg-black dark:text-white w-full cursor-pointer text-center h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 ${

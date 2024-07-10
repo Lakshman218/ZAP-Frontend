@@ -10,12 +10,11 @@ function ExploreGallery({ post, fetchposts }) {
 
   const imageUrlArray = post.imgUrl;
   return (
-    <div className="flex flex-wrap gap-4 lg:w-full w-10/12">
+    <div className="flex flex-wrap gap-4 w-full lg:pr-0 pr-6">
       {imageUrlArray.map((imageUrl, index) => (
         <div  
           onClick={handleModal}
           key={index}
-          style={{height: '256px'}}
           className="relative overflow-hidden w-full transition-transform duration-300 cursor-pointer"
         >
           <img

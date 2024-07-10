@@ -3,7 +3,7 @@ import React from 'react'
 function ProfilePostLoader() {
   return (
     <div className="max-w-sm p-0 border border-gray-200 rounded shadow animate-pulse dark:border-gray-400">
-      <div style={{width: '360px'}} className="flex items-center justify-center h-64  bg-gray-300  dark:bg-gray-400">
+      <div style={{width: '340px'}} className="flex items-center justify-center h-80  bg-gray-300  dark:bg-gray-400">
         <svg
           viewBox="0 0 16 20"
           fill="currentColor"

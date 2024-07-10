@@ -236,143 +236,96 @@ function HomePosts({post, fetchposts}) {
 
     <div className="w-12/12 lg:px-10 lg:p-0 mb-8 mr-2 h-max rounded-md border-none shadow-md bg-white dark:bg-black border dark:shadow-gray-500">
       
-      <div>
-      <div className='flex justify-between items-center'>
-        {/* user details */}
-        <div
-        onClick={() => handleSearch(postUserId._id)} 
-        className='flex cursor-pointer'>
-          <div className="flex items-center justify-center bg-white dark:bg-black rounded-full w-12 h-12 overflow-hidden ">
-            <img className='rounded-full object-cover w-full h-full' src={profileImg} alt="" />
-          </div>
-          <div className=' mb-1'>
-            <p className='text-black dark:text-white lg:ml-4 ml-2 font-medium lg:text-xl'>{userName}</p>
-            <p className='text-black dark:text-white lg:ml-4 ml-2 font-normal lg:text-sm'>{postDate}</p>
-          </div>
-        </div>
-
-        
-        {postUserId._id == userId ? (
-
-          <div className='relative'>
-            {/* edit or delete post */}
-          <div onClick={handleToggleDropdown} className='flex cursor-pointer'>
-            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" strokeLinecap="round" strokeWidth="4" d="M6 12h.01m6 0h.01m5.99 0h.01"/>
-            </svg>
-          </div>
-
-          {isDropdownOpen && (
-            <div ref={dropdownRef} className='absolute right-0 mt-2 w-48 bg-white dark:bg-black rounded-md shadow-lg z-10'>
-              <button
-              onClick={() => handlePostEdit(post._id)} 
-              className='w-full px-4 py-2 text-left text-gray-800 dark:text-white hover:text-blue-600 hover:bg-gray-200 rounded-md'>
-                Edit
-              </button>
-              <button
-                onClick={() => handleDeletePost(post._id, userId)}
-                className="w-full px-4 py-2 text-left text-gray-800 dark:text-white hover:text-red-600 hover:bg-gray-200 rounded-md">
-                Delete
-              </button>
-              
+      <div className='w-10/12 lg:ml-12 ml-6'>
+        <div className='flex justify-between items-center mx-2'>
+          {/* user details */}
+          <div
+            onClick={() => handleSearch(postUserId._id)} 
+            className='flex cursor-pointer lg:mb-0 mb-1'>
+            <div className="flex items-center justify-center bg-white dark:bg-black rounded-full lg:w-11 lg:h-11 w-10 h-10 overflow-hidden ">
+              <img className='rounded-full object-cover w-full h-full' src={profileImg} alt="" />
             </div>
-          )}
-        </div>
-        ) : (
-          <div className='relative'>
-            {/* report post */}
-            <div onClick={handleToggleDropdown} className='flex cursor-pointer'>
-              <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" strokeLinecap="round" strokeWidth="3" d="M6 12h.01m6 0h.01m5.99 0h.01"/>
-              </svg>
+            <div className=' mb-1'>
+              <p className='text-black dark:text-white lg:ml-4 ml-2 font-medium lg:text-md'>{userName}</p>
+              <p className='text-black dark:text-white lg:ml-4 ml-2 font-normal lg:text-xs text-xs'>{postDate}</p>
             </div>
+          </div>
 
-            {isDropdownOpen && (
-              <div ref={dropdownRef} className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10'>
-                <button 
-                onClick={() => handleReportModal()}
-                className='w-full px-4 py-2 text-left hover:text-red-600 hover:bg-gray-200 rounded-md'>
-                  Report
-                </button>
+          
+          {postUserId._id == userId ? (
+
+            <div className='relative'>
+              {/* edit or delete post */}
+              <div onClick={handleToggleDropdown} className='flex cursor-pointer'>
+                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" strokeLinecap="round" strokeWidth="4" d="M6 12h.01m6 0h.01m5.99 0h.01"/>
+                </svg>
               </div>
-            )}
-          </div>
-        )}  
-      </div>
 
-      {/* post image start here */}
-    
-      {/* <div
-        onDoubleClick={() => toHandleLike(post._id, user._id)} 
-        className=" lg:p-4 sm:p-0"> 
-        <div id="controls-carousel" className="relative w-full bg-gray-200 dark:bg-black rounded-md " >
-          <div className="relative h-56 overflow-hidden  md:h-96 rounded-md">
-            <div className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" data-carousel-item>
-              {imageUrlArray.map((imageUrl, index) => {
-                return <img src={imageUrl} alt={`post ${index}`} />
-              })}
+              {isDropdownOpen && (
+                <div ref={dropdownRef} className='absolute right-0 mt-2 w-48 bg-white dark:bg-black rounded-md shadow-lg z-10'>
+                  <button
+                  onClick={() => handlePostEdit(post._id)} 
+                  className='w-full px-4 py-2 text-left text-gray-800 dark:text-white hover:text-blue-600 hover:bg-gray-200 rounded-md'>
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeletePost(post._id, userId)}
+                    className="w-full px-4 py-2 text-left text-gray-800 dark:text-white hover:text-red-600 hover:bg-gray-200 rounded-md">
+                    Delete
+                  </button>
+                  
+                </div>
+              )}
             </div>
-          </div>
+          ) : (
+            <div className='relative'>
+              {/* report post */}
+              <div onClick={handleToggleDropdown} className='flex cursor-pointer'>
+                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" strokeLinecap="round" strokeWidth="3" d="M6 12h.01m6 0h.01m5.99 0h.01"/>
+                </svg>
+              </div>
+
+              {isDropdownOpen && (
+                <div ref={dropdownRef} className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10'>
+                  <button 
+                  onClick={() => handleReportModal()}
+                  className='w-full px-4 py-2 text-left hover:text-red-600 hover:bg-gray-200 rounded-md'>
+                    Report
+                  </button>
+                </div>
+              )}
+            </div>
+          )}  
+        </div>
+
+        {/* post image start here */}
       
-          <button type="button" className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                  <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                  </svg>
-                  <span className="sr-only">Previous</span>
-              </span>
-          </button>
-          <button type="button" className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                  <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                  </svg>
-                  <span className="sr-only">Next</span>
-              </span>
-          </button>
-        </div>
-      </div> */}
-
-      <div
-        onDoubleClick={() => toHandleLike(post._id, user._id)} 
-        className="lg:px-4 lg:py-2 sm:p-0"> 
-        <div id="controls-carousel" className="relative w-full bg-white border-2 border-gray-200 dark:border-gray-800 dark:bg-black rounded-md">
-          <div className="relative h-[28rem] overflow-hidden rounded-md"> 
-            {imageUrlArray.map((imageUrl, index) => (
-              <div 
-                key={index} 
-                className="absolute block w-full h-full"
-                data-carousel-item
-              >
-                <img 
-                  src={imageUrl} 
-                  alt={`post ${index}`} 
-                  className="object-contain w-full h-full"
-                />
-              </div>
-            ))}
+        <div
+          onDoubleClick={() => toHandleLike(post._id, user._id)} 
+          className="lg:px-4 lg:py-2 sm:p-0" > 
+          <div id="controls-carousel" className="relative w-4/4 max-w-xl mx-auto bg-white border-2 border-gray-200 dark:border-gray-800 dark:bg-black rounded-md">
+            <div className="relative w-full pb-[100%] overflow-hidden rounded-md">
+              {imageUrlArray.map((imageUrl, index) => (
+                <div 
+                  key={index} 
+                  className="absolute inset-0"
+                  data-carousel-item
+                >
+                  <img 
+                    src={imageUrl} 
+                    alt={`post ${index}`} 
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-          {/* <button type="button" className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-              <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-              </svg>
-              <span className="sr-only">Previous</span>
-            </span>
-          </button>
-          <button type="button" className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-              <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-              </svg>
-              <span className="sr-only">Next</span>
-            </span>
-          </button> */}
         </div>
-      </div>
 
         
-        <div className='text-gray-200  flex justify-between'>
+        <div className='text-gray-200  flex justify-between mx-2'>
           {/* like, comment, share */}
           <div className='py-1 mt-0 flex gap-3'>
               
@@ -459,14 +412,14 @@ function HomePosts({post, fetchposts}) {
             <p className='font-semibold'>{post.title}</p>
             {/* <p className='text-sm'>{post.description}</p> */}
           </div>
-        </div>
+      </div>
 
         {<ConfirmationModal
         isOpen={isModalOpen}
         onClose={closeModal}
         onConfirm={confirmDeletePost}
         message="Are you sure you want to delete this post?"
-      />}
+        />}
 
       {showCommentModal && (
         <ViewPost 

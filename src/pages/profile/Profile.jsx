@@ -21,6 +21,7 @@ function Profile() {
   const posts =  useSelector(selectPosts) || []
 
   const [loading, setLoading] = useState(false);
+  const [postLoading, setPostLoading] = useState(false)
   const [savedPost, setSavedPost] = useState([])
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
@@ -86,140 +87,139 @@ function Profile() {
   }
 
   return (
-      <div className='w-full p-4 mr-2 bg-white dark:bg-black'>
-        {loading && <Loader/> }
-        {!loading && 
-        <div>
-          <div className='flex w-full justify-center mb-6'>
-            <div className='flex bg-white dark:bg-black w-full rounded-md shadow-md dark:shadow-gray-500'>
-              <div className='lg:flex lg:p-8 lg:ml-4 justify-center gap-8'>
-                <div className="flex lg:ml-8 justify-center">
-                  <img
-                    className=" h-40 w-40 rounded-full"
-                    src={userimg}
-                    alt=""
-                  />
-                </div>
-                <div className='block ml-10 text-black dark:text-white'>
-                  <div className='font-semibold text-3xl pb-2'>{user.userName}</div>
-                  <div className='pb-0'>{user.name}</div>
-                  <div className='pb-1'>{user.bio}</div>
-                  <div className='flex justify-between  mt-2 cursor-pointer'>
-                    <div className='flex flex-col cursor-pointer items-center'>
-                      <p className="font-medium text-lg">{posts.length}</p>
-                      <p className="text-sm">Posts</p>
-                    </div>
-                    <div 
-                    onClick={handleFollowersModal}
-                    className='flex flex-col cursor-pointer items-center'>
-                      <p className="font-medium text-lg">{followers.length}</p>
-                      <p className="text-sm">Followers</p>
-                    </div>
-                    <div 
-                    onClick={handleFollowingModal}
-                    className='flex flex-col cursor-pointer items-center'>
-                      <p className="font-medium text-lg">{following.length}</p>
-                      <p className="text-sm">Following</p>
-                    </div>
-                  </div>  
-                </div>
-                <div className='flex lg:ml-4 py-4 lg:py-0'>
-                <div>
-                  <button 
-                  onClick={handleEditModal}
-                  // className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 '>
-                  class="lg:bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
-                    <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-                    Edit Profile
-                  </button>
-                </div>
-                <div>
-                  <button 
-                  onClick={handleLogout}
-                  // className=' lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded ml-10 '>
-                  class="lg:bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
-                    <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-                    Logout
-                  </button>
-                </div>
-                </div>
-              </div>
+    <div className='w-full p-4 mr-2 bg-white dark:bg-black'>
+      {loading && <Loader/> }
+      {!loading && 
+      <div>
+        <div className='flex w-full justify-center mb-6 lg:px-10'>
+    <div className='flex bg-white dark:bg-black w-full rounded-md shadow-md dark:shadow-gray-500 relative overflow-hidden '>
+      {/* <Meteors number={20} /> */}
+      <div className='lg:flex lg:p-8 lg:ml-4 justify-center gap-8 relative z-10'>
+        <div className="flex lg:ml-8 justify-center">
+          <img
+            className="h-40 w-40 rounded-full"
+            src={user.profileImg}
+            alt=""
+          />
+        </div>
+        <div className='block lg:ml-10 ml-4 lg:text-start text-center text-black dark:text-white'>
+          <div className='font-semibold text-3xl pb-2'>{user.userName}</div>
+          <div className='pb-0'>{user.name}</div>
+          <div className='pb-1'>{user.bio}</div>
+          <div className='flex justify-between mt-2 cursor-pointer'>
+            <div className='flex flex-col cursor-pointer items-center'>
+              <p className="font-medium text-lg">{posts.length}</p>
+              <p className="text-sm">Posts</p>
+            </div>
+            <div 
+              onClick={handleFollowersModal}
+              className='flex flex-col cursor-pointer items-center'>
+              <p className="font-medium text-lg">{followers.length}</p>
+              <p className="text-sm">Followers</p>
+            </div>
+            <div 
+              onClick={handleFollowingModal}
+              className='flex flex-col cursor-pointer items-center'>
+              <p className="font-medium text-lg">{following.length}</p>
+              <p className="text-sm">Following</p>
+            </div>
+          </div>  
+        </div>
+        <div className='flex lg:ml-4 py-4 lg:py-0 text-center'>
+          <div>
+            <button 
+              onClick={handleEditModal}
+              className="lg:bg-neutral-950 lg:ml-10 ml-4 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+              <span className="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+              Edit Profile
+            </button>
+          </div>
+          <div>
+            <button 
+              onClick={handleLogout}
+              className="lg:bg-neutral-950 ml-10 lg:w-32 w-28 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+              <span className="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+        
+        
+        <div className='w-full h-screen mt-5 rounded-md bg-white dark:bg-black '>
+          <div className='flex justify-between px-10 gap-10 p-2 font-normal text-lg'>
+            <div
+              onClick={() => setCurrentView('posts')}
+              className={`w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 bg-white dark:bg-black text-black dark:text-white ${
+                currentView === 'posts' ? 'border-b-2 border-blue-500' : ''
+              }`}
+            >
+              Posts
+            </div>
+            <div
+              onClick={() => setCurrentView('saved')}
+              className={`w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 bg-white dark:bg-black text-black dark:text-white ${
+                currentView === 'saved' ? 'border-b-2 border-blue-500' : ''
+              }`}
+            >
+              Saved
             </div>
           </div>
-          
-          
-          <div className='w-full h-screen mt-5 rounded-md bg-white dark:bg-black'>
-            <div className='flex justify-between px-10 gap-10 p-2 font-normal text-lg'>
-              <div
-                onClick={() => setCurrentView('posts')}
-                className={`w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 bg-white dark:bg-black text-black dark:text-white ${
-                  currentView === 'posts' ? 'border-b-2 border-blue-500' : ''
-                }`}
-              >
-                Posts
-              </div>
-              <div
-                onClick={() => setCurrentView('saved')}
-                className={`w-full text-center cursor-pointer h-10 flex items-center justify-center rounded hover:shadow-md border-b border-gray-400 bg-white dark:bg-black text-black dark:text-white ${
-                  currentView === 'saved' ? 'border-b-2 border-blue-500' : ''
-                }`}
-              >
-                Saved
-              </div>
-            </div>
 
-            {currentView === 'posts' ? (
-              posts.length === 0 ? (
-                <div className='flex flex-col justify-center items-center mt-4 text-black dark:text-white w-full h-auto'>
-                  <img className='w-96' src={emptypost} alt="" />
-                  <p>Create your first post.</p>
-                </div>
-              ) : (
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2'>
-                  {posts.map((post) => (
-                    <div key={post._id}>
-                      <PostGallery post={post} fetchposts={getUserPost}/>
-                    </div>
-                  ))}
-                </div>
-              )
-            ) : savedPost.length === 0 ? (
-              <div className='flex flex-col justify-center items-center mt-4 text-black w-full h-auto'>
+          {currentView === 'posts' ? (
+            posts.length === 0 ? (
+              <div className='flex flex-col justify-center items-center mt-4 text-black dark:text-white w-full h-auto'>
                 <img className='w-96' src={emptypost} alt="" />
-                <p>No saved post</p>
+                <p>Create your first post.</p>
               </div>
             ) : (
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2'>
-                {savedPost.map((post) => (
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
+                {posts.map((post) => (
                   <div key={post._id}>
-                    <PostGallery post={post} />
+                    <PostGallery post={post} fetchposts={getUserPost}/>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
+            )
+          ) : savedPost.length === 0 ? (
+            <div className='flex flex-col justify-center items-center mt-4 text-black w-full h-auto'>
+              <img className='w-96' src={emptypost} alt="" />
+              <p>No saved post</p>
+            </div>
+          ) : (
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
+              {savedPost.map((post) => (
+                <div key={post._id}>
+                  <PostGallery post={post} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        }
-
-        {IsEditProfileOpen && <UserEditProfile user={user} 
-        handleEditModal={handleEditModal} />}
-
-        {isFollowersgModal && <FollowersList 
-        callGetUserConnection={getUserConnection}
-        followers={followers}
-        followingUsers={following}
-        setFollowingUsers={setFollowing}
-        onClose={handleFollowersModal} /> }
-
-        {isFollowingModal && <FollowingList 
-        callGetUserConnection={getUserConnection}
-        currentUser={userId}
-        followingUsers={following}
-        setFollowingUsers={setFollowing}
-        onClose={handleFollowingModal} />}
-
       </div>
-  )
+      }
+
+      {IsEditProfileOpen && <UserEditProfile user={user} 
+      handleEditModal={handleEditModal} />}
+
+      {isFollowersgModal && <FollowersList 
+      callGetUserConnection={getUserConnection}
+      followers={followers}
+      followingUsers={following}
+      setFollowingUsers={setFollowing}
+      onClose={handleFollowersModal} /> }
+
+      {isFollowingModal && <FollowingList 
+      callGetUserConnection={getUserConnection}
+      currentUser={userId}
+      followingUsers={following}
+      setFollowingUsers={setFollowing}
+      onClose={handleFollowingModal} />}
+
+    </div>
+)
 }
 
 

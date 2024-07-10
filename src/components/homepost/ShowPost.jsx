@@ -371,11 +371,11 @@ function ShowPost({
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
       <div className='flex justify-center items-center h-full'> 
-        <div className='bg-white px-10 py-6 space-y-4 w-full md:mx-52 rounded-md'> 
+        <div className='bg-white px-6 py-2 space-y-0 w-full md:mx-52 rounded-md'> 
           <div className='flex justify-between items-center'>
             <h2 className='font-semibold text-xl'></h2>
             <div>
-              <button onClick={onClose} className="text-white dark:text-black px-0 py-0 rounded">
+              <button onClick={onClose} className="text-white dark:text-black px-0 py-0 mt-2 rounded">
                 <svg className="w-6 h-6 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                 </svg>
@@ -385,11 +385,11 @@ function ShowPost({
           <div className='max-w-full mx-auto flex justify-between'>
             {/* left side */}
             <div className="w-full lg:w-7/12 mr-2">
-              <div className="w-full lg:px-2 lg:p-0 mb-8 h-max rounded-md border-none shadow-md bg-white border">
+              <div className="w-full lg:px-2 lg:p-0 mb-2 h-max rounded-md border-none shadow-md bg-white border">
                 <div>
                   <div className='flex justify-between items-center'>
                     {/* user details */}
-                    <div onClick={() => handleSearch(postUserId._id)} className='flex cursor-pointer'>
+                    <div onClick={() => handleSearch(postUserId._id)} className='flex cursor-pointer px-4'>
                       <div className="flex items-center justify-center bg-white rounded-full w-10 h-10 overflow-hidden">
                         <img className='rounded-full object-cover w-full h-full' src={profileImg} alt="" />
                       </div>
@@ -461,36 +461,25 @@ function ShowPost({
                     )}
                   </div>
 
-                  <div onDoubleClick={() => toHandleLike(post._id, user._id)} className="lg:py-4 sm:p-0"> 
-                    <div id="controls-carousel" className="relative w-full bg-white rounded-md">
-                      <div className="relative h-56 overflow-hidden md:h-96 md:w-full rounded-md">
-                        <div className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" data-carousel-item>
+                  <div onDoubleClick={() => toHandleLike(post._id, user._id)} className="lg:py-2 sm:p-0"> 
+                    <div id="controls-carousel" className="relative w-full max-w-lg mx-auto bg-white rounded-md">
+                      <div className="relative w-full pb-[100%] overflow-hidden ">
+                        <div className="absolute inset-0" data-carousel-item>
                           {imageUrlArray.map((imageUrl, index) => (
-                            <img src={imageUrl} alt={`post ${index}`} key={index} />
+                            <img 
+                              src={imageUrl} 
+                              alt={`post ${index}`} 
+                              key={index}
+                              className="absolute w-full h-full object-cover"
+                            />
                           ))}
                         </div>
                       </div>
-                      {/* <button type="button" className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                        <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                          <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4"/>
-                          </svg>
-                          <span className="sr-only">Previous</span>
-                        </span>
-                      </button>
-                      <button type="button" className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                        <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                          <svg className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
-                          </svg>
-                          <span className="sr-only">Next</span>
-                        </span>
-                      </button> */}
                     </div>
                   </div>
 
                   
-                  <div className='text-black block pb-2'>
+                  <div className='text-gray-700 block pb-4 px-4'>
                     <p className='font-semibold'>{post.title}</p>
                     {/* <p className='text-sm'>{post.description}</p> */}
                   </div>
@@ -509,11 +498,11 @@ function ShowPost({
             </div>
 
             {/* right side */}
-            <div className="w-full lg:w-5/12 ml-2">
-              <div className="w-full h-max rounded-md border-none shadow-md bg-white border px-4 py-1">
+            <div className="w-full lg:w-6/12 ml-2">
+              <div className="w-full h-max rounded-md border-none shadow-md bg-white border px-4 p-1">
 
                 <div className='flex'>
-                  <h3 className="font-semibold text-lg mb-4 p-0">Comments</h3>
+                  <h3 className="font-semibold text-lg mb-2 p-0 mt-2">Comments</h3>
                   {/* <div className='pl-4 pt-1'>
                   <label class="inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" class="sr-only peer"/>
@@ -533,7 +522,7 @@ function ShowPost({
 
                 
 
-                <div className="mb-2 max-h-80 h-80 overflow-auto">
+                <div className="mb-10 max-h-96 h-96 overflow-auto">
                   {!isCommentsEnabled && (
                     <div className="flex items-center justify-center">
                       <div>
@@ -545,6 +534,10 @@ function ShowPost({
                   )}
                   {isCommentsEnabled && (
                     <div>
+                      {comments.length === 0 ? (
+                        <p tabIndex="0" className="flex justify-center focus:outline-none text-sm flex-shrink-0 leading-normal px-3 py-16 text-gray-500">Empty Comments :(</p>
+                      ): (
+                        <div>
                       {comments.map((comment) => (
                         <div key={comment._id} className="mb-6 flex flex-col">
                           {/* Display comment on the left */}
@@ -625,13 +618,15 @@ function ShowPost({
                         </div>
                       ))}
                     </div>
+                      )}
+                    </div>
                   )}
                 </div>
                 <div>
 
-                <div className='text-gray-200 flex justify-between pt-0'>
+                <div className='text-gray-200 flex justify-between pt-2'>
                     {/* like, comment, share */}
-                    <div className='py-1 mt-0 flex gap-3'>
+                    <div className='py-0 mt-0 flex gap-3'>
                       <div className='group relative'>
                         <button onClick={() => toHandleLike(post._id, user._id)} className='transition-transform transform group-hover:scale-110 group-hover:text-red-600 duration-200'>
                           {isLikedByUser ? 

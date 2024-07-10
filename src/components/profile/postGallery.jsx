@@ -21,16 +21,15 @@ function PostGallery({ post, fetchposts }) {
     //   </div>
     // </div>
 
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 w-full  rounded-md">
       {imageUrlArray.map((imageUrl, index) => (
         <div
           onClick={handleModal}
           key={index}
-          style={{height: '286px'}}
-          className="relative overflow-hidden w-full rounded-lg transition-transform duration-300 cursor-pointer"
+          className="relative overflow-hidden w-full transition-transform duration-300 cursor-pointer rounded-md"
         >
           <img
-            className="w-full h-full rounded-md object-cover transition-transform duration-300 transform hover:scale-125"
+            className="w-full h-full object-cover transition-transform duration-300 transform hover:scale-125 rounded-md"
             src={imageUrl}
             alt={`Post ${index}`}
           />
