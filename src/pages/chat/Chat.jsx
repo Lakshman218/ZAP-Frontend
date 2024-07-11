@@ -161,7 +161,7 @@ function Chat() {
   return (
     <div className="relative flex w-full h-screen overflow-hidden antialiased bg-gray-200">
 
-      <ChatNavbar />
+      {/* <ChatNavbar /> */}
 
       <ChatUsers 
         user={user}

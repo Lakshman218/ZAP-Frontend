@@ -89,7 +89,7 @@ function More() {
 
   return (
     <div className="ml-5">
-      <div className="h-5/6 my-4 w-8/12 col-span-8 fixed   rounded-xl bg-white border:none  sm:px-8 ">
+      <div className="h-full my-4 lg:w-8/12 col-span-8 fixed   rounded-xl bg-white border:none  sm:px-8 lg:overflow-visible overflow-auto">
         <div className="pt-4">
           <h1 className="py-2 text-lg font-semibold">Account settings</h1>
           <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 '>
@@ -102,7 +102,7 @@ function More() {
                 <Link to={'/profile'} className='text-xs font-semibold text-sky-500 truncate dark:text-white  hover:text-sky-600'>Edit Profile</Link>
               </div>
             </div>
-            <div className="flex items-center justify-between px-0 py-0">
+            <div className="flex items-center lg:justify-between px-0  py-0">
               <span className="text-md font-medium text-gray-900 dark:text-gray-300 mr-2">Private Account</span>
               <label className="inline-flex items-center cursor-pointer mt-1">
                 <input
