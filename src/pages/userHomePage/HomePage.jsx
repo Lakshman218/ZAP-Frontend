@@ -49,7 +49,7 @@ function HomePage() {
         </div>
 
         {loading ? (
-          <div className="flex justify-center items-center mt-4 w-full h-auto">
+          <div className="flex lg:px-10 justify-center items-center mt-4 w-full h-auto">
             <HomePostLoader />
           </div>
         ) : (

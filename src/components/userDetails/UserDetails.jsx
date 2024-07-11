@@ -98,21 +98,21 @@ function UserDetails({user, connections, posts}) {
 
   return (
     <div className='w-full h-screen p-4 mr-2 bg-white dark:bg-black'>
-      <div className='flex w-full justify-center mb-6'>
-          <div className='flex bg-white dark:bg-black w-full rounded-md shadow-md dark:shadow-gray-500'>
-            <div className='lg:flex lg:p-8 ml-4 justify-center gap-8'>
+      <div className='flex w-full justify-center mb-6 lg:px-10'>
+          <div className='flex bg-white dark:bg-black w-full rounded-md shadow-md dark:shadow-gray-500 relative overflow-hidden'>
+            <div className='lg:flex lg:p-8 lg:ml-4 justify-center gap-8 relative z-10'>
               <div className="flex lg:ml-8 justify-center">
                 <img
-                  className=" h-40 w-40 rounded-full"
+                  className=" lg:h-40 lg:w-40 h-36 w-36 rounded-full"
                   src={user?.profileImg}
                   alt="Profile image"
                 />
               </div>
-              <div className='block ml-10 text-black dark:text-white'>
+              <div className='block lg:ml-10 ml-0 lg:text-start text-center text-black dark:text-white'>
                 <div className='font-semibold text-3xl pb-2'>{user?.userName}</div>
                 <div className='pb-0'>{user?.name}</div>
                 <div className='pb-1'>{user?.bio}</div>
-                <div className='flex justify-between  mt-2 cursor-pointer gap-10'>
+                <div className='flex justify-between  mt-2 cursor-pointer lg:gap-10 lg:px-0 px-4'>
                   <div className='flex flex-col cursor-pointer items-center'>
                     <p className="font-medium text-lg">{posts?.length}</p>
                     <p className="text-sm">Posts</p>
@@ -211,7 +211,7 @@ function UserDetails({user, connections, posts}) {
                 </div> */}
               </div>
             
-              <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2 '>
+              <div className='grid grid-cols-2 md:grid-cols-3 gap-5 bg-white dark:bg-black p-2 lg:px-10'>
                 {
                   posts.map((post) => (
                     <div key={post._id}>

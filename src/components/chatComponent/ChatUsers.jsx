@@ -12,6 +12,7 @@ function ChatUsers({
   setConversations,
   setCurrentChat,
   lastMessages,
+  currentChat
 }) {
   const [messageUsersModal, setMessageUsersModal] = useState(false);
   const [chatEligibleUsers, setChatEligibleUsers] = useState([]);
@@ -69,7 +70,10 @@ function ChatUsers({
   }
 
   return (
-    <div className="relative flex flex-col hidden h-full bg-white border-r border-gray-300 shadow-xl md:block transition-all duration-500 ease-in-out" style={{ width: '24rem', zIndex: 40 }} >
+    <div className={`
+      relative flex flex-col h-full bg-white border-r border-gray-300 shadow-xl transition-all duration-500 ease-in-out
+      ${currentChat ? "hidden md:flex" : "flex"}
+    `} style={{ width: '24rem', zIndex: 40 }} >
       <div className="flex justify-between px-3 pt-1 text-white">
         <div className="flex items-center w-full py-2">
           <button aria-haspopup="true" className="p-2 text-gray-700 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-200">

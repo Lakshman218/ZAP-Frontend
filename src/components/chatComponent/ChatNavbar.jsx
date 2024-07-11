@@ -222,7 +222,7 @@ function ChatNavbar() {
                   </li>
                   <li>
                     <div
-                      onClick={openAddPostModal}
+                      // onClick={openAddPostModal}
                       className="flex items-center cursor-pointer p-2 pb-3 text-gray-900 transition duration-75 rounded-lg  dark:hover:bg-gray-700 dark:text-white group"
                     >
                       <svg
@@ -270,7 +270,7 @@ function ChatNavbar() {
                   </li>
                   <li>
                     <div
-                      onClick={openSettingsModal}
+                      // onClick={openSettingsModal}
                       className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg  dark:hover:bg-gray-700 dark:text-white group cursor-pointer"
                     >
                       <svg

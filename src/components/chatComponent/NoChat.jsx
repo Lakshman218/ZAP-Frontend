@@ -7,7 +7,8 @@ function NoChat() {
   const user  = useSelector(selectUser)
 
   return (
-    <div className='relative z-0 flex flex-col flex-1 bg-gray-300 justify-center items-center'>
+    <>
+      <div className='relative z-0 flex flex-col flex-1 bg-gray-300 justify-center items-center'>
       <div className=' h-auto'>
         {/* <img src={chatImg} alt="chat logo" /> */}
         <div class="group relative text-center">
@@ -43,13 +44,8 @@ function NoChat() {
         <p className='font-semibold text-lg text-black'>Your messages</p>
         <button className='mt-0 p-2  text-slate-950 rounded'>Send a message to start a chat.</button>
       </div>
-      {/* <div>
-        <div
-          class="max-w-40 bg-transparent items-center justify-center flex border-2 rounded-md bg-white border-sky-500 shadow-lg hover:bg-sky-500 text-sky-500 hover:text-white duration-300 cursor-pointer active:scale-[0.98]">
-          <button class="px-5 py-2"><a class="" href="">Send Message</a></button>
-        </div>
-      </div> */}
     </div>
+    </>
   )
 }
 

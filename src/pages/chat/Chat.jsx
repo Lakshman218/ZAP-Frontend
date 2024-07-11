@@ -161,7 +161,7 @@ function Chat() {
   return (
     <div className="relative flex w-full h-screen overflow-hidden antialiased bg-gray-200">
 
-      {/* <ChatNavbar /> */}
+      <ChatNavbar />
 
       <ChatUsers 
         user={user}
@@ -170,6 +170,7 @@ function Chat() {
         setConversations={setConversations}
         setCurrentChat={setCurrentChat}
         lastMessages={lastMessages}
+        currentChat={currentChat}
       />
 
       {currentChat && (
@@ -178,6 +179,7 @@ function Chat() {
           setMessages={setMessages}
           user={user}
           onlineUsers={onlineUsers}
+          setCurrentChat={setCurrentChat}
           currentChat={currentChat}
           socket={socket}
           shareUser={shareUser}
@@ -187,9 +189,11 @@ function Chat() {
         />
       )}
 
-      {!currentChat && (
-        <NoChat />
-      )}
+{!currentChat && (
+  <div className="hidden md:flex relative z-0 flex-col flex-1 bg-gray-300 justify-center items-center h-screen">
+    <NoChat />
+  </div>
+)}
 
       {joinVideoCall && (
         <VideoCallModal 
