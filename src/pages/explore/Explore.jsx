@@ -109,7 +109,7 @@ function Explore() {
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black p-2 mt-2 lg:px-10'>
             {users.map((user) => (
-              <div key={user._id} style={{width: '340px'}}>
+              <div key={user._id} className='lg:ml-0 ml-4' style={{width: '340px'}}>
                 <UsersGallery user={user} />
               </div>
             ))}

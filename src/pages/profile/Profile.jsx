@@ -94,42 +94,42 @@ function Profile() {
         <div className='flex w-full justify-center mb-6 lg:px-10'>
           <div className='flex bg-white dark:bg-black w-full rounded-md shadow-md dark:shadow-gray-500 relative overflow-hidden '>
             {/* <Meteors number={20} /> */}
-            <div className='lg:flex lg:p-8 lg:ml-4 justify-center gap-8 relative z-10'>
-              <div className="flex lg:ml-8 justify-center">
+            <div className='lg:flex lg:p-8 ml-4 justify-center gap-8 relative z-10 lg:mb-0 mb-2'>
+              <div className="flex lg:ml-8  justify-center">
                 <img
                   className="lg:h-40 lg:w-40 h-36 w-36 rounded-full"
                   src={user?.profileImg}
                   alt=""
                 />
               </div>
-              <div className='block lg:ml-10 ml-4 lg:text-start text-center text-black dark:text-white'>
+              <div className='block lg:ml-10 ml-2 lg:text-start text-center text-black dark:text-white'>
                 <div className='font-semibold text-3xl pb-2'>{user?.userName}</div>
                 <div className='pb-0'>{user?.name}</div>
                 <div className='pb-1'>{user?.bio}</div>
-                <div className='flex justify-between mt-2 cursor-pointer'>
+                <div className='flex justify-between  mt-2 cursor-pointer lg:gap-10 lg:px-0 px-4'>
                   <div className='flex flex-col cursor-pointer items-center'>
                     <p className="font-medium text-lg">{posts?.length}</p>
                     <p className="text-sm">Posts</p>
                   </div>
-                  <div 
-                    onClick={handleFollowersModal}
-                    className='flex flex-col cursor-pointer items-center'>
+                  <div
+                  onClick={handleFollowersModal} 
+                  className='flex flex-col cursor-pointer items-center lg:ml-0 ml-4'>
                     <p className="font-medium text-lg">{followers?.length}</p>
                     <p className="text-sm">Followers</p>
                   </div>
-                  <div 
-                    onClick={handleFollowingModal}
-                    className='flex flex-col cursor-pointer items-center'>
+                  <div
+                  onClick={handleFollowingModal} 
+                  className='flex flex-col cursor-pointer items-center'>
                     <p className="font-medium text-lg">{following?.length}</p>
                     <p className="text-sm">Following</p>
                   </div>
                 </div>  
               </div>
-              <div className='flex lg:ml-4 py-4 lg:py-0 text-center'>
+              <div className='flex lg:ml-4 py-2 lg:py-0 text-center'>
                 <div>
                   <button 
                     onClick={handleEditModal}
-                    className="lg:bg-neutral-950 lg:ml-10 ml-4 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    className="bg-neutral-950 lg:ml-10 ml-6 lg:w-32 w-28 text-neutral-400 border border-neutral-400 border-b-4 lg:font-medium font-normal text-md overflow-hidden relative px-4 lg:py-2 py-1 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                     <span className="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                     Edit Profile
                   </button>
@@ -137,7 +137,7 @@ function Profile() {
                 <div>
                   <button 
                     onClick={handleLogout}
-                    className="lg:bg-neutral-950 ml-10 lg:w-32 w-28 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                    className="bg-neutral-950 lg:ml-10 ml-6 lg:w-32 w-28 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 py-1 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                     <span className="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                     Logout
                   </button>
@@ -182,7 +182,7 @@ function Profile() {
               //     </div>
               //   ))}
               // </div>
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
+              <div className='grid grid-cols-2 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
                 {Array.isArray(posts) && posts.map((post) => (
                   <div key={post._id}>
                     <PostGallery post={post} fetchposts={getUserPost} />

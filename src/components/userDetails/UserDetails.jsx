@@ -100,15 +100,15 @@ function UserDetails({user, connections, posts}) {
     <div className='w-full h-screen p-4 mr-2 bg-white dark:bg-black'>
       <div className='flex w-full justify-center mb-6 lg:px-10'>
           <div className='flex bg-white dark:bg-black w-full rounded-md shadow-md dark:shadow-gray-500 relative overflow-hidden'>
-            <div className='lg:flex lg:p-8 lg:ml-4 justify-center gap-8 relative z-10'>
-              <div className="flex lg:ml-8 justify-center">
+            <div className='lg:flex lg:p-8 ml-4 justify-center gap-8 relative z-10 lg:mb-0 mb-2 '>
+              <div className="flex lg:ml-8 ml-4 justify-center">
                 <img
                   className=" lg:h-40 lg:w-40 h-36 w-36 rounded-full"
                   src={user?.profileImg}
                   alt="Profile image"
                 />
               </div>
-              <div className='block lg:ml-10 ml-0 lg:text-start text-center text-black dark:text-white'>
+              <div className='block lg:ml-10 ml-4 lg:text-start text-center text-black dark:text-white'>
                 <div className='font-semibold text-3xl pb-2'>{user?.userName}</div>
                 <div className='pb-0'>{user?.name}</div>
                 <div className='pb-1'>{user?.bio}</div>
@@ -119,7 +119,7 @@ function UserDetails({user, connections, posts}) {
                   </div>
                   <div
                   onClick={handleFollowersModal} 
-                  className='flex flex-col cursor-pointer items-center'>
+                  className='flex flex-col cursor-pointer items-center lg:ml-0 ml-4'>
                     <p className="font-medium text-lg">{followers?.length}</p>
                     <p className="text-sm">Followers</p>
                   </div>
@@ -137,14 +137,14 @@ function UserDetails({user, connections, posts}) {
                 {isFollowed ? (
                 <button
                 onClick={handleUnFollow} 
-                class="bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                class="bg-neutral-950 lg:ml-10 ml-6 lg:w-32 w-28 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 py-1 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                   <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                   Following
                 </button>
                 ) : isFollowRequested ? (
                   <button
                 onClick={handleReject} 
-                class="bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                class="bg-neutral-950 lg:ml-10 ml-6 lg:w-32 w-28 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 py-1 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                   <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                   Requested
                 </button>
@@ -157,7 +157,7 @@ function UserDetails({user, connections, posts}) {
                   
                 <button
                 onClick={handleFollow} 
-                class="bg-neutral-950 ml-10 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                class="bg-neutral-950 lg:ml-10 ml-6 lg:w-32 w-28 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 py-1 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                   <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                   Follow
                 </button>
@@ -170,7 +170,7 @@ function UserDetails({user, connections, posts}) {
 
                 <button 
                   onClick={() => handleNavigate(user)}
-                  class="bg-neutral-950 ml-8 lg:w-32 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+                  class="bg-neutral-950 lg:ml-10 ml-6 lg:w-32 w-28 text-neutral-400 border border-neutral-400 border-b-4 font-medium overflow-hidden relative px-4 lg:py-2 py-1 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
                   <span class="bg-neutral-400 shadow-neutral-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                   Message
                 </button>
