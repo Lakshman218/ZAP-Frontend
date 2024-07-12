@@ -32,6 +32,7 @@ export const apiCall = async(method, url, data) => {
 
       if(response) {
         resolve(response)
+        console.log("response", response);
       } else if(error) {  
         console.log("in error");
         if(error?.response?.status == 401) {
@@ -43,6 +44,7 @@ export const apiCall = async(method, url, data) => {
         reject(error?.response?.data);
       }
     } catch (error) {
+      console.log("error in api", error);
       reject(err.response.data);
     }
   })
