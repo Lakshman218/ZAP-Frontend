@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPosts } from '../../utils/context/reducers/authSlice';
 import { toast } from 'sonner';
 
-function EditPost({handlePostEdit, postId, userId, fetchposts}) {
+function EditPost({handlePostEdit, postId, userId}) {
   const dispatch = useDispatch()
   // const selectedUser = (state) => state.auth.user;
   // const user = useSelector(selectedUser);
@@ -50,7 +50,7 @@ function EditPost({handlePostEdit, postId, userId, fetchposts}) {
        .then((response) => {
         const PostData = response.data
         dispatch(setPosts({posts: PostData.posts}))
-        fetchposts()
+        // fetchposts()
         toast.info("Post updated successfully");
         resetState()
         handlePostEdit()
