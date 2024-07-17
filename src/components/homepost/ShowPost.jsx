@@ -17,7 +17,7 @@ import { loginSuccuss, setPosts } from '../../utils/context/reducers/authSlice';
 function ShowPost({
   post, 
   onClose,
-  fetchposts,
+  fetchPost,
 }) 
 {
 
@@ -100,7 +100,7 @@ function ShowPost({
   //       .then((response) => {
   //         const postData = response.data
   //         dispatch(setPosts({posts: postData.posts}))
-  //         fetchposts()
+  //         fetchPost()
   //         toast.info("post deleted")
   //       })
   //       .catch((error) => {
@@ -130,7 +130,7 @@ function ShowPost({
         .then((response) => {
           const postData = response.data;
           dispatch(setPosts({ posts: postData.posts }));
-          fetchposts()
+          fetchPost()
           toast.info('Post deleted');
         })
         .catch((error) => {
@@ -486,7 +486,7 @@ function ShowPost({
                   </div>
 
                   {showLikedUsersPopup && <LikedUsers likedUsers={likedUsers} onClose={handleLikedUsersPopup} />}
-                  {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchposts={fetchposts} />}
+                  {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchPost={fetchPost} />}
                   {reportModal && <ReportModal closeModal={handleReportModal} postId={post._id} userId={userId} />}
                   {<ConfirmationModal
                     isOpen={isModalOpen}

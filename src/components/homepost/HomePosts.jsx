@@ -13,7 +13,7 @@ import ViewPost from './ViewPost';
 import ConfirmationModal from './ConfirmationModal';
 import SharePost from '../sharePost/SharePost';
 
-function HomePosts({post, fetchposts}) {
+function HomePosts({post, fetchPosts}) {
   // console.log("updatedpost for like", post);
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -104,7 +104,7 @@ function HomePosts({post, fetchposts}) {
         .then((response) => {
           const postData = response.data;
           dispatch(setPosts({ posts: postData.posts }));
-          fetchposts()
+          fetchPosts()
           toast.info('Post deleted');
         })
         .catch((error) => {
@@ -437,7 +437,7 @@ function HomePosts({post, fetchposts}) {
           isLikesEnabled={isLikesEnabled}
           manageComment={manageComment}
           manageLikes={manageLikes}
-          fetchposts={fetchposts}
+          fetchposts={fetchPosts}
           commentsCount={commentsCount}
           getCommentsCount={getCommentsCount}
         />
@@ -451,7 +451,7 @@ function HomePosts({post, fetchposts}) {
         <SharePost onClose={handleSharePostModal} post={post} />
       )}
 
-      {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchposts={fetchposts} /> }
+      {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchposts={fetchPosts} /> }
 
       {reportModal && <ReportModal closeModal={handleReportModal} postId={post._id} userId={userId} /> }
 

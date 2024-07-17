@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ShowPost from '../homepost/ShowPost';
 
-function PostGallery({ post, fetchposts }) {
+function PostGallery({ post, fetchPost }) {
 
   const [showPostModal, setShowPostModal] = useState(false)
   const handleModal = () => {
@@ -36,7 +36,7 @@ function PostGallery({ post, fetchposts }) {
         </div>
       ))}
 
-      {showPostModal && <ShowPost post={post} fetchposts={fetchposts} onClose={handleModal} /> }
+      {showPostModal && <ShowPost post={post} fetchPost={fetchPost} onClose={handleModal} /> }
     </div>
 
     // <div className="flex flex-wrap gap-4">

@@ -41,17 +41,22 @@ function Profile() {
     setIsFollowersgModal(!isFollowersgModal)
   }
 
+  const fetchPost = () => {
+    getUserPost(userId)
+    .then((response) => {
+      const postsData = response.data
+      dispatch(setPosts({posts: postsData}))
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
   useEffect(() => {
     try {
       setLoading(true)
-      getUserPost(userId)
-        .then((response) => {
-          const postsData = response.data
-          dispatch(setPosts({posts: postsData}))
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+      
+      fetchPost()
 
       getUserConnection({userId:userId})
         .then((response)  => {
@@ -77,6 +82,8 @@ function Profile() {
       console.log(error);
     }
   }, [userId, dispatch])
+
+
 
   // logout
   const handleLogout = () => {
@@ -185,7 +192,7 @@ function Profile() {
               <div className='grid grid-cols-2 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
                 {Array.isArray(posts) && posts.map((post) => (
                   <div key={post._id}>
-                    <PostGallery post={post} fetchposts={getUserPost} />
+                    <PostGallery post={post} fetchPost={fetchPost} />
                   </div>
                 ))}
               </div>
@@ -206,7 +213,7 @@ function Profile() {
             <div className='grid grid-cols-1 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10'>
               {Array.isArray(savedPost) && savedPost.map((post) => (
                 <div key={post._id}>
-                  <PostGallery post={post} />
+                  <PostGallery post={post} fetchPost={fetchPost} />
                 </div>
               ))}
             </div>
