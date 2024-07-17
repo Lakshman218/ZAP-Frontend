@@ -29,7 +29,7 @@ function ViewPost({
   isLikesEnabled,
   manageComment,
   manageLikes,
-  fetchposts,
+  fetchPosts,
   commentsCount,
   getCommentsCount,
 }) {
@@ -113,7 +113,7 @@ function ViewPost({
   //       .then((response) => {
   //         const postData = response.data
   //         dispatch(setPosts({posts: postData.posts}))
-  //         fetchposts()
+  //         fetchPosts()
   //         toast.info("post deleted")
   //       })
   //       .catch((error) => {
@@ -143,7 +143,7 @@ function ViewPost({
         .then((response) => {
           const postData = response.data;
           dispatch(setPosts({ posts: postData.posts }));
-          fetchposts()
+          fetchPosts()
           toast.info('Post deleted');
         })
         .catch((error) => {
@@ -500,7 +500,7 @@ function ViewPost({
                   </div>
 
                   {showLikedUsersPopup && <LikedUsers likedUsers={likedUsers} onClose={handleLikedUsersPopup} />}
-                  {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchposts={fetchposts} />}
+                  {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchPosts={fetchPosts} />}
                   {reportModal && <ReportModal closeModal={handleReportModal} postId={post._id} userId={userId} />}
                   {<ConfirmationModal
                     isOpen={isModalOpen}

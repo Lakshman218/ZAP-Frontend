@@ -437,7 +437,7 @@ function HomePosts({post, fetchPosts}) {
           isLikesEnabled={isLikesEnabled}
           manageComment={manageComment}
           manageLikes={manageLikes}
-          fetchposts={fetchPosts}
+          fetchPosts={fetchPosts}
           commentsCount={commentsCount}
           getCommentsCount={getCommentsCount}
         />
@@ -451,7 +451,7 @@ function HomePosts({post, fetchPosts}) {
         <SharePost onClose={handleSharePostModal} post={post} />
       )}
 
-      {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchposts={fetchPosts} /> }
+      {IsEditPostOpen && <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchPosts={fetchPosts} /> }
 
       {reportModal && <ReportModal closeModal={handleReportModal} postId={post._id} userId={userId} /> }
 
